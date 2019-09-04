@@ -1,0 +1,54 @@
+<?php
+
+namespace App\Controller;
+
+use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
+use FOS\UserBundle\Model\UserInterface;
+use FOS\UserBundle\Model\UserManagerInterface;
+
+/**
+ * Class AdminController.
+ *
+ * Used to integrate FOSUserBundle and EasyAdminBundle
+ * https://symfony.com/doc/master/bundles/EasyAdminBundle/integration/fosuserbundle.html
+ */
+class AdminController extends EasyAdminController
+{
+    private $userManager;
+
+    /**
+     * AdminController constructor.
+     *
+     * @param UserManagerInterface $userManager
+     */
+    public function __construct(UserManagerInterface $userManager)
+    {
+        $this->userManager = $userManager;
+    }
+
+    /**
+     * @return UserInterface
+     */
+    public function createNewUserEntity(): UserInterface
+    {
+        return $this->userManager->createUser();
+    }
+
+    /**
+     * @param $user
+     */
+    public function persistUserEntity($user): void
+    {
+        $this->userManager->updateUser($user, false);
+        parent::persistEntity($user);
+    }
+
+    /**
+     * @param $user
+     */
+    public function updateUserEntity($user): void
+    {
+        $this->userManager->updateUser($user, false);
+        parent::updateEntity($user);
+    }
+}

@@ -48,7 +48,7 @@ class Material
      *
      * @return string
      */
-    public function getTitle(): string 
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -210,8 +210,8 @@ class Material
      *   The identifier
      *
      * @return $this
-     * @throws \ReflectionException
      *
+     * @throws \ReflectionException
      * @throws MaterialTypeException
      */
     public function addIdentifier(string $type, string $id): self

@@ -111,8 +111,8 @@ class AuthenticationService
                 $response = $this->client->request('POST', $this->params->get('openPlatform.auth.url'), [
                     'form_params' => [
                         'grant_type' => 'password',
-                        'username' => '@',
-                        'password' => '@',
+                        'username' => '@'.$this->params->get('datawell.vendor.agency'),
+                        'password' => '@'.$this->params->get('datawell.vendor.agency'),
                     ],
                     'auth' => [
                         $this->params->get('openPlatform.auth.id'),

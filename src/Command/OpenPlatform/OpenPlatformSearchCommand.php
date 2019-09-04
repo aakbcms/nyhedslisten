@@ -20,18 +20,18 @@ class OpenPlatformSearchCommand extends Command
 {
     protected static $defaultName = 'app:openplatform:search';
 
-    private $search;
+    private $searchService;
     private $refresh = false;
 
     /**
      * OpenPlatformSearchCommand constructor.
      *
-     * @param searchService $search
+     * @param searchService $searchService
      *   The open platform search service
      */
-    public function __construct(SearchService $search)
+    public function __construct(SearchService $searchService)
     {
-        $this->search = $search;
+        $this->searchService = $searchService;
 
         parent::__construct();
     }
@@ -60,7 +60,7 @@ class OpenPlatformSearchCommand extends Command
         $is = $input->getArgument('is');
         $type = $input->getArgument('type');
 
-        $material = $this->search->search($is, $type, $this->refresh);
+        $material = $this->searchService->searchByIdentifier($is, $type, $this->refresh);
         $output->writeln($material);
     }
 }

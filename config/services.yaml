@@ -10,7 +10,12 @@ parameters:
     openPlatform.auth.url: '%env(OPENPLATFORM_AUTH_URL)%'
     openPlatform.search.url: '%env(OPENPLATFORM_SEARCH_URL)%'
     openPlatform.search.index: '%env(OPENPLATFORM_SEARCH_INDEX)%'
-    openPlatform.search.ttl: '%env(OPENPLATFORM_SEARCH_TTL)%'
+    openPlatform.search.fields: '%env(OPENPLATFORM_SEARCH_FIELDS)%'
+    datawell.vendor.agency: '%env(DATAWELL_VENDOR_AGENCY)%'
+    datawell.vendor.profile: '%env(DATAWELL_VENDOR_PROFILE)%'
+    datawell.vendor.excluded.branches: '%env(DATAWELL_VENDOR_EXCLUDED_BRANCHES)%'
+    datawell.vendor.excluded.circulationRules: '%env(DATAWELL_VENDOR_EXCLUDED_CIRCULATION_RULES)%'
+    datawell.default.accessiondate.criteria: '%env(DATAWELL_DEFAULT_ACCESSIONDATE_CRITERIA)%'
 
 services:
     # default configuration for services in *this* file
@@ -35,3 +40,8 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    get_set_method_normalizer:
+        class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
+        public: false
+        tags: [serializer.normalizer]
