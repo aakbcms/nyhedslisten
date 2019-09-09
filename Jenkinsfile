@@ -60,7 +60,7 @@ pipeline {
                     input 'Should the site be deployed?'
                 }
                 steps {
-                    echo "production"
+                    echo 'production'
                 }
             }
         }
