@@ -54,10 +54,17 @@ class SearchService
         $this->searchFields = explode(',', $params->get('openPlatform.search.fields'));
 
         $this->profile = $params->get('datawell.vendor.profile');
-
-        $d = 1;
     }
 
+    /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
+     * @param string $query
+     * @return array
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
+     * @throws PlatformAuthException
+     */
     public function query(string $query): array
     {
         return $this->recursiveQuery($query);

@@ -23,6 +23,11 @@ class Material
     private $publisher = 'Unknown';
     private $identifiers = [];
 
+    /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
+     * @return string
+     */
     public function __toString()
     {
         $output = [];

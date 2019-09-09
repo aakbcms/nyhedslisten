@@ -10,6 +10,13 @@
 
 namespace App\Utils\Types;
 
+/**
+ * Class VendorState
+ *
+ * @TODO: MISSING DOCUMENTATION.
+ *
+ * @package App\Utils\Types
+ */
 class VendorState
 {
     const INSERT = 'insert';

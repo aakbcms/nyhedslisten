@@ -35,6 +35,8 @@ class AdminController extends EasyAdminController
     }
 
     /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
      * @return UserInterface
      */
     public function createNewUserEntity(): UserInterface
@@ -43,6 +45,8 @@ class AdminController extends EasyAdminController
     }
 
     /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
      * @param $user
      */
     public function persistUserEntity($user): void
@@ -52,6 +56,8 @@ class AdminController extends EasyAdminController
     }
 
     /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
      * @param $user
      */
     public function updateUserEntity($user): void

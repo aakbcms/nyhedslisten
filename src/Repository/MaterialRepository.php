@@ -16,6 +16,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\QueryException;
 
 /**
+ * @TODO: MISSING DOCUMENTATION.
+ *
  * @method Material|null find($id, $lockMode = null, $lockVersion = null)
  * @method Material|null findOneBy(array $criteria, array $orderBy = null)
  * @method Material[]    findAll()

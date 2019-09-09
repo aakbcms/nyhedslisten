@@ -10,6 +10,13 @@
 
 namespace App\Exception;
 
+/**
+ * Class PlatformSearchException
+ *
+ * @TODO: MISSING DOCUMENTATION.
+ *
+ * @package App\Exception
+ */
 class PlatformSearchException extends \Exception
 {
 }

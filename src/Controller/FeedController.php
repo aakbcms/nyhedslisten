@@ -17,6 +17,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
+/**
+ * Class FeedController
+ *
+ * @TODO: MISSING DOCUMENTATION.
+ *
+ * @package App\Controller
+ */
 class FeedController extends AbstractController
 {
     private $entityManager;
@@ -35,6 +42,8 @@ class FeedController extends AbstractController
     }
 
     /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
      * @Route("/feed", name="feed")
      */
     public function index()

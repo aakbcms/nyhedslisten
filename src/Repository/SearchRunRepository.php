@@ -15,6 +15,8 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
+ * @TODO: MISSING DOCUMENTATION.
+ *
  * @method SearchRun|null find($id, $lockMode = null, $lockVersion = null)
  * @method SearchRun|null findOneBy(array $criteria, array $orderBy = null)
  * @method SearchRun[]    findAll()

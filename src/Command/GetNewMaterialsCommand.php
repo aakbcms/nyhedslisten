@@ -32,6 +32,8 @@ class GetNewMaterialsCommand extends Command
     /**
      * OpenPlatformQueryCommand constructor.
      *
+     * @TODO: MISSING DOCUMENTATION.
+     *
      * @param NewMaterialService $newMaterialService
      * @param SearchRepository   $searchRepository
      */

@@ -17,6 +17,13 @@ use Doctrine\ORM\Query\QueryException;
 use Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
+/**
+ * Class MaterialPersistService
+ *
+ * @TODO: MISSING DOCUMENTATION.
+ *
+ * @package App\Service
+ */
 class MaterialPersistService
 {
     private $entityManager;
@@ -34,6 +41,8 @@ class MaterialPersistService
     }
 
     /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
      * @param array  $results
      * @param Search $search
      *
@@ -60,6 +69,8 @@ class MaterialPersistService
     }
 
     /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
      * @param array $results
      *
      * @return array
@@ -76,7 +87,7 @@ class MaterialPersistService
     }
 
     /**
-     * Parse the search result from the datawell.
+     * Parse the search result from the data well.
      *
      * @param array $result
      *                      The results from the data well
