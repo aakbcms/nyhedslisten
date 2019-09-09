@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @file
- * Service that handle authentication against the Open Platform.
+ * This file is part of aakbcms/nyhedslisten.
  *
- * Uses oAuth2 request to get access token and stores in cache until expire to
- * speed up the process and make as few calls as possible.
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
  */
 
 namespace App\Service\OpenPlatform;
