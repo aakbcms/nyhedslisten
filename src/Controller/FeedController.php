@@ -18,11 +18,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Class FeedController
+ * Class FeedController.
  *
  * @TODO: MISSING DOCUMENTATION.
- *
- * @package App\Controller
  */
 class FeedController extends AbstractController
 {

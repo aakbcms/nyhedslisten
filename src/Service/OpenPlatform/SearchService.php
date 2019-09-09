@@ -60,7 +60,9 @@ class SearchService
      * @TODO: MISSING DOCUMENTATION.
      *
      * @param string $query
+     *
      * @return array
+     *
      * @throws GuzzleException
      * @throws InvalidArgumentException
      * @throws PlatformAuthException

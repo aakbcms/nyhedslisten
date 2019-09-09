@@ -11,11 +11,9 @@
 namespace App\Utils\Types;
 
 /**
- * Class VendorState
+ * Class VendorState.
  *
  * @TODO: MISSING DOCUMENTATION.
- *
- * @package App\Utils\Types
  */
 class VendorState
 {

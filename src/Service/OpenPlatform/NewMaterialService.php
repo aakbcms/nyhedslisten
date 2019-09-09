@@ -19,11 +19,9 @@ use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
- * Class NewMaterialService
+ * Class NewMaterialService.
  *
  * @TODO: MISSING DOCUMENTATION.
- *
- * @package App\Service\OpenPlatform
  */
 class NewMaterialService
 {

@@ -11,11 +11,9 @@
 namespace App\Exception;
 
 /**
- * Class PlatformAuthException
+ * Class PlatformAuthException.
  *
  * @TODO: MISSING DOCUMENTATION.
- *
- * @package App\Exception
  */
 class PlatformAuthException extends \Exception
 {

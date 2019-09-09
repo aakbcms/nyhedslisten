@@ -18,11 +18,9 @@ use Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
- * Class MaterialPersistService
+ * Class MaterialPersistService.
  *
  * @TODO: MISSING DOCUMENTATION.
- *
- * @package App\Service
  */
 class MaterialPersistService
 {
