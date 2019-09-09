@@ -26,7 +26,7 @@ class MaterialPersistService
     }
 
     /**
-     * @param array $results
+     * @param array  $results
      * @param Search $search
      *
      * @throws QueryException
@@ -38,7 +38,7 @@ class MaterialPersistService
         foreach ($results as $result) {
             $pid = reset($result['pid']);
 
-            if (array_key_exists($pid, $existingMaterials)) {
+            if (\array_key_exists($pid, $existingMaterials)) {
                 $material = $existingMaterials[$pid];
             } else {
                 $material = $this->parseResultItem($result);
@@ -71,10 +71,10 @@ class MaterialPersistService
      * Parse the search result from the datawell.
      *
      * @param array $result
-     *   The results from the data well
+     *                      The results from the data well
      *
      * @return material
-     *   Material with all the information collected
+     *                  Material with all the information collected
      *
      * @throws Exception
      */

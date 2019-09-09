@@ -24,9 +24,9 @@ class MaterialIdentifier
      * MaterialIdentifier constructor.
      *
      * @param string $type
-     *   The material type
+     *                     The material type
      * @param string $id
-     *   The identifier for this material
+     *                     The identifier for this material
      *
      * @throws MaterialTypeException
      * @throws \ReflectionException
@@ -38,7 +38,7 @@ class MaterialIdentifier
         $this->types = array_values($obj->getConstants());
 
         // Validate type.
-        if (!in_array($type, $this->types)) {
+        if (!\in_array($type, $this->types)) {
             throw new MaterialTypeException('Unknown material type: '.$type, 0, null, $type);
         }
 

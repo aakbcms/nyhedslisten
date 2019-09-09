@@ -26,7 +26,7 @@ class MaterialRepository extends ServiceEntityRepository
      * @param array $pidList
      *
      * @return mixed
-     *  Array of materials indexed by match PID
+     *               Array of materials indexed by match PID
      *
      * @throws QueryException
      */

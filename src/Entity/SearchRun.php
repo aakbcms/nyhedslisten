@@ -41,7 +41,7 @@ class SearchRun
     /**
      * SearchRun constructor.
      *
-     * @param Search $search
+     * @param Search            $search
      * @param DateTimeImmutable $runAt
      */
     public function __construct(Search $search, DateTimeImmutable $runAt)

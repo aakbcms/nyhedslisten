@@ -34,10 +34,10 @@ class NewMaterialService
     /**
      * NewMaterialService constructor.
      *
-     * @param SearchService $searchService
+     * @param SearchService          $searchService
      * @param MaterialPersistService $materialPersistService
      * @param EntityManagerInterface $entityManager
-     * @param ParameterBagInterface $params
+     * @param ParameterBagInterface  $params
      */
     public function __construct(SearchService $searchService, MaterialPersistService $materialPersistService, EntityManagerInterface $entityManager, ParameterBagInterface $params)
     {
@@ -53,7 +53,7 @@ class NewMaterialService
     /**
      * Get and persists new materials received since date.
      *
-     * @param Search $search
+     * @param Search            $search
      * @param DateTimeImmutable $since
      *
      * @return array
@@ -71,7 +71,7 @@ class NewMaterialService
     /**
      * Get new materials received since date.
      *
-     * @param Search $search
+     * @param Search            $search
      * @param DateTimeImmutable $since
      *
      * @return array
@@ -103,7 +103,7 @@ class NewMaterialService
      *
      * Note: This includes materials where there is already an exiting copy in the collection
      *
-     * @param Search $search
+     * @param Search            $search
      * @param DateTimeImmutable $since
      *
      * @return array
@@ -121,19 +121,19 @@ class NewMaterialService
     /**
      * Exclude materials with exiting materials from result set.
      *
-     * @param array $list
+     * @param array             $list
      * @param DateTimeImmutable $before
      *
      * @return array
      */
     private function excludeMaterialsWithExistingCopy(array $list, DateTimeImmutable $before): array
     {
-        $count = count($list);
+        $count = \count($list);
         $offset = 0;
         $new = [];
 
         while ($offset < $count) {
-            $listSlice = array_slice($list, $offset, self::SEARCH_LIMIT);
+            $listSlice = \array_slice($list, $offset, self::SEARCH_LIMIT);
 
             $q = 'rec.id any "'.$this->buildPidIncludeString($listSlice).'"';
             $q .= sprintf(self::BASE_QUERY, $this->agencyId, $this->buildExcludeSearchString($this->excludedBranches), $this->buildExcludeSearchString($this->excludedCirculationRules));

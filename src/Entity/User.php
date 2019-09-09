@@ -103,7 +103,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setName($name): User
+    public function setName($name): self
     {
         $this->name = $name;
 

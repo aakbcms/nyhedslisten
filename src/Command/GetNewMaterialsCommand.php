@@ -30,7 +30,7 @@ class GetNewMaterialsCommand extends Command
      * OpenPlatformQueryCommand constructor.
      *
      * @param NewMaterialService $newMaterialService
-     * @param SearchRepository $searchRepository
+     * @param SearchRepository   $searchRepository
      */
     public function __construct(NewMaterialService $newMaterialService, SearchRepository $searchRepository, ParameterBagInterface $parameterBag)
     {
@@ -73,7 +73,7 @@ class GetNewMaterialsCommand extends Command
             if ($search) {
                 $results = $this->newMaterialService->persistNewMaterialsSinceDate($search, $date);
 
-                $output->writeln(count($results));
+                $output->writeln(\count($results));
             } else {
                 $output->writeln('No CQL Search found with id = '.$id);
             }

@@ -18,7 +18,7 @@ class FeedController extends AbstractController
      * FeedController constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param SerializerInterface $serializer
+     * @param SerializerInterface    $serializer
      */
     public function __construct(EntityManagerInterface $entityManager, SerializerInterface $serializer)
     {
