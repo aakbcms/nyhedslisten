@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is part of aakbcms/nyhedslisten.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
+
 namespace App\Entity;
 
 use Gedmo\Blameable\Traits\BlameableEntity;
@@ -103,7 +111,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setName($name): User
+    public function setName($name): self
     {
         $this->name = $name;
 

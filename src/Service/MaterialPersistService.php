@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is part of aakbcms/nyhedslisten.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
+
 namespace App\Service;
 
 use App\Entity\Material;
@@ -9,6 +17,11 @@ use Doctrine\ORM\Query\QueryException;
 use Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
+/**
+ * Class MaterialPersistService.
+ *
+ * @TODO: MISSING DOCUMENTATION.
+ */
 class MaterialPersistService
 {
     private $entityManager;
@@ -26,7 +39,9 @@ class MaterialPersistService
     }
 
     /**
-     * @param array $results
+     * @TODO: MISSING DOCUMENTATION.
+     *
+     * @param array  $results
      * @param Search $search
      *
      * @throws QueryException
@@ -38,7 +53,7 @@ class MaterialPersistService
         foreach ($results as $result) {
             $pid = reset($result['pid']);
 
-            if (array_key_exists($pid, $existingMaterials)) {
+            if (\array_key_exists($pid, $existingMaterials)) {
                 $material = $existingMaterials[$pid];
             } else {
                 $material = $this->parseResultItem($result);
@@ -52,6 +67,8 @@ class MaterialPersistService
     }
 
     /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
      * @param array $results
      *
      * @return array
@@ -68,13 +85,13 @@ class MaterialPersistService
     }
 
     /**
-     * Parse the search result from the datawell.
+     * Parse the search result from the data well.
      *
      * @param array $result
-     *   The results from the data well
+     *                      The results from the data well
      *
      * @return material
-     *   Material with all the information collected
+     *                  Material with all the information collected
      *
      * @throws Exception
      */

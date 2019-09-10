@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is part of aakbcms/nyhedslisten.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
+
 namespace App\Controller;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
@@ -27,6 +35,8 @@ class AdminController extends EasyAdminController
     }
 
     /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
      * @return UserInterface
      */
     public function createNewUserEntity(): UserInterface
@@ -35,6 +45,8 @@ class AdminController extends EasyAdminController
     }
 
     /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
      * @param $user
      */
     public function persistUserEntity($user): void
@@ -44,6 +56,8 @@ class AdminController extends EasyAdminController
     }
 
     /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
      * @param $user
      */
     public function updateUserEntity($user): void

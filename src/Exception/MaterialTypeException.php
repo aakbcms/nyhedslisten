@@ -1,7 +1,11 @@
 <?php
 
 /**
- * @file
+ * This file is part of aakbcms/nyhedslisten.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
  */
 
 namespace App\Exception;
@@ -23,6 +27,8 @@ class MaterialTypeException extends \Exception
     }
 
     /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
      * @param string $materialType
      */
     public function setMaterialType(string $materialType): void
@@ -31,6 +37,8 @@ class MaterialTypeException extends \Exception
     }
 
     /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
      * @return string
      */
     public function getMaterialType()

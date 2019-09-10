@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is part of aakbcms/nyhedslisten.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
+
 namespace App\Service\OpenPlatform;
 
 use App\Entity\Search;
@@ -10,6 +18,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
+/**
+ * Class NewMaterialService.
+ *
+ * @TODO: MISSING DOCUMENTATION.
+ */
 class NewMaterialService
 {
     private const SEARCH_LIMIT = 50;
@@ -34,10 +47,12 @@ class NewMaterialService
     /**
      * NewMaterialService constructor.
      *
-     * @param SearchService $searchService
+     * @TODO: MISSING DOCUMENTATION.
+     *
+     * @param SearchService          $searchService
      * @param MaterialPersistService $materialPersistService
      * @param EntityManagerInterface $entityManager
-     * @param ParameterBagInterface $params
+     * @param ParameterBagInterface  $params
      */
     public function __construct(SearchService $searchService, MaterialPersistService $materialPersistService, EntityManagerInterface $entityManager, ParameterBagInterface $params)
     {
@@ -53,7 +68,9 @@ class NewMaterialService
     /**
      * Get and persists new materials received since date.
      *
-     * @param Search $search
+     * @TODO: MISSING DOCUMENTATION.
+     *
+     * @param Search            $search
      * @param DateTimeImmutable $since
      *
      * @return array
@@ -71,12 +88,15 @@ class NewMaterialService
     /**
      * Get new materials received since date.
      *
-     * @param Search $search
+     * @TODO: MISSING DOCUMENTATION.
+     *
+     * @param Search            $search
      * @param DateTimeImmutable $since
      *
      * @return array
      *
-     * @throws Exception
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\Cache\InvalidArgumentException'
      */
     public function getMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
     {
@@ -103,10 +123,16 @@ class NewMaterialService
      *
      * Note: This includes materials where there is already an exiting copy in the collection
      *
-     * @param Search $search
+     * @param Search            $search
      * @param DateTimeImmutable $since
      *
      * @return array
+     *
+     * @TODO: MISSING DOCUMENTATION.
+     *
+     * @throws \App\Exception\PlatformAuthException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     private function getAllMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
     {
@@ -121,19 +147,25 @@ class NewMaterialService
     /**
      * Exclude materials with exiting materials from result set.
      *
-     * @param array $list
+     * @TODO: MISSING DOCUMENTATION.
+     *
+     * @param array             $list
      * @param DateTimeImmutable $before
      *
      * @return array
+     *
+     * @throws \App\Exception\PlatformAuthException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     private function excludeMaterialsWithExistingCopy(array $list, DateTimeImmutable $before): array
     {
-        $count = count($list);
+        $count = \count($list);
         $offset = 0;
         $new = [];
 
         while ($offset < $count) {
-            $listSlice = array_slice($list, $offset, self::SEARCH_LIMIT);
+            $listSlice = \array_slice($list, $offset, self::SEARCH_LIMIT);
 
             $q = 'rec.id any "'.$this->buildPidIncludeString($listSlice).'"';
             $q .= sprintf(self::BASE_QUERY, $this->agencyId, $this->buildExcludeSearchString($this->excludedBranches), $this->buildExcludeSearchString($this->excludedCirculationRules));
@@ -152,6 +184,8 @@ class NewMaterialService
 
     /**
      * Find all items in '$total' not present in '$exclude' compared by 'pid'.
+     *
+     * @TODO: MISSING DOCUMENTATION.
      *
      * @param array $total
      * @param array $exclude
@@ -183,6 +217,8 @@ class NewMaterialService
     /**
      * Build CQL string of PID's from result set.
      *
+     * @TODO: MISSING DOCUMENTATION.
+     *
      * @param array $results
      *
      * @return string
@@ -199,6 +235,8 @@ class NewMaterialService
 
     /**
      * Build the 'exclude' part for a CQL query string.
+     *
+     * @TODO: MISSING DOCUMENTATION.
      *
      * @param array $excluded
      *
@@ -218,6 +256,8 @@ class NewMaterialService
      *
      * PHPs array_merge() performance is not always optimal:
      * https://stackoverflow.com/questions/23348339/optimizing-array-merge-operation
+     *
+     * @TODO: MISSING DOCUMENTATION.
      *
      * @param array $mergeTo
      * @param array $mergeFrom

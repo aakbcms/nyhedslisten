@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is part of aakbcms/nyhedslisten.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
+
 namespace App\Utils\Types;
 
 class IdentifierType
@@ -15,8 +23,8 @@ class IdentifierType
      * Get array of all defined identifier types.
      *
      * @return array
-     *   An array of known identifiers.
-     *   Uppercase identifier name in key, lower case identifier in value.
+     *               An array of known identifiers.
+     *               Uppercase identifier name in key, lower case identifier in value.
      *
      * @throws \ReflectionException
      */

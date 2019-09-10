@@ -1,8 +1,11 @@
 <?php
 
 /**
- * @file
- * Handle search at open platform.
+ * This file is part of aakbcms/nyhedslisten.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
  */
 
 namespace App\Service\OpenPlatform;
@@ -33,15 +36,17 @@ class SearchService
      * SearchService constructor.
      *
      * @param parameterBagInterface $params
-     *   Access to environment variables
+     *                                                     Access to environment variables
      * @param authenticationService $authenticationService
-     *   The Open Platform authentication service
-     * @param ClientInterface $httpClient
-     *   Guzzle Client
+     *                                                     The Open Platform authentication service
+     * @param ClientInterface       $httpClient
+     *                                                     Guzzle Client
      */
-    public function __construct(ParameterBagInterface $params, AuthenticationService $authenticationService,
-                                ClientInterface $httpClient)
-    {
+    public function __construct(
+        ParameterBagInterface $params,
+        AuthenticationService $authenticationService,
+        ClientInterface $httpClient
+    ) {
         $this->authenticationService = $authenticationService;
         $this->client = $httpClient;
 
@@ -49,10 +54,19 @@ class SearchService
         $this->searchFields = explode(',', $params->get('openPlatform.search.fields'));
 
         $this->profile = $params->get('datawell.vendor.profile');
-
-        $d = 1;
     }
 
+    /**
+     * @TODO: MISSING DOCUMENTATION.
+     *
+     * @param string $query
+     *
+     * @return array
+     *
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
+     * @throws PlatformAuthException
+     */
     public function query(string $query): array
     {
         return $this->recursiveQuery($query);
@@ -65,14 +79,14 @@ class SearchService
      * if more results exists this calls it self to get all results.
      *
      * @param string $query
-     *   The cql-query to execute against OpenPlatform
-     * @param int $offset
-     *   The offset to start getting results
-     * @param array $results
-     *   The current results array
+     *                        The cql-query to execute against OpenPlatform
+     * @param int    $offset
+     *                        The offset to start getting results
+     * @param array  $results
+     *                        The current results array
      *
      * @return array
-     *   The results currently found. If recursion is completed all the results.
+     *               The results currently found. If recursion is completed all the results.
      *
      * @throws GuzzleException
      * @throws PlatformAuthException
