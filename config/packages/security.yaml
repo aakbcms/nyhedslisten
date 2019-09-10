@@ -15,6 +15,9 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        feed:
+            pattern: ^/feed
+            security: false
         main:
             pattern: ^/
             form_login:

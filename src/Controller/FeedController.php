@@ -29,13 +29,14 @@ class FeedController extends AbstractController
     /**
      * @Route("/feed", name="feed")
      */
-    public function index()
+    public function index(): JsonResponse
     {
         $date = new \DateTimeImmutable('7 days ago');
 
-        $categories = $this->entityManager->getRepository(Category::class)->findBySearchDate($date);
-        $json = $this->serializer->normalize($categories, null, ['groups' => 'feed']);
+        $data = [];
+        $data['categories'] = $this->entityManager->getRepository(Category::class)->findBySearchDate($date);
+        $json = $this->serializer->serialize($data, 'json', ['groups' => 'feed']);
 
-        return new JsonResponse($json);
+        return JsonResponse::fromJsonString($json);
     }
 }
