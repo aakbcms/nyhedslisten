@@ -8,7 +8,6 @@
         "alterphp/easyadmin-extension-bundle": "^2.1",
         "easycorp/easyadmin-bundle": "^2.3",
         "eightpoints/guzzle-bundle": "^7.5",
-        "friendsofphp/php-cs-fixer": "^2.15",
         "friendsofsymfony/user-bundle": "~2.0",
         "guzzlehttp/guzzle": "^6.3",
         "rollerworks/password-strength-bundle": "^2.1",
@@ -25,6 +24,11 @@
         "symfony/yaml": "4.3.*"
     },
     "require-dev": {
+        "escapestudios/symfony2-coding-standard": "^3.9",
+        "friendsofphp/php-cs-fixer": "^2.15",
+        "friendsoftwig/twigcs": "^3.1",
+        "phan/phan": "^2.2",
+        "phpmd/phpmd": "^2.7",
         "symfony/maker-bundle": "^1.13",
         "symfony/profiler-pack": "^1.0"
     },
@@ -53,6 +57,11 @@
         "symfony/polyfill-php56": "*"
     },
     "scripts": {
+        "cs": "vendor/bin/phpcs",
+        "cbf": "vendor/bin/phpcbf",
+        "cs-fixer": "vendor/bin/php-cs-fixer fix -v --diff --dry-run",
+        "cs-fixer-fix": "vendor/bin/php-cs-fixer fix -v --diff",
+        "md": "vendor/bin/phpmd ./src/ text phpmd.xml.dist --suffixes php",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
@@ -66,11 +75,29 @@
         "check": [
             "@php-cs-check"
         ],
-        "php-cs-check": [
-            "php vendor/bin/php-cs-fixer fix --dry-run --diff src/"
+        "check-coding-standards/php-cs-fixer": [
+            "php-cs-fixer --config=.php_cs.dist fix --dry-run"
         ],
-        "php-cs-fix": [
-            "php vendor/bin/php-cs-fixer fix src/"
+        "check-coding-standards/phpcs": [
+            "phpcs --standard=phpcs.xml.dist"
+        ],
+        "check-coding-standards/twigcs": [
+            "twigcs lint templates"
+        ],
+        "check-coding-standards": [
+            "@check-coding-standards/php-cs-fixer",
+            "@check-coding-standards/phpcs",
+            "@check-coding-standards/twigcs"
+        ],
+        "apply-coding-standards/php-cs-fixer": [
+            "php-cs-fixer --config=.php_cs.dist fix"
+        ],
+        "apply-coding-standards/phpcs": [
+            "phpcbf --standard=phpcs.xml.dist"
+        ],
+        "apply-coding-standards": [
+            "@apply-coding-standards/php-cs-fixer",
+            "@apply-coding-standards/phpcs"
         ]
     },
     "conflict": {

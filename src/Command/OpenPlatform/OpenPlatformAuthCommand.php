@@ -1,8 +1,11 @@
 <?php
 
 /**
- * @file
- * Console commands to execute and test Open Platform authentication.
+ * This file is part of aakbcms/nyhedslisten.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
  */
 
 namespace App\Command\OpenPlatform;
@@ -27,7 +30,7 @@ class OpenPlatformAuthCommand extends Command
      * OpenPlatformAuthCommand constructor.
      *
      * @param authenticationService $authentication
-     *   Open Platform authentication service
+     *                                              Open Platform authentication service
      */
     public function __construct(AuthenticationService $authentication)
     {
@@ -59,7 +62,7 @@ class OpenPlatformAuthCommand extends Command
         $token = $this->authentication->getAccessToken($this->refresh);
 
         $msg = 'Access token: '.$token;
-        $separator = str_repeat('-', strlen($msg) + 2);
+        $separator = str_repeat('-', \strlen($msg) + 2);
         $output->writeln($separator);
         $output->writeln(' Access token: '.$token);
         $output->writeln($separator);

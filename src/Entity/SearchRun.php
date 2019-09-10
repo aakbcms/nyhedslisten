@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * This file is part of aakbcms/nyhedslisten.
+ *
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
+ */
+
 namespace App\Entity;
 
 use DateTimeImmutable;
@@ -41,7 +49,7 @@ class SearchRun
     /**
      * SearchRun constructor.
      *
-     * @param Search $search
+     * @param Search            $search
      * @param DateTimeImmutable $runAt
      */
     public function __construct(Search $search, DateTimeImmutable $runAt)

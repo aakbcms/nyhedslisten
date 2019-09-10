@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @file
- * Service that handle authentication against the Open Platform.
+ * This file is part of aakbcms/nyhedslisten.
  *
- * Uses oAuth2 request to get access token and stores in cache until expire to
- * speed up the process and make as few calls as possible.
+ * (c) 2019 ITK Development
+ *
+ * This source file is subject to the MIT license.
  */
 
 namespace App\Service\OpenPlatform;
@@ -37,13 +37,13 @@ class AuthenticationService
      * Authentication constructor.
      *
      * @param parameterBagInterface $params
-     *   Used to get parameters form the environment
-     * @param adapterInterface $cache
-     *   Cache to store access token
-     * @param loggerInterface $statsLogger
-     *   Logger object to send stats to ES
-     * @param ClientInterface $httpClient
-     *   Guzzle Client
+     *                                           Used to get parameters form the environment
+     * @param adapterInterface      $cache
+     *                                           Cache to store access token
+     * @param loggerInterface       $statsLogger
+     *                                           Logger object to send stats to ES
+     * @param ClientInterface       $httpClient
+     *                                           Guzzle Client
      */
     public function __construct(ParameterBagInterface $params, AdapterInterface $cache, LoggerInterface $statsLogger, ClientInterface $httpClient)
     {
@@ -61,10 +61,10 @@ class AuthenticationService
      *
      *
      * @param bool $refresh
-     *   If TRUE refresh token. Default: FALSE.
+     *                      If TRUE refresh token. Default: FALSE.
      *
      * @return string
-     *   The access token
+     *                The access token
      *
      * @throws PlatformAuthException
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -83,10 +83,10 @@ class AuthenticationService
      * Authenticate against open platform.
      *
      * @param bool $refresh
-     *   If TRUE refresh token. Default: FALSE.
+     *                      If TRUE refresh token. Default: FALSE.
      *
      * @return string
-     *   The token if successful else the empty string,
+     *                The token if successful else the empty string,
      *
      * @throws PlatformAuthException
      * @throws \GuzzleHttp\Exception\GuzzleException
