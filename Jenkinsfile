@@ -40,7 +40,16 @@ pipeline {
                 branch 'develop'
             }
             steps {
-                echo "develop"
+                sh "ansible srvitkphp72stg -m shell -a 'cd /data/www/nyhedslisten_srvitkphp72stg_itkdev_dk/htdocs; git clean -d --force'"
+                sh "ansible srvitkphp72stg -m shell -a 'cd /data/www/nyhedslisten_srvitkphp72stg_itkdev_dk/htdocs; git checkout ${BRANCH_NAME}'"
+                sh "ansible srvitkphp72stg -m shell -a 'cd /data/www/nyhedslisten_srvitkphp72stg_itkdev_dk/htdocs; git fetch'"
+                sh "ansible srvitkphp72stg -m shell -a 'cd /data/www/nyhedslisten_srvitkphp72stg_itkdev_dk/htdocs; git reset origin/${BRANCH_NAME} --hard'"
+
+                // Run composer.
+                sh "ansible srvitkphp72stg -m shell -a 'cd /data/www/nyhedslisten_srvitkphp72stg_itkdev_dk/htdocs; APP_ENV=prod composer install --no-dev -o'"
+
+                // Run migrations.
+                sh "ansible srvitkphp72stg -m shell -a 'cd /data/www/nyhedslisten_srvitkphp72stg_itkdev_dk/htdocs; APP_ENV=prod php bin/console doctrine:migrations:migrate --no-interaction'"
             }
         }
         stage('Deployment staging') {
