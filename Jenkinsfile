@@ -28,7 +28,8 @@ pipeline {
                             steps {
                                 sh 'vendor/bin/phpcs --standard=phpcs.xml.dist'
                                 sh 'vendor/bin/php-cs-fixer --config=.php_cs.dist fix --dry-run --verbose'
-                                sh 'vendor/bin/twigcs lint templates'
+                                // Disabled for now as it has unresolved issues.
+                                // sh 'vendor/bin/twigcs lint templates'
                             }
                         }
                     }
