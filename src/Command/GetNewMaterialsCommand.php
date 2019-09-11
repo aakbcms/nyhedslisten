@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
- * Class OpenPlatformSearchCommand.
+ * Class GetNewMaterialsCommand.
  */
 class GetNewMaterialsCommand extends Command
 {
@@ -32,10 +32,12 @@ class GetNewMaterialsCommand extends Command
     /**
      * OpenPlatformQueryCommand constructor.
      *
-     * @TODO: MISSING DOCUMENTATION.
-     *
-     * @param NewMaterialService $newMaterialService
-     * @param SearchRepository   $searchRepository
+     * @param NewMaterialService    $newMaterialService
+     *                                                  Service to query for new materials
+     * @param SearchRepository      $searchRepository
+     *                                                  Search entity repository
+     * @param ParameterBagInterface $parameterBag
+     *                                                  Application configuration
      */
     public function __construct(NewMaterialService $newMaterialService, SearchRepository $searchRepository, ParameterBagInterface $parameterBag)
     {
@@ -49,7 +51,7 @@ class GetNewMaterialsCommand extends Command
     /**
      * Define the command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Get all new materials received in configured timespan')
             ->setHelp('Searches through OpenSearch to get all materials received within the time interval configured for the application')
@@ -76,7 +78,7 @@ class GetNewMaterialsCommand extends Command
 
         foreach ($searches as $search) {
             if ($search) {
-                $results = $this->newMaterialService->persistNewMaterialsSinceDate($search, $date);
+                $results = $this->newMaterialService->updateNewMaterialsSinceDate($search, $date);
 
                 $output->writeln(\count($results));
             } else {

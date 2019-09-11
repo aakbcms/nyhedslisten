@@ -12,16 +12,26 @@ namespace App\Service\OpenPlatform;
 
 use App\Entity\Search;
 use App\Entity\SearchRun;
+use App\Exception\PlatformAuthException;
 use App\Service\MaterialPersistService;
+use App\Utils\ArrayMerge;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\QueryException;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Class NewMaterialService.
  *
- * @TODO: MISSING DOCUMENTATION.
+ * Service to query the Open Platform for all new materials for a given CQL search. The
+ * strategy used to exclude materials where a new copy of an existing title have been
+ * received is to first query for all materials with an accession date greater than
+ * the given date (Set 1). Then query again for materials with an ID from Set 1 and an
+ * accession date smaller than the given date (Set 2). Materials in Set 1, not present
+ * in Set 2 are considered new.
  */
 class NewMaterialService
 {
@@ -47,12 +57,10 @@ class NewMaterialService
     /**
      * NewMaterialService constructor.
      *
-     * @TODO: MISSING DOCUMENTATION.
-     *
-     * @param SearchService          $searchService
-     * @param MaterialPersistService $materialPersistService
-     * @param EntityManagerInterface $entityManager
-     * @param ParameterBagInterface  $params
+     * @param SearchService          $searchService          Service to query the Open Platform
+     * @param MaterialPersistService $materialPersistService Service to persist or update new materials
+     * @param EntityManagerInterface $entityManager          Doctrine Entitymanager
+     * @param ParameterBagInterface  $params                 Application configuration
      */
     public function __construct(SearchService $searchService, MaterialPersistService $materialPersistService, EntityManagerInterface $entityManager, ParameterBagInterface $params)
     {
@@ -66,21 +74,21 @@ class NewMaterialService
     }
 
     /**
-     * Get and persists new materials received since date.
+     * Update materials received since date.
      *
-     * @TODO: MISSING DOCUMENTATION.
+     * @param Search            $search The Search to check for new materials to
+     * @param DateTimeImmutable $since  The date since when materials should be received
      *
-     * @param Search            $search
-     * @param DateTimeImmutable $since
+     * @return array Array of new Materials
      *
-     * @return array
-     *
-     * @throws \Doctrine\ORM\Query\QueryException
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
+     * @throws QueryException
      */
-    public function persistNewMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
+    public function updateNewMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
     {
-        $newMaterials = $this->getMaterialsSinceDate($search, $since);
-        $this->materialPersistService->persistResults($newMaterials, $search);
+        $newMaterials = $this->getNewMaterialsSinceDate($search, $since);
+        $this->materialPersistService->saveResults($newMaterials, $search);
 
         return $newMaterials;
     }
@@ -88,17 +96,15 @@ class NewMaterialService
     /**
      * Get new materials received since date.
      *
-     * @TODO: MISSING DOCUMENTATION.
+     * @param Search            $search The Search to check for new materials to
+     * @param DateTimeImmutable $since  The date since when materials should be received
      *
-     * @param Search            $search
-     * @param DateTimeImmutable $since
+     * @return array Array of new Materials
      *
-     * @return array
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\Cache\InvalidArgumentException'
+     * @throws GuzzleException
+     * @throws InvalidArgumentException'
      */
-    public function getMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
+    public function getNewMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
     {
         $searchRun = new SearchRun($search, new DateTimeImmutable());
 
@@ -123,16 +129,14 @@ class NewMaterialService
      *
      * Note: This includes materials where there is already an exiting copy in the collection
      *
-     * @param Search            $search
-     * @param DateTimeImmutable $since
+     * @param Search            $search The Search to check for new materials to
+     * @param DateTimeImmutable $since  The date since when materials should be received
      *
-     * @return array
+     * @return array Array of Materials
      *
-     * @TODO: MISSING DOCUMENTATION.
-     *
-     * @throws \App\Exception\PlatformAuthException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws PlatformAuthException
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
      */
     private function getAllMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
     {
@@ -145,18 +149,16 @@ class NewMaterialService
     }
 
     /**
-     * Exclude materials with exiting materials from result set.
+     * Exclude materials with exiting copies from the result set.
      *
-     * @TODO: MISSING DOCUMENTATION.
+     * @param array             $list   Array of Materials to exclude from
+     * @param DateTimeImmutable $before The date before which materials should be excluded
      *
-     * @param array             $list
-     * @param DateTimeImmutable $before
+     * @return array Array of Materials
      *
-     * @return array
-     *
-     * @throws \App\Exception\PlatformAuthException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws PlatformAuthException
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
      */
     private function excludeMaterialsWithExistingCopy(array $list, DateTimeImmutable $before): array
     {
@@ -174,7 +176,7 @@ class NewMaterialService
             $existingCopy = $this->searchService->query($q);
 
             $diff = $this->getResultDiffByPid($listSlice, $existingCopy);
-            $this->mergeArraysByReference($new, $diff);
+            ArrayMerge::mergeArraysByReference($new, $diff);
 
             $offset += self::SEARCH_LIMIT;
         }
@@ -185,12 +187,10 @@ class NewMaterialService
     /**
      * Find all items in '$total' not present in '$exclude' compared by 'pid'.
      *
-     * @TODO: MISSING DOCUMENTATION.
+     * @param array $total   The array of items to exclude from
+     * @param array $exclude The array of items to exclude
      *
-     * @param array $total
-     * @param array $exclude
-     *
-     * @return array
+     * @return array An array with unique items
      */
     private function getResultDiffByPid(array $total, array $exclude): array
     {
@@ -217,11 +217,9 @@ class NewMaterialService
     /**
      * Build CQL string of PID's from result set.
      *
-     * @TODO: MISSING DOCUMENTATION.
+     * @param array $results Array of elements to get PID's from
      *
-     * @param array $results
-     *
-     * @return string
+     * @return string String of all PID's concatenated with commas
      */
     private function buildPidIncludeString(array $results): string
     {
@@ -236,11 +234,9 @@ class NewMaterialService
     /**
      * Build the 'exclude' part for a CQL query string.
      *
-     * @TODO: MISSING DOCUMENTATION.
+     * @param array $excluded Array of strings to build exclude from
      *
-     * @param array $excluded
-     *
-     * @return string
+     * @return string String of all elements with "not" prepended
      */
     private function buildExcludeSearchString(array $excluded): string
     {
@@ -249,23 +245,5 @@ class NewMaterialService
         }, $excluded);
 
         return 'not '.implode(' not ', $excluded);
-    }
-
-    /**
-     * Merge from one array into another by reference.
-     *
-     * PHPs array_merge() performance is not always optimal:
-     * https://stackoverflow.com/questions/23348339/optimizing-array-merge-operation
-     *
-     * @TODO: MISSING DOCUMENTATION.
-     *
-     * @param array $mergeTo
-     * @param array $mergeFrom
-     */
-    private function mergeArraysByReference(array &$mergeTo, array &$mergeFrom): void
-    {
-        foreach ($mergeFrom as $i) {
-            $mergeTo[] = $i;
-        }
     }
 }

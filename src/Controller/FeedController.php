@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * Class FeedController.
  *
- * @TODO: MISSING DOCUMENTATION.
+ * Exposes endpoints for all json feeds
  */
 class FeedController extends AbstractController
 {
@@ -40,7 +40,7 @@ class FeedController extends AbstractController
     }
 
     /**
-     * @TODO: MISSING DOCUMENTATION.
+     * Main feed endpoint.
      *
      * @Route("/feed", name="feed")
      */
@@ -49,7 +49,7 @@ class FeedController extends AbstractController
         $date = new \DateTimeImmutable('7 days ago');
 
         $data = [];
-        $data['categories'] = $this->entityManager->getRepository(Category::class)->findBySearchDate($date);
+        $data['categories'] = $this->entityManager->getRepository(Category::class)->findBySearchMaterialDate($date);
         $json = $this->serializer->serialize($data, 'json', ['groups' => 'feed']);
 
         return JsonResponse::fromJsonString($json);

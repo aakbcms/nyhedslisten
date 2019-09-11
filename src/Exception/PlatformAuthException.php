@@ -13,7 +13,7 @@ namespace App\Exception;
 /**
  * Class PlatformAuthException.
  *
- * @TODO: MISSING DOCUMENTATION.
+ * Exception when authenticating against the Open Platform
  */
 class PlatformAuthException extends \Exception
 {

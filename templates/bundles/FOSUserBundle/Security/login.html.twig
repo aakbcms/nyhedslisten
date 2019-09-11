@@ -3,9 +3,6 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
 {% block fos_user_content %}
-  {% set _username_label = username_label is defined ? username_label|trans : 'login.username'|trans({}, 'EasyAdminBundle') %}
-  {% set _password_label = password_label is defined ? password_label|trans : 'login.password'|trans({}, 'EasyAdminBundle') %}
-
   <form method="post" action="{{ path('fos_user_security_check') }}">
     {% if csrf_token %}
       <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
