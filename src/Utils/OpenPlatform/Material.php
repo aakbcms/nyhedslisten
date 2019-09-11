@@ -24,7 +24,7 @@ class Material
     private $identifiers = [];
 
     /**
-     * @TODO: MISSING DOCUMENTATION.
+     * Get string representation.
      *
      * @return string
      */

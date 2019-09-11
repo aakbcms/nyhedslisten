@@ -20,7 +20,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 /**
  * Class MaterialPersistService.
  *
- * @TODO: MISSING DOCUMENTATION.
+ * Service to persist new Materials or update existing Materials
  */
 class MaterialPersistService
 {
@@ -39,14 +39,14 @@ class MaterialPersistService
     }
 
     /**
-     * @TODO: MISSING DOCUMENTATION.
+     * Save result set either updating existing Material or persisting new Materials.
      *
-     * @param array  $results
-     * @param Search $search
+     * @param array  $results Array of Materials to save
+     * @param Search $search  The Search that generated the result set
      *
      * @throws QueryException
      */
-    public function persistResults(array $results, Search $search): void
+    public function saveResults(array $results, Search $search): void
     {
         $existingMaterials = $this->getExistingMaterials($results);
 
@@ -67,9 +67,9 @@ class MaterialPersistService
     }
 
     /**
-     * @TODO: MISSING DOCUMENTATION.
+     * Search for the Materials in $results that already exist in the database.
      *
-     * @param array $results
+     * @param array $results the Materials to check for existing Materials for
      *
      * @return array
      *
@@ -87,11 +87,9 @@ class MaterialPersistService
     /**
      * Parse the search result from the data well.
      *
-     * @param array $result
-     *                      The results from the data well
+     * @param array $result The results from the data well
      *
-     * @return material
-     *                  Material with all the information collected
+     * @return material Material with all the information collected
      *
      * @throws Exception
      */

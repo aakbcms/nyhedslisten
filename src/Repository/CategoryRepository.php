@@ -11,11 +11,12 @@
 namespace App\Repository;
 
 use App\Entity\Category;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @TODO: MISSING DOCUMENTATION.
+ * Repository for Category Entity.
  *
  * @method Category|null find($id, $lockMode = null, $lockVersion = null)
  * @method Category|null findOneBy(array $criteria, array $orderBy = null)
@@ -24,19 +25,24 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class CategoryRepository extends ServiceEntityRepository
 {
+    /**
+     * CategoryRepository constructor.
+     *
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Category::class);
     }
 
     /**
-     * @param \DateTimeImmutable $since
+     * Find all Categories, join Searches, join Materials where date is newer than given date.
      *
-     * @TODO: MISSING DOCUMENTATION.
+     * @param DateTimeImmutable $since The date materials should have been added after
      *
-     * @return mixed
+     * @return mixed Array of Categories
      */
-    public function findBySearchDate(\DateTimeImmutable $since)
+    public function findBySearchMaterialDate(DateTimeImmutable $since)
     {
         return $this->createQueryBuilder('c')
             ->select('c', 's', 'm')

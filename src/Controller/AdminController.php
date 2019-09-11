@@ -11,6 +11,7 @@
 namespace App\Controller;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
+use App\Entity\User;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 
@@ -35,7 +36,9 @@ class AdminController extends EasyAdminController
     }
 
     /**
-     * @TODO: MISSING DOCUMENTATION.
+     * Create new User entity.
+     *
+     * EasyAdmin custom action to integrate FOSUserBundle and EasyAdminBundle
      *
      * @return UserInterface
      */
@@ -45,22 +48,26 @@ class AdminController extends EasyAdminController
     }
 
     /**
-     * @TODO: MISSING DOCUMENTATION.
+     * Persist User entity.
+     *
+     * EasyAdmin custom action to integrate FOSUserBundle and EasyAdminBundle
      *
      * @param $user
      */
-    public function persistUserEntity($user): void
+    public function persistUserEntity(User $user): void
     {
         $this->userManager->updateUser($user, false);
         parent::persistEntity($user);
     }
 
     /**
-     * @TODO: MISSING DOCUMENTATION.
+     * Update User entity.
+     *
+     * EasyAdmin custom action to integrate FOSUserBundle and EasyAdminBundle
      *
      * @param $user
      */
-    public function updateUserEntity($user): void
+    public function updateUserEntity(User $user): void
     {
         $this->userManager->updateUser($user, false);
         parent::updateEntity($user);

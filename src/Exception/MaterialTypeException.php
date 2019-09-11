@@ -19,6 +19,14 @@ class MaterialTypeException extends \Exception
 {
     private $materialType;
 
+    /**
+     * MaterialTypeException constructor.
+     *
+     * @param string         $message      [optional] The Exception message to throw
+     * @param int            $code         [optional] The Exception code
+     * @param Throwable|null $previous     [optional] The previous throwable used for the exception chaining
+     * @param string         $materialType [optional] The type of material
+     */
     public function __construct(string $message = '', int $code = 0, Throwable $previous = null, $materialType = 'Unknown')
     {
         parent::__construct($message, $code, $previous);
@@ -27,7 +35,7 @@ class MaterialTypeException extends \Exception
     }
 
     /**
-     * @TODO: MISSING DOCUMENTATION.
+     * Set the type of material.
      *
      * @param string $materialType
      */
@@ -37,7 +45,7 @@ class MaterialTypeException extends \Exception
     }
 
     /**
-     * @TODO: MISSING DOCUMENTATION.
+     * Get the type of material.
      *
      * @return string
      */

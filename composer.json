@@ -72,9 +72,6 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "check": [
-            "@php-cs-check"
-        ],
         "check-coding-standards/php-cs-fixer": [
             "php-cs-fixer --config=.php_cs.dist fix --dry-run"
         ],

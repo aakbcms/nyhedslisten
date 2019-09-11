@@ -15,7 +15,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @TODO: MISSING DOCUMENTATION.
+ * Repository for SearchRun Entity.
  *
  * @method SearchRun|null find($id, $lockMode = null, $lockVersion = null)
  * @method SearchRun|null findOneBy(array $criteria, array $orderBy = null)
@@ -24,6 +24,11 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class SearchRunRepository extends ServiceEntityRepository
 {
+    /**
+     * SearchRunRepository constructor.
+     *
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SearchRun::class);

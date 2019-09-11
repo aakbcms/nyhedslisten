@@ -16,7 +16,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\QueryException;
 
 /**
- * @TODO: MISSING DOCUMENTATION.
+ * Repository for Material Entity.
  *
  * @method Material|null find($id, $lockMode = null, $lockVersion = null)
  * @method Material|null findOneBy(array $criteria, array $orderBy = null)
@@ -25,6 +25,11 @@ use Doctrine\ORM\Query\QueryException;
  */
 class MaterialRepository extends ServiceEntityRepository
 {
+    /**
+     * MaterialRepository constructor.
+     *
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Material::class);
@@ -33,10 +38,9 @@ class MaterialRepository extends ServiceEntityRepository
     /**
      * Find materials from list of match PIDs.
      *
-     * @param array $pidList
+     * @param array $pidList The array of PID's to search for
      *
-     * @return mixed
-     *               Array of materials indexed by match PID
+     * @return mixed Array of materials indexed by match PID
      *
      * @throws QueryException
      */
