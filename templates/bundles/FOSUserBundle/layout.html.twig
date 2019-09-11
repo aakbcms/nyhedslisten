@@ -4,9 +4,15 @@
 {% block body_class 'page-login' %}
 
 {% block wrapper_wrapper %}
+  {# Set UI labels used in login/reset/etc tamplates #}
   {% set _username_label = username_label is defined ? username_label|trans : 'login.username'|trans({}, 'EasyAdminBundle') %}
   {% set _password_label = password_label is defined ? password_label|trans : 'login.password'|trans({}, 'EasyAdminBundle') %}
   {% set _sign_in_label = sign_in_label is defined ? sign_in_label|trans : 'login.sign_in'|trans({}, 'EasyAdminBundle') %}
+
+  {# "Use" vars to fool twig lint, see https://github.com/friendsoftwig/twigcs/issues/35#issuecomment-414579334 #}
+  {# twigcs use-var _username_label #}
+  {# twigcs use-var _username_label #}
+  {# twigcs use-var _username_label #}
 
   <div class="login-wrapper">
     <header class="main-header mb-4">
