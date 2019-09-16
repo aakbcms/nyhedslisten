@@ -30,14 +30,14 @@ class Search
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      *
-     * @Groups("feed")
+     * @Groups({"search", "category"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
-     * @Groups("feed")
+     * @Groups({"search", "category"})
      */
     private $name;
 
@@ -49,13 +49,15 @@ class Search
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="searches")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Groups({"search"})
      */
     private $category;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Material", mappedBy="searches")
      *
-     * @Groups("feed")
+     * @Groups({"material"})
      */
     private $materials;
 

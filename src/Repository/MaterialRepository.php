@@ -11,6 +11,8 @@
 namespace App\Repository;
 
 use App\Entity\Material;
+use App\Entity\Search;
+use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\QueryException;
@@ -44,12 +46,31 @@ class MaterialRepository extends ServiceEntityRepository
      *
      * @throws QueryException
      */
-    public function findByPidList(array &$pidList)
+    public function findByPidList(array &$pidList): array
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.pid IN (:ids)')
             ->setParameter('ids', $pidList)
             ->indexBy('m', 'm.pid')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Find materials received since a given date and belonging to a specific search.
+     *
+     * @param DateTimeInterface $since
+     * @param int               $searchId
+     *
+     * @return mixed Array of materials
+     */
+    public function findLatestBySearch(DateTimeInterface $since, int $searchId): array
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere(':searchId MEMBER OF m.searches')
+            ->setParameter('searchId', $searchId)
+            ->andWhere('m.date >= :date')
+            ->setParameter('date', $since)
             ->getQuery()
             ->getResult();
     }

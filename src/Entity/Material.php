@@ -36,42 +36,42 @@ class Material
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      *
-     * @Groups("feed")
+     * @Groups("material")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
-     * @Groups("feed")
+     * @Groups("material")
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Groups("feed")
+     * @Groups("material")
      */
     private $creator;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups("feed")
+     * @Groups("material")
      */
     private $abstract;
 
     /**
      * @ORM\Column(type="string", length=25)
      *
-     * @Groups("feed")
+     * @Groups("material")
      */
     private $pid;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
-     * @Groups("feed")
+     * @Groups("material")
      */
     private $publisher;
 
