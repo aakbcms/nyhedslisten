@@ -29,19 +29,22 @@ class Category
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("feed")
+     *
+     * @Groups({"category", "search"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("feed")
+     *
+     * @Groups({"category", "search"})
      */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Search", mappedBy="category")
-     * @Groups("feed")
+     *
+     * @Groups({"category"})
      */
     private $searches;
 
