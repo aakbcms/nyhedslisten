@@ -46,7 +46,7 @@ class MaterialRepository extends ServiceEntityRepository
      *
      * @throws QueryException
      */
-    public function findByPidList(array &$pidList)
+    public function findByPidList(array &$pidList): array
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.pid IN (:ids)')
@@ -62,9 +62,9 @@ class MaterialRepository extends ServiceEntityRepository
      * @param DateTimeInterface $since
      * @param int               $searchId
      *
-     * @return mixed
+     * @return mixed Array of materials
      */
-    public function findLatestBySearch(DateTimeInterface $since, int $searchId)
+    public function findLatestBySearch(DateTimeInterface $since, int $searchId): array
     {
         return $this->createQueryBuilder('m')
             ->andWhere(':searchId MEMBER OF m.searches')
