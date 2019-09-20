@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Table(name="material",
@@ -37,6 +38,7 @@ class Material
      * @ORM\Column(type="integer")
      *
      * @Groups({"material", "feed_materials"})
+     * @SerializedName("material_id")
      */
     private $id;
 
