@@ -129,7 +129,7 @@ class NewMaterialService
      * @param Search            $search
      * @param DateTimeImmutable $since
      *
-     * @return string The complete CQL query string.
+     * @return string the complete CQL query string
      */
     public function getCompleteCqlQuery(Search $search, DateTimeImmutable $since): string
     {
