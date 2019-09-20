@@ -17,7 +17,6 @@ use App\Service\MaterialPersistService;
 use App\Utils\ArrayMerge;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\QueryException;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Cache\InvalidArgumentException;
@@ -83,14 +82,25 @@ class NewMaterialService
      *
      * @throws GuzzleException
      * @throws InvalidArgumentException
-     * @throws QueryException
      */
     public function updateNewMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
     {
-        $newMaterials = $this->getNewMaterialsSinceDate($search, $since);
-        $this->materialPersistService->saveResults($newMaterials, $search);
+        $searchRun = new SearchRun($search, new DateTimeImmutable());
 
-        return $newMaterials;
+        try {
+            $newMaterials = $this->getNewMaterialsSinceDate($search, $since);
+            $this->materialPersistService->saveResults($newMaterials, $search);
+
+            $searchRun->setIsSuccess(true);
+        } catch (Exception $exception) {
+            $searchRun->setIsSuccess(false);
+            $searchRun->setErrorMessage($exception->getMessage());
+        }
+
+        $this->entityManager->persist($searchRun);
+        $this->entityManager->flush();
+
+        return $newMaterials ?? [];
     }
 
     /**
@@ -103,25 +113,32 @@ class NewMaterialService
      *
      * @throws GuzzleException
      * @throws InvalidArgumentException'
+     * @throws PlatformAuthException
      */
     public function getNewMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
     {
-        $searchRun = new SearchRun($search, new DateTimeImmutable());
+        $allMaterials = $this->getAllMaterialsSinceDate($search, $since);
+        $newMaterials = $this->excludeMaterialsWithExistingCopy($allMaterials, $since);
 
-        try {
-            $allMaterials = $this->getAllMaterialsSinceDate($search, $since);
-            $newMaterials = $this->excludeMaterialsWithExistingCopy($allMaterials, $since);
+        return $newMaterials;
+    }
 
-            $searchRun->setIsSuccess(true);
-        } catch (Exception $exception) {
-            $searchRun->setIsSuccess(false);
-            $searchRun->setErrorMessage($exception->getMessage());
-        }
+    /**
+     * Get the complete CQL query thar will be preformed against OPen Search for the given Search and Date.
+     *
+     * @param Search            $search
+     * @param DateTimeImmutable $since
+     *
+     * @return string
+     */
+    public function getCompleteCqlQuery(Search $search, DateTimeImmutable $since): string
+    {
+        $query = $search->getCqlSearch();
 
-        $this->entityManager->persist($searchRun);
-        $this->entityManager->flush();
+        $query .= sprintf(self::BASE_QUERY, $this->agencyId, $this->buildExcludeSearchString($this->excludedBranches), $this->buildExcludeSearchString($this->excludedCirculationRules));
+        $query .= sprintf(self::DATE_QUERY_AFTER, $since->format(self::DATAWELL_DATE_FORMAT));
 
-        return $newMaterials ?? [];
+        return $query;
     }
 
     /**
@@ -140,10 +157,7 @@ class NewMaterialService
      */
     private function getAllMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
     {
-        $query = $search->getCqlSearch();
-
-        $query .= sprintf(self::BASE_QUERY, $this->agencyId, $this->buildExcludeSearchString($this->excludedBranches), $this->buildExcludeSearchString($this->excludedCirculationRules));
-        $query .= sprintf(self::DATE_QUERY_AFTER, $since->format(self::DATAWELL_DATE_FORMAT));
+        $query = $this->getCompleteCqlQuery($search, $since);
 
         return $this->searchService->query($query);
     }

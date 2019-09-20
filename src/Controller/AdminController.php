@@ -11,9 +11,14 @@
 namespace App\Controller;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
+use App\Entity\Search;
 use App\Entity\User;
+use App\Service\OpenPlatform\NewMaterialService;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Cache\InvalidArgumentException;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class AdminController.
@@ -24,15 +29,84 @@ use FOS\UserBundle\Model\UserManagerInterface;
 class AdminController extends EasyAdminController
 {
     private $userManager;
+    private $newMaterialService;
 
     /**
      * AdminController constructor.
      *
      * @param UserManagerInterface $userManager
+     * @param NewMaterialService   $newMaterialService
      */
-    public function __construct(UserManagerInterface $userManager)
+    public function __construct(UserManagerInterface $userManager, NewMaterialService $newMaterialService)
     {
         $this->userManager = $userManager;
+        $this->newMaterialService = $newMaterialService;
+    }
+
+    public function queryBatchAction(array $ids)
+    {
+        $ids = array_map(static function ($id) {
+            return (int) $id;
+        }, $ids);
+        $searches = $this->em->getRepository(Search::class)->findBy(['id' => $ids]);
+
+        $date = new \DateTimeImmutable('7 days ago');
+
+        $materialCount = 0;
+        foreach ($searches as $search) {
+            $result = $this->newMaterialService->updateNewMaterialsSinceDate($search, $date);
+
+            $materialCount += \count($result);
+        }
+
+        if (!empty($searches)) {
+            $this->addFlash(
+                'info',
+                \count($searches).' CQL queries performed, '.$materialCount.' materials fetched'
+            );
+        }
+    }
+
+    /**
+     * Custom action to test CQL Query.
+     *
+     * @return Response
+     *
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
+     */
+    public function queryAction(): Response
+    {
+        $id = $this->request->query->get('id');
+        $search = $this->em->getRepository(Search::class)->find($id);
+
+        $date = new \DateTimeImmutable('7 days ago');
+        try {
+            $result = $this->newMaterialService->getNewMaterialsSinceDate($search, $date);
+
+            $this->addFlash(
+                'success',
+                'CQL query successful'
+            );
+            $success = true;
+        } catch (\Exception $exception) {
+            $this->addFlash(
+                'danger',
+                'Error testing CQL query: '.$exception->getMessage()
+            );
+            $success = false;
+        }
+        $query = $this->newMaterialService->getCompleteCqlQuery($search, $date);
+
+        $templateData = [
+            'id' => $id,
+            'entity' => $search,
+            'cqlQuery' => $query,
+            'result' => $result ?? null,
+            'success' => $success,
+        ];
+
+        return $this->render('actions/showQueryResult.html.twig', $templateData);
     }
 
     /**

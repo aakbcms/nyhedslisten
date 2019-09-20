@@ -10,6 +10,7 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -55,14 +56,15 @@ class Search
     private $category;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Material", mappedBy="searches")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Material", mappedBy="searches", fetch="EXTRA_LAZY")
      *
      * @Groups({"material"})
      */
     private $materials;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SearchRun", mappedBy="search", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\SearchRun", mappedBy="search", orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"id" = "DESC"})
      */
     private $searchRuns;
 
@@ -147,6 +149,8 @@ class Search
     }
 
     /**
+     * Get search runs.
+     *
      * @return Collection|SearchRun[]
      */
     public function getSearchRuns(): Collection
@@ -154,6 +158,13 @@ class Search
         return $this->searchRuns;
     }
 
+    /**
+     * Add search run.
+     *
+     * @param SearchRun $searchRun
+     *
+     * @return Search
+     */
     public function addSearchRun(SearchRun $searchRun): self
     {
         if (!$this->searchRuns->contains($searchRun)) {
@@ -164,6 +175,13 @@ class Search
         return $this;
     }
 
+    /**
+     * Remove search run.
+     *
+     * @param SearchRun $searchRun
+     *
+     * @return Search
+     */
     public function removeSearchRun(SearchRun $searchRun): self
     {
         if ($this->searchRuns->contains($searchRun)) {
@@ -175,5 +193,29 @@ class Search
         }
 
         return $this;
+    }
+
+    /**
+     * Get the datetime of the latest search run.
+     *
+     * @return DateTimeInterface|null
+     */
+    public function getLastSearchRunAt(): ?DateTimeInterface
+    {
+        $searchRun = $this->searchRuns->first();
+
+        return $searchRun ? $searchRun->getRunAt() : null;
+    }
+
+    /**
+     * Get if the last search run was a success.
+     *
+     * @return bool|null
+     */
+    public function getLastSearchRunSuccess(): ?bool
+    {
+        $searchRun = $this->searchRuns->first();
+
+        return $searchRun ? $searchRun->getIsSuccess() : null;
     }
 }
