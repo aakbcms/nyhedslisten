@@ -36,42 +36,42 @@ class Material
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      *
-     * @Groups("material")
+     * @Groups({"material", "feed_materials"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
-     * @Groups("material")
+     * @Groups({"material", "feed_materials"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      *
-     * @Groups("material")
+     * @Groups({"material", "feed_materials"})
      */
     private $creator;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Groups("material")
+     * @Groups({"material", "feed_materials"})
      */
     private $abstract;
 
     /**
      * @ORM\Column(type="string", length=25)
      *
-     * @Groups("material")
+     * @Groups({"material", "feed_materials"})
      */
     private $pid;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
-     * @Groups("material")
+     * @Groups({"material", "feed_materials"})
      */
     private $publisher;
 
@@ -82,6 +82,8 @@ class Material
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Search", inversedBy="materials")
+     *
+     * @Groups("search")
      */
     private $searches;
 
