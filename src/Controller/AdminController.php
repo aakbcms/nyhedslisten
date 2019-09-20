@@ -34,8 +34,8 @@ class AdminController extends EasyAdminController
     /**
      * AdminController constructor.
      *
-     * @param UserManagerInterface $userManager
-     * @param NewMaterialService   $newMaterialService
+     * @param UserManagerInterface $userManager The FOS user manager
+     * @param NewMaterialService   $newMaterialService  The service to query for new materials
      */
     public function __construct(UserManagerInterface $userManager, NewMaterialService $newMaterialService)
     {
@@ -43,13 +43,22 @@ class AdminController extends EasyAdminController
         $this->newMaterialService = $newMaterialService;
     }
 
-    public function queryBatchAction(array $ids)
+    /**
+     * Custom batch action to update materials for Searches.
+     *
+     * @param array $ids The ids of the entities selected in the UI.
+     *
+     * @throws GuzzleException if the Search query is malformed or the Open Search calls fails
+     * @throws InvalidArgumentException
+     */
+    public function queryBatchAction(array $ids): void
     {
         $ids = array_map(static function ($id) {
             return (int) $id;
         }, $ids);
         $searches = $this->em->getRepository(Search::class)->findBy(['id' => $ids]);
 
+        // @TODO Move time interval to config
         $date = new \DateTimeImmutable('7 days ago');
 
         $materialCount = 0;
@@ -72,7 +81,7 @@ class AdminController extends EasyAdminController
      *
      * @return Response
      *
-     * @throws GuzzleException
+     * @throws GuzzleException if the Search query is malformed or the Open Search calls fails
      * @throws InvalidArgumentException
      */
     public function queryAction(): Response
@@ -80,6 +89,7 @@ class AdminController extends EasyAdminController
         $id = $this->request->query->get('id');
         $search = $this->em->getRepository(Search::class)->find($id);
 
+        // @TODO Move time interval to config
         $date = new \DateTimeImmutable('7 days ago');
         try {
             $result = $this->newMaterialService->getNewMaterialsSinceDate($search, $date);
