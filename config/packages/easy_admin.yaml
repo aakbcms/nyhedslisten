@@ -21,22 +21,29 @@ easy_admin:
         Search:
             class: App\Entity\Search
             list:
+                batch_actions:
+                    - { label: 'Query Open Search', name: 'query' }
+                    - { label: 'Delete', name: 'delete' }
                 sort: ['name', 'ASC']
                 fields:
                     - 'name'
                     - { property: 'cqlSearch', label: 'CQL search' }
                     - 'category'
+                    - { property: 'lastSearchRunAt', label: 'Last run', type: 'datetime' }
+                    - { property: 'lastSearchRunSuccess', label: 'Success', type: 'boolean' }
             form:
                 fields:
                     - 'name'
                     - { property: 'cqlSearch', label: 'CQL search', help: 'Do not include "holdingsitem.accessionDate" ("bad") or "facet.acSource" parameters in the CQL statement. These will be added automatically.' }
                     - 'category'
             show:
+                actions:
+                    - { label: 'Test search', name: 'query', icon: 'search', css_class: 'btn btn-light' }
                 fields:
                     - 'name'
                     - { property: 'cqlSearch', label: 'CQL search', help: 'Do not include "holdingsitem.accessionDate" ("bad") or "facet.acSource" parameters in the CQL statement. These will be added automatically.' }
                     - 'category'
-                    - { property: 'searchRuns', label: 'Last run', type: embedded_list }
+                    - { property: 'searchRuns', label: 'Last run', type: 'embedded_list' }
                     - 'createdAt'
                     - 'createdBy'
                     - 'updatedAt'

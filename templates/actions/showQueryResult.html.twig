@@ -1,0 +1,74 @@
+{% extends '@!EasyAdmin/page/content.html.twig' %}
+
+{% block body_class 'show show-search' %}
+
+{% block content_title %}
+  Test result for {{ entity.name }} (#{{ entity.id }})
+{% endblock %}
+
+{% block content_footer_wrapper '' %}
+
+{% block main %}
+  <div class="form-horizontal">
+    <div class="form-group field-string ">
+      <label class="control-label">
+        Name
+      </label>
+      <div class="form-widget">
+        <div class="form-control">
+          {{ entity.name }}
+        </div>
+      </div>
+    </div>
+    <div class="form-group field-string ">
+      <label class="control-label">
+        CQL Query
+      </label>
+      <div class="form-widget">
+        <div class="form-control">
+          {{ entity.cqlSearch }}
+        </div>
+      </div>
+    </div>
+    <div class="form-group field-string ">
+      <label class="control-label">
+        Complete CQL Query
+      </label>
+      <div class="form-widget">
+        <div class="form-control">
+          {{ cqlQuery }}
+        </div>
+      </div>
+    </div>
+    {% if success %}
+      <div class="form-group field-string ">
+        <label class="control-label">
+          Result Count
+        </label>
+        <div class="form-widget">
+          <div class="form-control">
+            {{ result|length }}
+          </div>
+        </div>
+      </div>
+      <div class="form-group field-string ">
+        <label class="control-label">
+          Result
+        </label>
+        <div class="form-widget">
+          <div class="form-control">
+            <pre><code>{{ result|json_encode(constant('JSON_PRETTY_PRINT')) }}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <section class="content-footer">
+    <div class="form-actions">
+      <a name="edit" class="btn btn-primary action-edit" title="" href="{{ path('easyadmin', {'action': 'edit', 'id': entity.id, 'entity': 'Search' }) }}" target="_self"><i class="fa fa-edit"></i> Edit</a>
+      <a name="list" class="btn btn-link pr-0 action-list" title="" href="{{ path('easyadmin', {'action': 'show', 'id': entity.id, 'entity': 'Search' }) }}" target="_self">Back to Search</a>
+    </div>
+  </section>
+{% endblock %}
+
