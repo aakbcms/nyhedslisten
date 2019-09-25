@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SearchRepository")
@@ -31,6 +32,7 @@ class Search
      * @ORM\Column(type="integer")
      *
      * @Groups({"search", "category"})
+     * @SerializedName("search_id")
      */
     private $id;
 
@@ -38,6 +40,7 @@ class Search
      * @ORM\Column(type="string", length=255)
      *
      * @Groups({"search", "category"})
+     * @SerializedName("search_name")
      */
     private $name;
 

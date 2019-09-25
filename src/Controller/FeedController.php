@@ -79,6 +79,20 @@ class FeedController extends AbstractController
     }
 
     /**
+     * Get all materials for last 7 days.
+     *
+     * @Route("/feed/materials", name="feed_materials", methods={"GET","HEAD"})
+     */
+    public function materials(): JsonResponse
+    {
+        $date = new \DateTimeImmutable('7 days ago');
+
+        $data = $this->entityManager->getRepository(Material::class)->findLatest($date);
+
+        return $this->json($data, 200, [], ['groups' => ['search', 'feed_materials']]);
+    }
+
+    /**
      * Get search.
      *
      * @Route("/feed/searches/{id}", name="feed_search", methods={"GET","HEAD"}, requirements={"page"="\d+"})

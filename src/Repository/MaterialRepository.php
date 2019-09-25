@@ -57,6 +57,22 @@ class MaterialRepository extends ServiceEntityRepository
     }
 
     /**
+     * Find materials received since a given date.
+     *
+     * @param DateTimeInterface $since
+     *
+     * @return mixed Array of materials
+     */
+    public function findLatest(DateTimeInterface $since): array
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.date >= :date')
+            ->setParameter('date', $since)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Find materials received since a given date and belonging to a specific search.
      *
      * @param DateTimeInterface $since
