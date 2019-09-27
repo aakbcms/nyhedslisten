@@ -154,6 +154,9 @@
     "guzzlehttp/psr7": {
         "version": "1.6.1"
     },
+    "heyloyalty/hl-phpclient": {
+        "version": "1.6.2"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
