@@ -16,6 +16,10 @@ parameters:
     datawell.vendor.excluded.branches: '%env(DATAWELL_VENDOR_EXCLUDED_BRANCHES)%'
     datawell.vendor.excluded.circulationRules: '%env(DATAWELL_VENDOR_EXCLUDED_CIRCULATION_RULES)%'
     datawell.default.accessiondate.criteria: '%env(DATAWELL_DEFAULT_ACCESSIONDATE_CRITERIA)%'
+    heyloyalty.apikey: '%env(HAYLOYALTY_APIKEY)%'
+    heyloyalty.secret: '%env(HAYLOYALTY_SECRET)%'
+    heyloyalty.list.id: '%env(HAYLOYALTY_LIST_ID)%'
+    heyloyalty.field.id: '%env(HAYLOYALTY_FIELD_ID)%'
 
 services:
     # default configuration for services in *this* file
