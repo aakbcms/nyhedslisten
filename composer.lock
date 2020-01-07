@@ -1889,16 +1889,16 @@
         },
         {
             "name": "heyloyalty/hl-phpclient",
-            "version": "1.6.2",
+            "version": "1.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Heyloyalty/HL-phpclient.git",
-                "reference": "f64010be3ec832776ed3d6fc905f2a365d75720d"
+                "reference": "91404b22598239ddca6e2e7061644d2337d4d793"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Heyloyalty/HL-phpclient/zipball/f64010be3ec832776ed3d6fc905f2a365d75720d",
-                "reference": "f64010be3ec832776ed3d6fc905f2a365d75720d",
+                "url": "https://api.github.com/repos/Heyloyalty/HL-phpclient/zipball/91404b22598239ddca6e2e7061644d2337d4d793",
+                "reference": "91404b22598239ddca6e2e7061644d2337d4d793",
                 "shasum": ""
             },
             "require": {
@@ -1934,7 +1934,7 @@
                 "marketing",
                 "rest"
             ],
-            "time": "2019-08-21T09:44:39+00:00"
+            "time": "2019-12-11T07:58:21+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -6484,6 +6484,7 @@
                 "code",
                 "zf2"
             ],
+            "abandoned": "laminas/laminas-code",
             "time": "2018-08-13T20:36:59+00:00"
         },
         {
@@ -6538,6 +6539,7 @@
                 "events",
                 "zf2"
             ],
+            "abandoned": "laminas/laminas-eventmanager",
             "time": "2018-04-25T15:33:34+00:00"
         }
     ],
