@@ -2,11 +2,13 @@
 
 namespace App\Service\Heyloyalty;
 
+use mysql_xdevapi\Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Phpclient\HLClient;
 use Phpclient\HLLists;
+use Phpclient\V2\HLLists as HLListsV2;
 
 /**
  * Class AuthenticationService.
@@ -26,16 +28,71 @@ class HeyloyaltyService
         $this->statsLogger = $statsLogger;
     }
 
+    /**
+     * Remove option from list field.
+     */
     public function removeOption() {
-
+        throw new Exception('Not supported yet');
     }
 
+    /**
+     * Update option/value to the list.
+     *
+     * @param string $oldOption
+     *   Option to update
+     * @param string $newOption
+     *   New option.
+     *
+     * @throws \Exception
+     */
+    public function updateOption(string $oldOption, string $newOption) {
+        $listId = $this->params->get('heyloyalty.list.id');
+        $list = $this->getList($listId);
+
+        $field = $this->getListField($listId, $this->params->get('heyloyalty.field.id'));
+        $id = array_search($oldOption, $list['fields'][$field['name']]['options']);
+
+        if ($id ==! FALSE) {
+            $list['fields'][$field['name']]['options'] = [
+                [
+                    'id' => $id,
+                    'label' => $newOption
+                ]
+            ];
+
+            $params = [
+                'id' => $list['id'],
+                'name' => $list['name'],
+                'country_id' => $list['country_id'],
+                'duplicates' => $list['duplicates'],
+                'fields' => $list['fields'],
+            ];
+
+            $this->updateListField($this->params->get('heyloyalty.list.id'), $params);
+        }
+        else {
+            throw new \Exception('Option not found');
+        }
+    }
+
+    /**
+     * Add option/value to the list.
+     *
+     * @param string $option
+     *   Option to add.
+     *
+     * @throws \Exception
+     */
     public function addOption(string $option) {
         $listId = $this->params->get('heyloyalty.list.id');
         $list = $this->getList($listId);
 
         $field = $this->getListField($listId, $this->params->get('heyloyalty.field.id'));
-        $list['fields'][$field['name']]['options'][] = $option;
+        $list['fields'][$field['name']]['options'] = [
+            [
+                'label' => $option
+            ]
+        ];
 
         $params = [
             'id' => $list['id'],
@@ -48,16 +105,26 @@ class HeyloyaltyService
         $this->updateListField($this->params->get('heyloyalty.list.id'), $params);
     }
 
+    /**
+     * Updated list.
+     *
+     * @param int $listId
+     * @param $params
+     */
     private function updateListField(int $listId, $params) {
         $client = $this->getClient();
-        $listsService = new HLLists($client);
-        $response = $listsService->update($listId, $params);
-        print_r($response);
+        $listsService = new HLListsV2($client);
+        $listsService->patch($listId, $params);
     }
 
     /**
+     * Get list field.
+     *
      * @param int $listId
+     *   List ID.
      * @param int $fieldId
+     *   Field ID.
+     *
      * @return mixed|null
      * @throws \Exception
      */

@@ -50,6 +50,6 @@ class HayloyaltyCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->hlService->addOption('TEST 42');
+        $this->hlService->updateOption('TEST 158', '158 TEST');
     }
 }
