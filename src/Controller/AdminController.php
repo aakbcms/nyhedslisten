@@ -13,6 +13,7 @@ namespace App\Controller;
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
 use App\Entity\Search;
 use App\Entity\User;
+use App\Service\Heyloyalty\HeyloyaltyService;
 use App\Service\OpenPlatform\NewMaterialService;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
@@ -30,17 +31,20 @@ class AdminController extends EasyAdminController
 {
     private $userManager;
     private $newMaterialService;
+    private $heyloyaltyService;
 
     /**
      * AdminController constructor.
      *
      * @param UserManagerInterface $userManager        The FOS user manager
      * @param NewMaterialService   $newMaterialService The service to query for new materials
+     * @param HeyloyaltyService $heyloyaltyService     Integration with HL.
      */
-    public function __construct(UserManagerInterface $userManager, NewMaterialService $newMaterialService)
+    public function __construct(UserManagerInterface $userManager, NewMaterialService $newMaterialService, HeyloyaltyService $heyloyaltyService)
     {
         $this->userManager = $userManager;
         $this->newMaterialService = $newMaterialService;
+        $this->heyloyaltyService = $heyloyaltyService;
     }
 
     /**
@@ -155,5 +159,41 @@ class AdminController extends EasyAdminController
     {
         $this->userManager->updateUser($user, false);
         parent::updateEntity($user);
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function removeEntity($entity) {
+        parent::removeEntity($entity);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function updateEntity($entity) {
+        $uof = $this->em->getUnitOfWork();
+        $originalEntity = $uof->getOriginalEntityData($entity);
+
+        parent::updateEntity($entity);
+
+        try {
+            $this->heyloyaltyService->updateOption($originalEntity['name'], $entity->getName());
+        }
+        catch (\Exception $exception) {
+            if ($exception->getCode() == 'Option not found') {
+                $this->heyloyaltyService->addOption($entity->getName());
+            }
+        }
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function persistEntity($entity) {
+        parent::persistEntity($entity);
+
+        $this->heyloyaltyService->addOption($entity->getName());
     }
 }

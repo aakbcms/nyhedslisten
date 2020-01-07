@@ -2,7 +2,6 @@
 
 namespace App\Service\Heyloyalty;
 
-use mysql_xdevapi\Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -32,7 +31,7 @@ class HeyloyaltyService
      * Remove option from list field.
      */
     public function removeOption() {
-        throw new Exception('Not supported yet');
+        throw new \Exception('Not supported yet');
     }
 
     /**
@@ -109,12 +108,19 @@ class HeyloyaltyService
      * Updated list.
      *
      * @param int $listId
+     *   List ID.
      * @param $params
+     *  Stuff to patch.
+     *
+     * @throws \Exception
      */
     private function updateListField(int $listId, $params) {
         $client = $this->getClient();
         $listsService = new HLListsV2($client);
-        $listsService->patch($listId, $params);
+        $res = $listsService->patch($listId, $params);
+
+        // We decode res to get exception on errors in responses.
+        $this->jsonDecode($res['response'], TRUE);
     }
 
     /**
@@ -183,6 +189,10 @@ class HeyloyaltyService
             }
             else {
                 $error = $json->error;
+            }
+
+            if (is_array($error)) {
+                $error = $error['original'];
             }
             throw new \Exception($error);
         }
