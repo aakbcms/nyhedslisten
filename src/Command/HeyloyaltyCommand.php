@@ -18,11 +18,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
- * Class HayloyaltyCommand.
+ * Class HeyloyaltyCommand.
  */
-class HayloyaltyCommand extends Command
+class HeyloyaltyCommand extends Command
 {
-    protected static $defaultName = 'app:hayloyalty';
+    protected static $defaultName = 'app:heyloyalty';
 
     private $parameterBag;
     private $hlService;
