@@ -89,6 +89,13 @@ class Material
      */
     private $searches;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Groups({"material", "feed_materials"})
+     */
+    private $uri;
+
     public function __construct()
     {
         $this->searches = new ArrayCollection();
@@ -198,6 +205,18 @@ class Material
         if ($this->searches->contains($search)) {
             $this->searches->removeElement($search);
         }
+
+        return $this;
+    }
+
+    public function getUri(): ?string
+    {
+        return $this->uri;
+    }
+
+    public function setUri(string $uri): self
+    {
+        $this->uri = $uri;
 
         return $this;
     }
