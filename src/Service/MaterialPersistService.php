@@ -26,15 +26,17 @@ class MaterialPersistService
 {
     private $entityManager;
     private $propertyAccessor;
+    private $ddbUriService;
 
     /**
      * MaterialPersistService constructor.
      *
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, DdbUriService $ddbUriService)
     {
         $this->entityManager = $entityManager;
+        $this->ddbUriService = $ddbUriService;
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
@@ -60,6 +62,8 @@ class MaterialPersistService
                 $this->entityManager->persist($material);
             }
 
+            $uri = $this->ddbUriService->getUri($material->getPid());
+            $material->setUri($uri);
             $material->addSearch($search);
         }
 
