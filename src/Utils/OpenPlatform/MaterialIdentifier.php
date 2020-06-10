@@ -1,11 +1,7 @@
 <?php
 
 /**
- * This file is part of aakbcms/nyhedslisten.
- *
- * (c) 2019 ITK Development
- *
- * This source file is subject to the MIT license.
+ * @file
  */
 
 namespace App\Utils\OpenPlatform;
@@ -28,9 +24,9 @@ class MaterialIdentifier
      * MaterialIdentifier constructor.
      *
      * @param string $type
-     *                     The material type
+     *   The material type
      * @param string $id
-     *                     The identifier for this material
+     *   The identifier for this material
      *
      * @throws MaterialTypeException
      * @throws \ReflectionException

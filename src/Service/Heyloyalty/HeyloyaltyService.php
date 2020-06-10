@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Integration with Heyloyalty API services.
+ */
+
 namespace App\Service\Heyloyalty;
 
 use Psr\Log\LoggerInterface;
@@ -19,6 +24,13 @@ class HeyloyaltyService
 
     private $client;
 
+    /**
+     * HeyloyaltyService constructor.
+     *
+     * @param ParameterBagInterface $params
+     * @param AdapterInterface $cache
+     * @param LoggerInterface $statsLogger
+     */
     public function __construct(ParameterBagInterface $params, AdapterInterface $cache, LoggerInterface $statsLogger)
     {
         $this->params = $params;
@@ -26,11 +38,20 @@ class HeyloyaltyService
         $this->statsLogger = $statsLogger;
     }
 
-    public function removeOption() {
-
+    /**
+     * @TODO: What is this used for?
+     */
+    public function removeOption()
+    {
     }
 
-    public function addOption(string $option) {
+    /**
+     * @param string $option
+     *
+     * @throws \Exception
+     */
+    public function addOption(string $option)
+    {
         $listId = $this->params->get('heyloyalty.list.id');
         $list = $this->getList($listId);
 
@@ -48,7 +69,13 @@ class HeyloyaltyService
         $this->updateListField($this->params->get('heyloyalty.list.id'), $params);
     }
 
-    private function updateListField(int $listId, $params) {
+    /**
+     * @param int $listId
+     *
+     * @param $params
+     */
+    private function updateListField(int $listId, $params)
+    {
         $client = $this->getClient();
         $listsService = new HLLists($client);
         $response = $listsService->update($listId, $params);
@@ -58,39 +85,43 @@ class HeyloyaltyService
     /**
      * @param int $listId
      * @param int $fieldId
+     *
      * @return mixed|null
+     *
      * @throws \Exception
      */
-    private function getListField(int $listId, int $fieldId) {
+    private function getListField(int $listId, int $fieldId)
+    {
         $list = $this->getList($listId);
         $field = array_filter($list['fields'], function ($val, $id) use ($fieldId) {
-            return $val['id'] == $fieldId;
+            return $val['id'] === $fieldId;
         }, ARRAY_FILTER_USE_BOTH);
 
-        return is_array($field) ? reset($field) : NULL;
+        return \is_array($field) ? reset($field) : null;
     }
 
     /**
      * Get list.
      *
      * @param $listId
-     *   ID of the list to get.
+     *   ID of the list to get
      *
      * @return mixed|null
-     *   The list object.
+     *                    The list object
      *
      * @throws \Exception
-     *   If error is return from Heyloyalty.
+     *                    If error is return from Heyloyalty
      */
-    private function getList(int $listId) {
+    private function getList(int $listId)
+    {
         $client = $this->getClient();
         $listsService = new HLLists($client);
         $response = $listsService->getList($listId);
-        if (array_key_exists('response', $response)) {
-            $list = $this->jsonDecode($response['response'], TRUE);
+        if (\array_key_exists('response', $response)) {
+            $list = $this->jsonDecode($response['response'], true);
         }
 
-        return $list ?? NULL;
+        return $list ?? null;
     }
 
     /**
@@ -99,26 +130,27 @@ class HeyloyaltyService
      * @param $string
      *   JSON encoded string
      * @param bool $assoc
-     *   IF TRUE, returned objects will be converted into associative arrays.
-     *   Default FALSE.
+     *                    IF TRUE, returned objects will be converted into associative arrays.
+     *                    Default FALSE.
      *
      * @return mixed
-     *   Decoded result.
+     *               Decoded result
      *
      * @throws \Exception
-     *   If error is return from Heyloyalty.
+     *                    If error is return from Heyloyalty
      */
-    private function jsonDecode($string, $assoc = FALSE) {
+    private function jsonDecode($string, $assoc = false)
+    {
         $json = json_decode($string, $assoc);
-        if (array_key_exists('error', $json)) {
+        if (\array_key_exists('error', $json)) {
             if ($assoc) {
                 $error = $json['error'];
-            }
-            else {
+            } else {
                 $error = $json->error;
             }
             throw new \Exception($error);
         }
+
         return $json;
     }
 
@@ -127,8 +159,9 @@ class HeyloyaltyService
      *
      * @return \Phpclient\HLClient|null
      */
-    private function getClient() {
-        if (is_null($this->client)) {
+    private function getClient()
+    {
+        if (null === $this->client) {
             $this->client = new HLClient($this->params->get('heyloyalty.apikey'), $this->params->get('heyloyalty.secret'));
         }
 

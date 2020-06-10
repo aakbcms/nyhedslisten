@@ -1,11 +1,7 @@
 <?php
 
 /**
- * This file is part of aakbcms/nyhedslisten.
- *
- * (c) 2019 ITK Development
- *
- * This source file is subject to the MIT license.
+ * @file
  */
 
 namespace App\Controller;
@@ -34,8 +30,10 @@ class AdminController extends EasyAdminController
     /**
      * AdminController constructor.
      *
-     * @param UserManagerInterface $userManager        The FOS user manager
-     * @param NewMaterialService   $newMaterialService The service to query for new materials
+     * @param UserManagerInterface $userManager
+     *   The FOS user manager
+     * @param NewMaterialService $newMaterialService
+     *   The service to query for new materials
      */
     public function __construct(UserManagerInterface $userManager, NewMaterialService $newMaterialService)
     {
@@ -46,9 +44,11 @@ class AdminController extends EasyAdminController
     /**
      * Custom batch action to update materials for Searches.
      *
-     * @param array $ids the ids of the entities selected in the UI
+     * @param array $ids
+     *   The ids of the entities selected in the UI
      *
-     * @throws GuzzleException          if the Search query is malformed or the Open Search calls fails
+     * @throws GuzzleException
+     *   If the Search query is malformed or the Open Search calls fails
      * @throws InvalidArgumentException
      */
     public function queryBatchAction(array $ids): void
@@ -81,7 +81,8 @@ class AdminController extends EasyAdminController
      *
      * @return Response
      *
-     * @throws GuzzleException          if the Search query is malformed or the Open Search calls fails
+     * @throws GuzzleException
+     *   If the Search query is malformed or the Open Search calls fails
      * @throws InvalidArgumentException
      */
     public function queryAction(): Response

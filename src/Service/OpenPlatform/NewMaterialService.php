@@ -1,11 +1,8 @@
 <?php
 
 /**
- * This file is part of aakbcms/nyhedslisten.
- *
- * (c) 2019 ITK Development
- *
- * This source file is subject to the MIT license.
+ * @file
+ * New materials service.
  */
 
 namespace App\Service\OpenPlatform;
@@ -56,10 +53,10 @@ class NewMaterialService
     /**
      * NewMaterialService constructor.
      *
-     * @param SearchService          $searchService          Service to query the Open Platform
-     * @param MaterialPersistService $materialPersistService Service to persist or update new materials
-     * @param EntityManagerInterface $entityManager          Doctrine Entitymanager
-     * @param ParameterBagInterface  $params                 Application configuration
+     * @param SearchService $searchService
+     * @param MaterialPersistService $materialPersistService
+     * @param EntityManagerInterface $entityManager
+     * @param ParameterBagInterface  $params
      */
     public function __construct(SearchService $searchService, MaterialPersistService $materialPersistService, EntityManagerInterface $entityManager, ParameterBagInterface $params)
     {
@@ -75,10 +72,13 @@ class NewMaterialService
     /**
      * Update materials received since date.
      *
-     * @param Search            $search The Search to check for new materials to
-     * @param DateTimeImmutable $since  The date since when materials should be received
+     * @param Search $search
+     *   The Search to check for new materials to
+     * @param DateTimeImmutable $since
+     *   The date since when materials should be received
      *
-     * @return array Array of new Materials
+     * @return array
+     *   Array of new Materials
      *
      * @throws GuzzleException
      * @throws InvalidArgumentException
@@ -106,10 +106,13 @@ class NewMaterialService
     /**
      * Get new materials received since date.
      *
-     * @param Search            $search The Search to check for new materials to
-     * @param DateTimeImmutable $since  The date since when materials should be received
+     * @param Search $search
+     *   The Search to check for new materials to
+     * @param DateTimeImmutable $since
+     *   The date since when materials should be received
      *
-     * @return array Array of new Materials
+     * @return array
+     *   Array of new Materials
      *
      * @throws GuzzleException
      * @throws InvalidArgumentException'
@@ -118,18 +121,17 @@ class NewMaterialService
     public function getNewMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
     {
         $allMaterials = $this->getAllMaterialsSinceDate($search, $since);
-        $newMaterials = $this->excludeMaterialsWithExistingCopy($allMaterials, $since);
-
-        return $newMaterials;
+        return $this->excludeMaterialsWithExistingCopy($allMaterials, $since);
     }
 
     /**
      * Get the complete CQL query thar will be preformed against OPen Search for the given Search and Date.
      *
-     * @param Search            $search
+     * @param Search $search
      * @param DateTimeImmutable $since
      *
-     * @return string the complete CQL query string
+     * @return string
+     *   CQL query string
      */
     public function getCompleteCqlQuery(Search $search, DateTimeImmutable $since): string
     {
@@ -146,10 +148,13 @@ class NewMaterialService
      *
      * Note: This includes materials where there is already an exiting copy in the collection
      *
-     * @param Search            $search The Search to check for new materials to
-     * @param DateTimeImmutable $since  The date since when materials should be received
+     * @param Search $search
+     *   The Search to check for new materials to
+     * @param DateTimeImmutable $since
+     *   The date since when materials should be received
      *
-     * @return array Array of Materials
+     * @return array
+     *   Array of Materials
      *
      * @throws PlatformAuthException
      * @throws GuzzleException
@@ -165,10 +170,13 @@ class NewMaterialService
     /**
      * Exclude materials with exiting copies from the result set.
      *
-     * @param array             $list   Array of Materials to exclude from
-     * @param DateTimeImmutable $before The date before which materials should be excluded
+     * @param array $list
+     *   Array of Materials to exclude from
+     * @param DateTimeImmutable $before
+     *   The date before which materials should be excluded
      *
-     * @return array Array of Materials
+     * @return array
+     *   Array of Materials
      *
      * @throws PlatformAuthException
      * @throws GuzzleException
@@ -201,10 +209,13 @@ class NewMaterialService
     /**
      * Find all items in '$total' not present in '$exclude' compared by 'pid'.
      *
-     * @param array $total   The array of items to exclude from
-     * @param array $exclude The array of items to exclude
+     * @param array $total
+     *   The array of items to exclude from
+     * @param array $exclude
+     *   The array of items to exclude
      *
-     * @return array An array with unique items
+     * @return array
+     *   An array with unique items
      */
     private function getResultDiffByPid(array $total, array $exclude): array
     {
@@ -231,9 +242,11 @@ class NewMaterialService
     /**
      * Build CQL string of PID's from result set.
      *
-     * @param array $results Array of elements to get PID's from
+     * @param array $results
+     *   Array of elements to get PID's from
      *
-     * @return string String of all PID's concatenated with commas
+     * @return string
+     *   String of all PID's concatenated with commas
      */
     private function buildPidIncludeString(array $results): string
     {
@@ -248,9 +261,11 @@ class NewMaterialService
     /**
      * Build the 'exclude' part for a CQL query string.
      *
-     * @param array $excluded Array of strings to build exclude from
+     * @param array $excluded
+     *   Array of strings to build exclude from
      *
-     * @return string String of all elements with "not" prepended
+     * @return string
+     *   String of all elements with "not" prepended
      */
     private function buildExcludeSearchString(array $excluded): string
     {

@@ -1,11 +1,7 @@
 <?php
 
 /**
- * This file is part of aakbcms/nyhedslisten.
- *
- * (c) 2019 ITK Development
- *
- * This source file is subject to the MIT license.
+ * @file
  */
 
 namespace App\Repository;
@@ -19,11 +15,6 @@ use Doctrine\ORM\Query\QueryException;
 
 /**
  * Repository for Material Entity.
- *
- * @method Material|null find($id, $lockMode = null, $lockVersion = null)
- * @method Material|null findOneBy(array $criteria, array $orderBy = null)
- * @method Material[]    findAll()
- * @method Material[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class MaterialRepository extends ServiceEntityRepository
 {
@@ -40,9 +31,11 @@ class MaterialRepository extends ServiceEntityRepository
     /**
      * Find materials from list of match PIDs.
      *
-     * @param array $pidList The array of PID's to search for
+     * @param array $pidList T
+     *   he array of PID's to search for
      *
-     * @return mixed Array of materials indexed by match PID
+     * @return mixed
+     *   Array of materials indexed by match PID
      *
      * @throws QueryException
      */
@@ -61,7 +54,8 @@ class MaterialRepository extends ServiceEntityRepository
      *
      * @param DateTimeInterface $since
      *
-     * @return mixed Array of materials
+     * @return mixed
+     *   Array of materials
      */
     public function findLatest(DateTimeInterface $since): array
     {
@@ -78,7 +72,8 @@ class MaterialRepository extends ServiceEntityRepository
      * @param DateTimeInterface $since
      * @param int               $searchId
      *
-     * @return mixed Array of materials
+     * @return mixed
+     *   Array of materials
      */
     public function findLatestBySearch(DateTimeInterface $since, int $searchId): array
     {

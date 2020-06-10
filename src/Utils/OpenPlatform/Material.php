@@ -1,11 +1,7 @@
 <?php
 
 /**
- * This file is part of aakbcms/nyhedslisten.
- *
- * (c) 2019 ITK Development
- *
- * This source file is subject to the MIT license.
+ * @file
  */
 
 namespace App\Utils\OpenPlatform;
@@ -214,9 +210,9 @@ class Material
      * Add single identifier.
      *
      * @param string $type
-     *                     The identifier type (ISBN, ISSN, ISMN, ISRC, PID)
+     *   The identifier type (ISBN, ISSN, ISMN, ISRC, PID)
      * @param string $id
-     *                     The identifier
+     *  The identifier
      *
      * @return $this
      *
@@ -236,7 +232,7 @@ class Material
      * Check if this was a zero-hit-object.
      *
      * @return bool
-     *              TRUE if no identifiers was found else FALSE
+     *  TRUE if no identifiers was found else FALSE
      */
     public function isEmpty(): bool
     {

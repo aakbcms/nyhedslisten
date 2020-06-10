@@ -1,11 +1,8 @@
 <?php
 
 /**
- * This file is part of aakbcms/nyhedslisten.
- *
- * (c) 2019 ITK Development
- *
- * This source file is subject to the MIT license.
+ * @file
+ * Service to persist new Materials or update existing Materials in local database.
  */
 
 namespace App\Service;
@@ -20,7 +17,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 /**
  * Class MaterialPersistService.
  *
- * Service to persist new Materials or update existing Materials
+ * Service to persist new Materials or update existing Materials.
  */
 class MaterialPersistService
 {
@@ -32,6 +29,7 @@ class MaterialPersistService
      * MaterialPersistService constructor.
      *
      * @param EntityManagerInterface $entityManager
+     * @param DdbUriService $ddbUriService
      */
     public function __construct(EntityManagerInterface $entityManager, DdbUriService $ddbUriService)
     {
@@ -43,10 +41,10 @@ class MaterialPersistService
     /**
      * Save result set either updating existing Material or persisting new Materials.
      *
-     * @param array  $results Array of Materials to save
-     * @param Search $search  The Search that generated the result set
-     *
-     * @throws QueryException
+     * @param array  $results
+     *   Array of Materials to save
+     * @param Search $search
+     *   The Search that generated the result set
      */
     public function saveResults(array $results, Search $search): void
     {
@@ -73,11 +71,11 @@ class MaterialPersistService
     /**
      * Search for the Materials in $results that already exist in the database.
      *
-     * @param array $results the Materials to check for existing Materials for
+     * @param array $results
+     *   The Materials to check for existing Materials for
      *
-     * @return array
-     *
-     * @throws QueryException
+     * @return Material[]
+     *   Array of material entities
      */
     private function getExistingMaterials(array $results): array
     {
@@ -91,9 +89,11 @@ class MaterialPersistService
     /**
      * Parse the search result from the data well.
      *
-     * @param array $result The results from the data well
+     * @param array $result
+     *   The results from the data well
      *
-     * @return material Material with all the information collected
+     * @return Material
+     *   Material entity with all the information collected
      *
      * @throws Exception
      */

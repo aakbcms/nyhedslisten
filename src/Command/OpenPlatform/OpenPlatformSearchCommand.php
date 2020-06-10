@@ -1,11 +1,7 @@
 <?php
 
 /**
- * This file is part of aakbcms/nyhedslisten.
- *
- * (c) 2019 ITK Development
- *
- * This source file is subject to the MIT license.
+ * @file
  */
 
 namespace App\Command\OpenPlatform;
@@ -30,7 +26,7 @@ class OpenPlatformSearchCommand extends Command
      * OpenPlatformSearchCommand constructor.
      *
      * @param searchService $searchService
-     *                                     The open platform search service
+     *   The open platform search service
      */
     public function __construct(SearchService $searchService)
     {

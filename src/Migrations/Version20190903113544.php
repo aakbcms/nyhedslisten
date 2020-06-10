@@ -2,14 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * This file is part of aakbcms/nyhedslisten.
- *
- * (c) 2019 ITK Development
- *
- * This source file is subject to the MIT license.
- */
-
 namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;

@@ -1,11 +1,7 @@
 <?php
 
 /**
- * This file is part of aakbcms/nyhedslisten.
- *
- * (c) 2019 ITK Development
- *
- * This source file is subject to the MIT license.
+ * @file
  */
 
 namespace App\Utils;
@@ -21,8 +17,10 @@ class ArrayMerge
     /**
      * Merge from one array into another by reference.
      *
-     * @param array $mergeTo   The array to merge to
-     * @param array $mergeFrom The array to merge from
+     * @param array $mergeTo
+     *   The array to merge to
+     * @param array $mergeFrom
+     *   The array to merge from
      */
     public static function mergeArraysByReference(array &$mergeTo, array &$mergeFrom): void
     {

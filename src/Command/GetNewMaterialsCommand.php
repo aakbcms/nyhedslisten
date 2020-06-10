@@ -1,11 +1,7 @@
 <?php
 
 /**
- * This file is part of aakbcms/nyhedslisten.
- *
- * (c) 2019 ITK Development
- *
- * This source file is subject to the MIT license.
+ * @file
  */
 
 namespace App\Command;
@@ -32,12 +28,12 @@ class GetNewMaterialsCommand extends Command
     /**
      * OpenPlatformQueryCommand constructor.
      *
-     * @param NewMaterialService    $newMaterialService
-     *                                                  Service to query for new materials
-     * @param SearchRepository      $searchRepository
-     *                                                  Search entity repository
+     * @param NewMaterialService $newMaterialService
+     *   Service to query for new materials
+     * @param SearchRepository $searchRepository
+     *   Search entity repository
      * @param ParameterBagInterface $parameterBag
-     *                                                  Application configuration
+     *   Application configuration
      */
     public function __construct(NewMaterialService $newMaterialService, SearchRepository $searchRepository, ParameterBagInterface $parameterBag)
     {

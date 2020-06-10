@@ -1,18 +1,13 @@
 <?php
 
 /**
- * This file is part of aakbcms/nyhedslisten.
- *
- * (c) 2019 ITK Development
- *
- * This source file is subject to the MIT license.
+ * @file
  */
 
 namespace App\Command;
 
 use App\Service\Heyloyalty\HeyloyaltyService;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -27,6 +22,12 @@ class HeyloyaltyCommand extends Command
     private $parameterBag;
     private $hlService;
 
+    /**
+     * HeyloyaltyCommand constructor.
+     *
+     * @param ParameterBagInterface $parameterBag
+     * @param HeyloyaltyService $hlService
+     */
     public function __construct(ParameterBagInterface $parameterBag, HeyloyaltyService $hlService)
     {
         $this->parameterBag = $parameterBag;
@@ -40,7 +41,6 @@ class HeyloyaltyCommand extends Command
      */
     protected function configure(): void
     {
-
     }
 
     /**
