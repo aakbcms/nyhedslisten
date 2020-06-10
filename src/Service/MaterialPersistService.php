@@ -1,11 +1,8 @@
 <?php
 
 /**
- * This file is part of aakbcms/nyhedslisten.
- *
- * (c) 2019 ITK Development
- *
- * This source file is subject to the MIT license.
+ * @file
+ * Service to persist new Materials or update existing Materials in local database.
  */
 
 namespace App\Service;
@@ -13,44 +10,56 @@ namespace App\Service;
 use App\Entity\Material;
 use App\Entity\Search;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\QueryException;
 use Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Class MaterialPersistService.
  *
- * Service to persist new Materials or update existing Materials
+ * Service to persist new Materials or update existing Materials.
  */
 class MaterialPersistService
 {
     private $entityManager;
     private $propertyAccessor;
     private $ddbUriService;
+    private $coverServiceService;
 
     /**
      * MaterialPersistService constructor.
      *
      * @param EntityManagerInterface $entityManager
+     * @param DdbUriService $ddbUriService
+     * @param CoverServiceService $coverServiceService
      */
-    public function __construct(EntityManagerInterface $entityManager, DdbUriService $ddbUriService)
+    public function __construct(EntityManagerInterface $entityManager, DdbUriService $ddbUriService, CoverServiceService $coverServiceService)
     {
         $this->entityManager = $entityManager;
         $this->ddbUriService = $ddbUriService;
+        $this->coverServiceService = $coverServiceService;
+
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
     /**
      * Save result set either updating existing Material or persisting new Materials.
      *
-     * @param array  $results Array of Materials to save
-     * @param Search $search  The Search that generated the result set
+     * @param array  $results
+     *   Array of Materials to save
+     * @param Search $search
+     *   The Search that generated the result set
      *
-     * @throws QueryException
+     * @throws Exception
      */
     public function saveResults(array $results, Search $search): void
     {
         $existingMaterials = $this->getExistingMaterials($results);
+
+        // Try to get covers for the materials.
+        $pids = array_map(function ($item) {
+            return $item['pid'][0];
+        }, $results);
+        $covers = $this->coverServiceService->getCovers($pids);
 
         foreach ($results as $result) {
             $pid = reset($result['pid']);
@@ -65,6 +74,9 @@ class MaterialPersistService
             $uri = $this->ddbUriService->getUri($material->getPid());
             $material->setUri($uri);
             $material->addSearch($search);
+
+            // Try to get cover for the material.
+            $material->setCoverUrl($covers[$pid] ?? '');
         }
 
         $this->entityManager->flush();
@@ -73,11 +85,11 @@ class MaterialPersistService
     /**
      * Search for the Materials in $results that already exist in the database.
      *
-     * @param array $results the Materials to check for existing Materials for
+     * @param array $results
+     *   The Materials to check for existing Materials for
      *
-     * @return array
-     *
-     * @throws QueryException
+     * @return Material[]
+     *   Array of material entities
      */
     private function getExistingMaterials(array $results): array
     {
@@ -91,9 +103,11 @@ class MaterialPersistService
     /**
      * Parse the search result from the data well.
      *
-     * @param array $result The results from the data well
+     * @param array $result
+     *   The results from the data well
      *
-     * @return material Material with all the information collected
+     * @return Material
+     *   Material entity with all the information collected
      *
      * @throws Exception
      */

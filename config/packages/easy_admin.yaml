@@ -102,6 +102,7 @@ easy_admin:
                     - publisher
                     - pid
                     - date
+                    - { property: 'coverUrl', label: 'Cover', type: 'image' }
                     - searches
 
         User:

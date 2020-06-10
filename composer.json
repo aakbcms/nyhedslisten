@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "alterphp/easyadmin-extension-bundle": "^2.1",
+        "danskernesdigitalebibliotek/ddb-cover-service-php-client": "dev-master#1.0.0",
         "easycorp/easyadmin-bundle": "^2.3",
         "eightpoints/guzzle-bundle": "^7.5",
         "friendsofsymfony/user-bundle": "~2.0",
@@ -35,6 +36,12 @@
         "symfony/maker-bundle": "^1.13",
         "symfony/profiler-pack": "^1.0"
     },
+    "repositories": [
+        {
+          "type": "git",
+          "url": "https://github.com/danskernesdigitalebibliotek/ddb-cover-service-php-client.git"
+        }
+    ],
     "config": {
         "preferred-install": {
             "*": "dist"

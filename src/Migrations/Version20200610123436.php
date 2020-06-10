@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200316141848 extends AbstractMigration
+final class Version20200610123436 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -22,7 +22,7 @@ final class Version20200316141848 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE material ADD uri VARCHAR(255) NOT NULL');
+        $this->addSql('ALTER TABLE material ADD cover_url VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema): void
@@ -30,6 +30,6 @@ final class Version20200316141848 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf('mysql' !== $this->connection->getDatabasePlatform()->getName(), 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE material DROP uri');
+        $this->addSql('ALTER TABLE material DROP cover_url');
     }
 }
