@@ -34,10 +34,10 @@ class CoverServiceService
     }
 
     /**
-     * Get covers for the identifiers given
+     * Get covers for the identifiers given.
      *
      * @param array $identifiers
-     *   Material identifiers (PIDs).
+     *   Material identifiers (PIDs)
      *
      * @return array
      *   URLs for covers for the ones found (indexed by pid)
@@ -89,8 +89,8 @@ class CoverServiceService
     /**
      * Get configuration for the CoverService client.
      *
-     * @return Configuration
-     *   The configuration,.
+     * @return configuration
+     *   The configuration,
      *
      * @throws \App\Exception\PlatformAuthException
      * @throws \GuzzleHttp\Exception\GuzzleException

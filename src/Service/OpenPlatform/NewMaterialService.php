@@ -10,7 +10,6 @@ namespace App\Service\OpenPlatform;
 use App\Entity\Search;
 use App\Entity\SearchRun;
 use App\Exception\PlatformAuthException;
-use App\Service\CoverServiceService;
 use App\Service\MaterialPersistService;
 use App\Utils\ArrayMerge;
 use DateTimeImmutable;

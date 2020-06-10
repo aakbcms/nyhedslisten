@@ -56,7 +56,7 @@ class MaterialPersistService
         $existingMaterials = $this->getExistingMaterials($results);
 
         // Try to get covers for the materials.
-        $pids = array_map(function($item) {
+        $pids = array_map(function ($item) {
             return $item['pid'][0];
         }, $results);
         $covers = $this->coverServiceService->getCovers($pids);
