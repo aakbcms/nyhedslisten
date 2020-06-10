@@ -92,6 +92,13 @@ class Material
      */
     private $uri;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Groups({"material", "feed_materials"})
+     */
+    private $coverUrl;
+
     public function __construct()
     {
         $this->searches = new ArrayCollection();
@@ -213,6 +220,18 @@ class Material
     public function setUri(string $uri): self
     {
         $this->uri = $uri;
+
+        return $this;
+    }
+
+    public function getCoverUrl(): ?string
+    {
+        return $this->coverUrl;
+    }
+
+    public function setCoverUrl(string $coverUrl): self
+    {
+        $this->coverUrl = $coverUrl;
 
         return $this;
     }
