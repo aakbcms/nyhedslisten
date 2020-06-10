@@ -23,17 +23,21 @@ class MaterialPersistService
     private $entityManager;
     private $propertyAccessor;
     private $ddbUriService;
+    private $coverServiceService;
 
     /**
      * MaterialPersistService constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param DdbUriService $ddbUriService
+     * @param CoverServiceService $coverServiceService
      */
-    public function __construct(EntityManagerInterface $entityManager, DdbUriService $ddbUriService)
+    public function __construct(EntityManagerInterface $entityManager, DdbUriService $ddbUriService, CoverServiceService $coverServiceService)
     {
         $this->entityManager = $entityManager;
         $this->ddbUriService = $ddbUriService;
+        $this->coverServiceService = $coverServiceService;
+
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
@@ -44,10 +48,18 @@ class MaterialPersistService
      *   Array of Materials to save
      * @param Search $search
      *   The Search that generated the result set
+     *
+     * @throws Exception
      */
     public function saveResults(array $results, Search $search): void
     {
         $existingMaterials = $this->getExistingMaterials($results);
+
+        // Try to get covers for the materials.
+        $pids = array_map(function($item) {
+            return $item['pid'][0];
+        }, $results);
+        $covers = $this->coverServiceService->getCovers($pids);
 
         foreach ($results as $result) {
             $pid = reset($result['pid']);
@@ -62,6 +74,9 @@ class MaterialPersistService
             $uri = $this->ddbUriService->getUri($material->getPid());
             $material->setUri($uri);
             $material->addSearch($search);
+
+            // Try to get cover for the material.
+            $material->setCoverUrl($covers[$pid] ?? '');
         }
 
         $this->entityManager->flush();

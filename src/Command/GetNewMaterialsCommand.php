@@ -7,6 +7,7 @@
 namespace App\Command;
 
 use App\Repository\SearchRepository;
+use App\Service\CoverServiceService;
 use App\Service\OpenPlatform\NewMaterialService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,6 +25,7 @@ class GetNewMaterialsCommand extends Command
     private $newMaterialService;
     private $searchRepository;
     private $parameterBag;
+    private $coverServiceService;
 
     /**
      * OpenPlatformQueryCommand constructor.
