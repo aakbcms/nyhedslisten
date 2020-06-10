@@ -10,7 +10,6 @@ namespace App\Service;
 use App\Entity\Material;
 use App\Entity\Search;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query\QueryException;
 use Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 

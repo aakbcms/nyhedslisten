@@ -71,7 +71,6 @@ class HeyloyaltyService
 
     /**
      * @param int $listId
-     *
      * @param $params
      */
     private function updateListField(int $listId, $params)

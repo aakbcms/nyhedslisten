@@ -7,10 +7,8 @@
 
 namespace App\Service;
 
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-
 /**
- * Class DdbUriService
+ * Class DdbUriService.
  */
 class DdbUriService
 {
@@ -22,10 +20,10 @@ class DdbUriService
     /**
      * DdbUriService constructor.
      *
-     * @param String $bindDdbcmsBaseUrl
+     * @param string $bindDdbcmsBaseUrl
      *   DDB CMS base URL from configuration
      */
-    public function __construct(String $bindDdbcmsBaseUrl)
+    public function __construct(string $bindDdbcmsBaseUrl)
     {
         $this->basePath = $bindDdbcmsBaseUrl;
     }

@@ -121,6 +121,7 @@ class NewMaterialService
     public function getNewMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
     {
         $allMaterials = $this->getAllMaterialsSinceDate($search, $since);
+
         return $this->excludeMaterialsWithExistingCopy($allMaterials, $since);
     }
 
