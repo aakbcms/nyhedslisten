@@ -76,7 +76,7 @@ class MaterialPersistService
             $material->addSearch($search);
 
             // Try to get cover for the material.
-            $material->setCoverUrl($covers[$pid] ?? '');
+            $material->setCoverUrl($covers[$pid] ?? $this->coverServiceService->getDefaultCoverUrl());
         }
 
         $this->entityManager->flush();

@@ -19,18 +19,21 @@ class CoverServiceService
 {
     private $authenticationService;
     private $bindCoverServiceUrl;
+    private $bindCoverServiceDefaultUrl;
 
     /**
      * CoverServiceService constructor.
      *
      * @param AuthenticationService $authenticationService
      * @param string $bindCoverServiceUrl
+     * @param string $bindCoverServiceDefault
      */
-    public function __construct(AuthenticationService $authenticationService, string $bindCoverServiceUrl)
+    public function __construct(AuthenticationService $authenticationService, string $bindCoverServiceUrl, string $bindCoverServiceDefaultUrl)
     {
         // This reuse of the authentication service assumes that the token is an agency token (auth with an agency).
         $this->authenticationService = $authenticationService;
         $this->bindCoverServiceUrl = $bindCoverServiceUrl;
+        $this->bindCoverServiceDefaultUrl = $bindCoverServiceDefaultUrl;
     }
 
     /**
@@ -41,6 +44,9 @@ class CoverServiceService
      *
      * @return array
      *   URLs for covers for the ones found (indexed by pid)
+     *
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function getCovers(array $identifiers)
     {
@@ -84,6 +90,17 @@ class CoverServiceService
         }
 
         return $covers;
+    }
+
+    /**
+     * Default cover image url
+     *
+     * @return string
+     *   The URL to the default cover
+     */
+    public function getDefaultCoverUrl()
+    {
+        return $this->bindCoverServiceDefaultUrl;
     }
 
     /**
