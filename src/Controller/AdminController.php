@@ -36,8 +36,8 @@ class AdminController extends EasyAdminController
      *   The FOS user manager
      * @param NewMaterialService $newMaterialService
      *   The service to query for new materials
-     * @param HeyloyaltyService $heyloyaltyService
-     *   Integration with HL.
+     * @param heyloyaltyService $heyloyaltyService
+     *   Integration with HL
      */
     public function __construct(UserManagerInterface $userManager, NewMaterialService $newMaterialService, HeyloyaltyService $heyloyaltyService)
     {
@@ -164,16 +164,18 @@ class AdminController extends EasyAdminController
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
-    protected function removeEntity($entity) {
+    protected function removeEntity($entity)
+    {
         parent::removeEntity($entity);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
-    protected function updateEntity($entity) {
+    protected function updateEntity($entity)
+    {
         $uof = $this->em->getUnitOfWork();
         $originalEntity = $uof->getOriginalEntityData($entity);
 
@@ -181,18 +183,18 @@ class AdminController extends EasyAdminController
 
         try {
             $this->heyloyaltyService->updateOption($originalEntity['name'], $entity->getName());
-        }
-        catch (\Exception $exception) {
-            if ($exception->getCode() == 'Option not found') {
+        } catch (\Exception $exception) {
+            if ('Option not found' == $exception->getCode()) {
                 $this->heyloyaltyService->addOption($entity->getName());
             }
         }
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
-    protected function persistEntity($entity) {
+    protected function persistEntity($entity)
+    {
         parent::persistEntity($entity);
 
         $this->heyloyaltyService->addOption($entity->getName());

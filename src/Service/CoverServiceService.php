@@ -93,7 +93,7 @@ class CoverServiceService
     }
 
     /**
-     * Default cover image url
+     * Default cover image url.
      *
      * @return string
      *   The URL to the default cover
