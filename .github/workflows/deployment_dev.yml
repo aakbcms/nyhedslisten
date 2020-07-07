@@ -1,0 +1,27 @@
+---
+on:
+  push:
+    branches:
+      - develop
+
+name: Deployment (dev)
+
+jobs:
+  remote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run remote commands
+        uses: itk-dev/actions-remote-ssh@master
+        with:
+          command: |
+            cd ${{ secrets.APP_PATH_DEV }}
+            git clean -d --force
+            git checkout develop
+            git fetch
+            git reset origin/develop --hard
+            composer install
+            bin/console doctrine:migrations:migrate --no-interaction
+            bin/console cache:clear --no-debug
+          host: ${{ secrets.HOST_DEV }}
+          key: ${{ secrets.PRIVATE_KEY }}
+          cert: ${{ secrets.PUBLIC_KEY_CERT }}
