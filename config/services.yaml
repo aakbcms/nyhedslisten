@@ -18,8 +18,8 @@ parameters:
     datawell.default.accessiondate.criteria: '%env(DATAWELL_DEFAULT_ACCESSIONDATE_CRITERIA)%'
     heyloyalty.apikey: '%env(HEYLOYALTY_APIKEY)%'
     heyloyalty.secret: '%env(HEYLOYALTY_SECRET)%'
-    heyloyalty.list.id: '%env(HEYLOYALTY_LIST_ID)%'
-    heyloyalty.field.id: '%env(HEYLOYALTY_FIELD_ID)%'
+    heyloyalty.list.id: '%env(int:HEYLOYALTY_LIST_ID)%'
+    heyloyalty.field.id: '%env(int:HEYLOYALTY_FIELD_ID)%'
     ddbcms.base.url: '%env(DDBCMS_BASE_URL)%'
 
 services:
