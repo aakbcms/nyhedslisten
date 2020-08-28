@@ -66,7 +66,7 @@ class HeyloyaltyService
                 'name' => $list['name'],
                 'country_id' => $list['country_id'],
                 'duplicates' => $list['duplicates'],
-                'fields' => $list['fields'],
+                'fields' => [$field['name'] => $list['fields'][$field['name']]],
             ];
 
             $this->updateListField($this->params->get('heyloyalty.list.id'), $params);
@@ -100,7 +100,7 @@ class HeyloyaltyService
             'name' => $list['name'],
             'country_id' => $list['country_id'],
             'duplicates' => $list['duplicates'],
-            'fields' => $list['fields'],
+            'fields' => [$field['name'] => $list['fields'][$field['name']]],
         ];
 
         $this->updateListField($this->params->get('heyloyalty.list.id'), $params);
