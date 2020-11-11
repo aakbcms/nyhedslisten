@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6a7f08803c49b1d575356b50272321ed",
+    "content-hash": "f380c1a82782be5f7514f608662a9e74",
     "packages": [
         {
             "name": "alterphp/easyadmin-extension-bundle",
@@ -144,6 +144,12 @@
                 "url": "https://github.com/danskernesdigitalebibliotek/ddb-cover-service-php-client.git",
                 "reference": "b5da3650cbe5f92dd372782f8049ea438d5a8659"
             },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/danskernesdigitalebibliotek/ddb-cover-service-php-client/zipball/b5da3650cbe5f92dd372782f8049ea438d5a8659",
+                "reference": "b5da3650cbe5f92dd372782f8049ea438d5a8659",
+                "shasum": ""
+            },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
@@ -161,37 +167,7 @@
                     "CoverService\\": "lib/"
                 }
             },
-            "scripts": {
-                "check": [
-                    "@check-coding-standards"
-                ],
-                "check-coding-standards/php-cs-fixer": [
-                    "php-cs-fixer --config=.php_cs.dist fix --dry-run --format=checkstyle"
-                ],
-                "check-coding-standards/phpcs": [
-                    "phpcs --standard=phpcs.xml.dist"
-                ],
-                "check-coding-standards": [
-                    "@check-coding-standards/php-cs-fixer",
-                    "@check-coding-standards/phpcs"
-                ],
-                "apply-coding-standards/php-cs-fixer": [
-                    "php-cs-fixer --config=.php_cs.dist fix"
-                ],
-                "apply-coding-standards/phpcs": [
-                    "phpcbf --standard=phpcs.xml.dist"
-                ],
-                "apply-coding-standards": [
-                    "@apply-coding-standards/php-cs-fixer",
-                    "@apply-coding-standards/phpcs"
-                ],
-                "actions/phpcs": [
-                    "phpcs --standard=phpcs.xml.dist --report=checkstyle"
-                ],
-                "actions/phpcsfixer": [
-                    "php-cs-fixer --config=.php_cs.dist fix --dry-run --diff --diff-format=udiff"
-                ]
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "AGPL-3.0-only"
             ],
@@ -1409,6 +1385,7 @@
             "keywords": [
                 "reflection"
             ],
+            "abandoned": "roave/better-reflection",
             "time": "2018-06-14T14:45:07+00:00"
         },
         {
@@ -6700,6 +6677,7 @@
                 "i18n",
                 "text"
             ],
+            "abandoned": true,
             "time": "2018-12-05T18:34:18+00:00"
         },
         {
