@@ -82,7 +82,7 @@ class BookCover
     public function __construct()
     {
         $this->fontMetrics = new FontMetrics();
-        $this->baseCover = dirname(__FILE__) . '/autocover5.png';
+        $this->baseCover = dirname(__FILE__).'/autocover5.png';
         $this->setTextColor('white');
         $this->setBackgroundColor('#c10001');
     }
@@ -94,7 +94,7 @@ class BookCover
 
     public function __set($key, $value)
     {
-        $method = 'get' . ucfirst($key);
+        $method = 'get'.ucfirst($key);
         if (method_exists($this, $method)) {
             $this->$method($value);
         }
@@ -191,7 +191,7 @@ class BookCover
         return $this;
     }
 
-    public function getImage($maxWidth=0)
+    public function getImage($maxWidth = 0)
     {
         if ($this->dirty) {
             $this->make();
@@ -204,7 +204,7 @@ class BookCover
         return $image;
     }
 
-    public function getImageBlob($maxWidth=0)
+    public function getImageBlob($maxWidth = 0)
     {
         if ($this->dirty) {
             $this->make();
@@ -213,7 +213,7 @@ class BookCover
         return $this->getImage($maxWidth)->getImageBlob();
     }
 
-    public function save($filename, $maxWidth=0)
+    public function save($filename, $maxWidth = 0)
     {
         $fp = fopen($filename, 'w');
         fwrite($fp, $this->getImageBlob($maxWidth));
@@ -314,7 +314,7 @@ class BookCover
 
     protected function drawPublisherDate($right, $bottom)
     {
-        $text = $this->publisher . ', ' . $this->datePublished;
+        $text = $this->publisher.', '.$this->datePublished;
         if (empty($text)) {
             return 0;
         }
