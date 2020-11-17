@@ -24,7 +24,6 @@ class GetNewMaterialsCommand extends Command
     private $newMaterialService;
     private $searchRepository;
     private $parameterBag;
-    private $coverServiceService;
 
     /**
      * OpenPlatformQueryCommand constructor.

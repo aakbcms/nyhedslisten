@@ -7,10 +7,13 @@
 
 namespace App\Service;
 
+use App\Entity\Material;
 use App\Service\OpenPlatform\AuthenticationService;
+use App\Utils\GenericBookCover\BookCover;
 use CoverService\Api\CoverApi;
 use CoverService\Configuration;
 use GuzzleHttp\Client;
+use Symfony\Component\HttpFoundation\UrlHelper;
 
 /**
  * Class CoverServiceService.
@@ -18,22 +21,28 @@ use GuzzleHttp\Client;
 class CoverServiceService
 {
     private $authenticationService;
+    private $urlHelper;
     private $bindCoverServiceUrl;
     private $bindCoverServiceDefaultUrl;
+    private $bindProjectDir;
 
     /**
      * CoverServiceService constructor.
      *
      * @param AuthenticationService $authenticationService
+     * @param UrlHelper $urlHelper
      * @param string $bindCoverServiceUrl
-     * @param string $bindCoverServiceDefault
+     * @param string $bindCoverServiceDefaultUrl
+     * @param string $bindProjectDir
      */
-    public function __construct(AuthenticationService $authenticationService, string $bindCoverServiceUrl, string $bindCoverServiceDefaultUrl)
+    public function __construct(AuthenticationService $authenticationService, UrlHelper $urlHelper, string $bindCoverServiceUrl, string $bindCoverServiceDefaultUrl, string $bindProjectDir)
     {
         // This reuse of the authentication service assumes that the token is an agency token (auth with an agency).
         $this->authenticationService = $authenticationService;
+        $this->urlHelper = $urlHelper;
         $this->bindCoverServiceUrl = $bindCoverServiceUrl;
         $this->bindCoverServiceDefaultUrl = $bindCoverServiceDefaultUrl;
+        $this->bindProjectDir = $bindProjectDir;
     }
 
     /**
@@ -98,9 +107,39 @@ class CoverServiceService
      * @return string
      *   The URL to the default cover
      */
-    public function getDefaultCoverUrl()
+    public function getDefaultCoverUrl(): string
     {
         return $this->bindCoverServiceDefaultUrl;
+    }
+
+    /**
+     * Generate generic cover for the material.
+     *
+     * @param material $material
+     *   The material to generate cover for
+     *
+     * @return string
+     *   URL to the cover. Will fallback to default cover if generation fails.
+     */
+    public function getGenericCoverUrl(Material $material): string
+    {
+        $url = $this->getDefaultCoverUrl();
+        $file = '/public/covers/'.$material->getPid().'.png';
+        try {
+            $cover = new BookCover();
+            $cover->setTitle($material->getTitle())
+                ->setCreators($material->getCreator())
+                ->setPublisher($material->getPublisher())
+                ->setDatePublished($material->getDate()->format('Y'))
+                ->randomizeBackgroundColor()
+                ->save($this->bindProjectDir.$file, 350);
+
+            $url = $this->urlHelper->getAbsoluteUrl($file);
+        } catch (\Exception $e) {
+            // Don't do anything. Will fallback to default cover missing image.
+        }
+
+        return $url;
     }
 
     /**
