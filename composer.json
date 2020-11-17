@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "ext-imagick": "*",
         "alterphp/easyadmin-extension-bundle": "^2.1",
         "danskernesdigitalebibliotek/ddb-cover-service-php-client": "dev-master#1.0.0",
         "easycorp/easyadmin-bundle": "^2.3",
