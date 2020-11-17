@@ -125,7 +125,8 @@ class CoverServiceService
     public function getGenericCoverUrl(Material $material): string
     {
         $url = $this->getDefaultCoverUrl();
-        $file = '/public/covers/'.$material->getPid().'.png';
+        $filename = $material->getPid().'.png';
+        $file = '/public/covers/'.$filename;
         try {
             $cover = new BookCover();
             $cover->setTitle($material->getTitle())
@@ -135,7 +136,7 @@ class CoverServiceService
                 ->randomizeBackgroundColor()
                 ->save($this->bindProjectDir.$file, 350);
 
-            $url = $this->bindCoverServiceGenerateDomain.$file;
+            $url = $this->bindCoverServiceGenerateDomain.'/covers/'.$filename;
         } catch (\Exception $e) {
             // Don't do anything. Will fallback to default cover missing image.
         }
