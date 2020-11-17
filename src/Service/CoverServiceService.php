@@ -24,24 +24,25 @@ class CoverServiceService
     private $urlHelper;
     private $bindCoverServiceUrl;
     private $bindCoverServiceDefaultUrl;
+    private $bindCoverServiceGenerateDomain;
     private $bindProjectDir;
 
     /**
      * CoverServiceService constructor.
      *
      * @param AuthenticationService $authenticationService
-     * @param UrlHelper $urlHelper
      * @param string $bindCoverServiceUrl
      * @param string $bindCoverServiceDefaultUrl
+     * @param string $bindCoverServiceGenerateDomain
      * @param string $bindProjectDir
      */
-    public function __construct(AuthenticationService $authenticationService, UrlHelper $urlHelper, string $bindCoverServiceUrl, string $bindCoverServiceDefaultUrl, string $bindProjectDir)
+    public function __construct(AuthenticationService $authenticationService, string $bindCoverServiceUrl, string $bindCoverServiceDefaultUrl, string $bindCoverServiceGenerateDomain, string $bindProjectDir)
     {
         // This reuse of the authentication service assumes that the token is an agency token (auth with an agency).
         $this->authenticationService = $authenticationService;
-        $this->urlHelper = $urlHelper;
         $this->bindCoverServiceUrl = $bindCoverServiceUrl;
         $this->bindCoverServiceDefaultUrl = $bindCoverServiceDefaultUrl;
+        $this->bindCoverServiceGenerateDomain = $bindCoverServiceGenerateDomain;
         $this->bindProjectDir = $bindProjectDir;
     }
 
@@ -134,7 +135,7 @@ class CoverServiceService
                 ->randomizeBackgroundColor()
                 ->save($this->bindProjectDir.$file, 350);
 
-            $url = $this->urlHelper->getAbsoluteUrl($file);
+            $url = $this->bindCoverServiceGenerateDomain.$file;
         } catch (\Exception $e) {
             // Don't do anything. Will fallback to default cover missing image.
         }
