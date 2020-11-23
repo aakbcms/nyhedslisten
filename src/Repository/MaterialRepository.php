@@ -62,6 +62,7 @@ class MaterialRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('m')
             ->andWhere('m.date >= :date')
             ->setParameter('date', $since)
+            ->orderBy('m.creatorFiltered', 'ASC')
             ->getQuery()
             ->getResult();
     }

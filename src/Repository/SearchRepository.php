@@ -24,4 +24,12 @@ class SearchRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Search::class);
     }
+
+    /**
+     * @return Search[]|array
+     */
+    public function findAll()
+    {
+        return $this->findBy([], ['name' => 'ASC']);
+    }
 }
