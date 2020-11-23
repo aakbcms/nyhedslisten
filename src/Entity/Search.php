@@ -56,6 +56,7 @@ class Search
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Material", mappedBy="searches", fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"creatorFiltered" = "ASC"})
      *
      * @Groups({"material"})
      */

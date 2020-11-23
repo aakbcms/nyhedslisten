@@ -42,6 +42,7 @@ class Category
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Search", mappedBy="category")
+     * @ORM\OrderBy({"name" = "ASC"})
      *
      * @Groups({"category"})
      */
