@@ -19,12 +19,11 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  */
 class GetNewMaterialsCommand extends Command
 {
-    protected static $defaultName = 'app:openplatform:query';
+    protected static $defaultName = 'app:materials:get-new';
 
     private $newMaterialService;
     private $searchRepository;
     private $parameterBag;
-    private $coverServiceService;
 
     /**
      * OpenPlatformQueryCommand constructor.
@@ -73,14 +72,17 @@ class GetNewMaterialsCommand extends Command
         $dateConfig = $this->parameterBag->get('datawell.default.accessiondate.criteria');
         $date = new \DateTimeImmutable($dateConfig);
 
+        $count = 1;
+        $total = \count($searches);
         foreach ($searches as $search) {
             if ($search) {
                 $results = $this->newMaterialService->updateNewMaterialsSinceDate($search, $date);
 
-                $output->writeln(\count($results));
+                $output->writeln($count.'/'.$total.' - ['.$search->getId().'] '.$search->getName().': '.\count($results).' materiels found.');
             } else {
                 $output->writeln('No CQL Search found with id = '.$id);
             }
+            ++$count;
         }
     }
 }
