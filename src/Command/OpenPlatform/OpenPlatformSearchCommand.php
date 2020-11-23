@@ -7,10 +7,12 @@
 namespace App\Command\OpenPlatform;
 
 use App\Service\OpenPlatform\SearchService;
+use App\Utils\Types\IdentifierType;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Class OpenPlatformSearchCommand.
@@ -60,6 +62,8 @@ class OpenPlatformSearchCommand extends Command
         $type = $input->getArgument('type');
 
         $material = $this->searchService->searchByIdentifier($is, $type, $this->refresh);
-        $output->writeln($material);
+
+        $io = new SymfonyStyle($input, $output);
+        $io->text(json_encode($material, JSON_PRETTY_PRINT));
     }
 }

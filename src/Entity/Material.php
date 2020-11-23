@@ -25,6 +25,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  *    }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\MaterialRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Material
 {
@@ -49,8 +50,49 @@ class Material
      * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @Groups({"material", "feed_materials"})
+     * @SerializedName("creator")
+     */
+    private $creatorFiltered;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $creator;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $creatorAut;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $creatorCre;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $contributor;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $contributorAct;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $contributorAut;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $contributorCtb;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $contributorDkfig;
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -99,6 +141,13 @@ class Material
      */
     private $coverUrl;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
+     * @Groups({"material", "feed_materials"})
+     */
+    private $type;
+
     public function __construct()
     {
         $this->searches = new ArrayCollection();
@@ -107,6 +156,22 @@ class Material
     public function __toString()
     {
         return $this->title ?? '';
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersistCallback(): void
+    {
+        $this->updateCreatorFiltered();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdateCallback(): void
+    {
+        $this->updateCreatorFiltered();
     }
 
     public function getId(): ?int
@@ -124,6 +189,11 @@ class Material
         $this->title = $title;
 
         return $this;
+    }
+
+    public function getCreatorFiltered(): ?string
+    {
+        return $this->creatorFiltered;
     }
 
     public function getCreator(): ?string
@@ -234,5 +304,114 @@ class Material
         $this->coverUrl = $coverUrl;
 
         return $this;
+    }
+
+    public function getCreatorAut(): ?string
+    {
+        return $this->creatorAut;
+    }
+
+    public function setCreatorAut(?string $creatorAut): self
+    {
+        $this->creatorAut = $creatorAut;
+
+        return $this;
+    }
+
+    public function getCreatorCre(): ?string
+    {
+        return $this->creatorCre;
+    }
+
+    public function setCreatorCre(?string $creatorCre): self
+    {
+        $this->creatorCre = $creatorCre;
+
+        return $this;
+    }
+
+    public function getContributor(): ?string
+    {
+        return $this->contributor;
+    }
+
+    public function setContributor(?string $contributor): self
+    {
+        $this->contributor = $contributor;
+
+        return $this;
+    }
+
+    public function getContributorAct(): ?string
+    {
+        return $this->contributorAct;
+    }
+
+    public function setContributorAct(?string $contributorAct): self
+    {
+        $this->contributorAct = $contributorAct;
+
+        return $this;
+    }
+
+    public function getContributorAut(): ?string
+    {
+        return $this->contributorAut;
+    }
+
+    public function setContributorAut(?string $contributorAut): self
+    {
+        $this->contributorAut = $contributorAut;
+
+        return $this;
+    }
+
+    public function getContributorCtb(): ?string
+    {
+        return $this->contributorCtb;
+    }
+
+    public function setContributorCtb(?string $contributorCtb): self
+    {
+        $this->contributorCtb = $contributorCtb;
+
+        return $this;
+    }
+
+    public function getContributorDkfig(): ?string
+    {
+        return $this->contributorDkfig;
+    }
+
+    public function setContributorDkfig(?string $contributorDkfig): self
+    {
+        $this->contributorDkfig = $contributorDkfig;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Update the "filtered" creator to ensure a value is given.
+     *
+     * Return the first non null value from "creator", "creatorAut", "creatorCre",
+     * "contributor", "contributorAct", "contributorAut", "contributorCtb",
+     * "contributorDkfig" and "publisher" in that order
+     */
+    private function updateCreatorFiltered(): void
+    {
+        $creatorFiltered = $this->creator ?? $this->creatorAut ?? $this->creatorCre ?? $this->contributor ?? $this->contributorAct ?? $this->contributorAut ?? $this->contributorCtb ?? $this->contributorDkfig ?? $this->publisher;
+        $this->creatorFiltered = $creatorFiltered;
     }
 }

@@ -43,6 +43,7 @@ class CategoryRepository extends ServiceEntityRepository
             ->innerJoin('s.materials', 'm')
             ->andWhere('m.date >= :date')
             ->setParameter('date', $since)
+            ->orderBy('c.name', 'ASC')
             ->getQuery()
             ->getResult();
     }

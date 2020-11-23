@@ -254,9 +254,8 @@ class NewMaterialService
         $pidArray = array_map(static function ($element) {
             return implode(' ', $element['pid']);
         }, $results);
-        $included = implode(' ', $pidArray);
 
-        return $included;
+        return implode(' ', $pidArray);
     }
 
     /**

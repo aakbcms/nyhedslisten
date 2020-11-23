@@ -15,9 +15,9 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 /**
  * Class HeyloyaltyCommand.
  */
-class HeyloyaltyCommand extends Command
+class HeyloyaltyTestCommand extends Command
 {
-    protected static $defaultName = 'app:heyloyalty';
+    protected static $defaultName = 'app:heyloyalty:test';
 
     private $parameterBag;
     private $hlService;
