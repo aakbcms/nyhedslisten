@@ -90,15 +90,25 @@ easy_admin:
             list:
                 fields:
                     - title
-                    - creator
+                    - creatorFiltered
                     - pid
+                    - type
                     - date
                     - searches
             show:
                 fields:
                     - title
-                    - creator
+                    - { property: 'creatorFiltered', type: 'string', help: 'The first non null value from "Creator", "CreatorAut", "CreatorCre", "Contributor", "ContributorAct", "ContributorAut", "ContributorCtb", "ContributorDkfig" and "Publisher" in that order' }
+                    - { property: 'creator', label: 'Creator', type: 'string' }
+                    - { property: 'creatorAut', label: 'CreatorAut', type: 'string' }
+                    - { property: 'creatorCre', label: 'CreatorCre', type: 'string' }
+                    - { property: 'contributor', label: 'Contributor', type: 'string' }
+                    - { property: 'contributorAct', label: 'ContributorAct', type: 'string' }
+                    - { property: 'contributorAut', label: 'ContributorAut', type: 'string' }
+                    - { property: 'contributorCtb', label: 'ContributorCtb', type: 'string' }
+                    - { property: 'contributorDkfig', label: 'ContributorDkfig', type: 'string' }
                     - abstract
+                    - type
                     - publisher
                     - pid
                     - date

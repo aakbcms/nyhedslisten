@@ -11,6 +11,8 @@ use App\Entity\Material;
 use App\Entity\Search;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
@@ -44,11 +46,13 @@ class MaterialPersistService
     /**
      * Save result set either updating existing Material or persisting new Materials.
      *
-     * @param array  $results
+     * @param array $results
      *   Array of Materials to save
      * @param Search $search
      *   The Search that generated the result set
      *
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
      * @throws Exception
      */
     public function saveResults(array $results, Search $search): void
@@ -63,13 +67,9 @@ class MaterialPersistService
 
         foreach ($results as $result) {
             $pid = reset($result['pid']);
+            $material = \array_key_exists($pid, $existingMaterials) ? $existingMaterials[$pid] : new Material();
 
-            if (\array_key_exists($pid, $existingMaterials)) {
-                $material = $existingMaterials[$pid];
-            } else {
-                $material = $this->parseResultItem($result);
-                $this->entityManager->persist($material);
-            }
+            $this->parseResultItem($material, $result);
 
             $uri = $this->ddbUriService->getUri($material->getPid());
             $material->setUri($uri);
@@ -77,6 +77,10 @@ class MaterialPersistService
 
             // Try to get cover for the material.
             $material->setCoverUrl($covers[$pid] ?? $this->coverServiceService->getDefaultCoverUrl());
+
+            if (!$this->entityManager->contains($material)) {
+                $this->entityManager->persist($material);
+            }
         }
 
         $this->entityManager->flush();
@@ -103,38 +107,34 @@ class MaterialPersistService
     /**
      * Parse the search result from the data well.
      *
+     * @param Material $material
+     *   The material to parse the results to
      * @param array $result
      *   The results from the data well
      *
-     * @return Material
-     *   Material entity with all the information collected
-     *
      * @throws Exception
      */
-    private function parseResultItem(array $result): Material
+    private function parseResultItem(Material $material, array $result): void
     {
-        $material = new Material();
         foreach ($result as $key => $items) {
             switch ($key) {
                 case 'identifierISMN':
                 case 'identifierISR':
                 case 'identifierISBN':
                 case 'identifierISSN':
-                    break;
-
                 case 'date':
-                    $year = reset($items);
-                    $material->setDate(new \DateTime());
                     break;
 
                 default:
                     if ($this->propertyAccessor->isWritable($material, $key)) {
-                        $this->propertyAccessor->setValue($material, $key, reset($items));
+                        $value = implode(', ', $items);
+                        $value = mb_strlen($value) <= 255 ? $value : mb_substr($value, 0, 251).'...';
+                        $this->propertyAccessor->setValue($material, $key, $value);
                     }
                     break;
             }
         }
 
-        return $material;
+        $material->setDate(new \DateTime());
     }
 }
