@@ -9,6 +9,7 @@ namespace App\Service\OpenPlatform;
 
 use App\Exception\PlatformAuthException;
 use App\Utils\ArrayMerge;
+use App\Utils\Types\IdentifierType;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\RequestOptions;
@@ -67,6 +68,40 @@ class SearchService
     public function query(string $query): array
     {
         return $this->recursiveQuery($query);
+    }
+
+    /**
+     * Search by identifier of type.
+     *
+     * @param string $identifier
+     * @param string $type
+     * @return array
+     *
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
+     * @throws PlatformAuthException
+     */
+    public function searchByIdentifier(string $identifier, string $type): array
+    {
+        switch ($type) {
+            case IdentifierType::PID:
+                // If this is a search after a pid simply search for it and not in the search index.
+                $query = 'rec.id='.$identifier;
+                break;
+
+            case IdentifierType::ISBN:
+                $query = 'term.isbn='.$identifier;
+                break;
+
+            case IdentifierType::FAUST:
+                $query = 'dkcclterm.is='.$identifier;
+                break;
+
+            default:
+                throw new \InvalidArgumentException('Unknown identifier type: '.$type);
+        }
+
+        return $this->query($query);
     }
 
     /**
