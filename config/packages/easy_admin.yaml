@@ -89,7 +89,7 @@ easy_admin:
             disabled_actions: ['new', 'edit', 'delete']
             list:
                 fields:
-                    - title
+                    - titleFull
                     - creatorFiltered
                     - pid
                     - type
@@ -97,7 +97,7 @@ easy_admin:
                     - searches
             show:
                 fields:
-                    - title
+                    - titleFull
                     - { property: 'creatorFiltered', type: 'string', help: 'The first non null value from "Creator", "CreatorAut", "CreatorCre", "Contributor", "ContributorAct", "ContributorAut", "ContributorCtb", "ContributorDkfig" and "Publisher" in that order' }
                     - { property: 'creator', label: 'Creator', type: 'string' }
                     - { property: 'creatorAut', label: 'CreatorAut', type: 'string' }

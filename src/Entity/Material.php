@@ -43,8 +43,9 @@ class Material
      * @ORM\Column(type="string", length=255)
      *
      * @Groups({"material", "feed_materials"})
+     * @SerializedName("title")
      */
-    private $title;
+    private $titleFull;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -155,7 +156,7 @@ class Material
 
     public function __toString()
     {
-        return $this->title ?? '';
+        return $this->titleFull ?? '';
     }
 
     /**
@@ -179,14 +180,14 @@ class Material
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitleFull(): ?string
     {
-        return $this->title;
+        return $this->titleFull;
     }
 
-    public function setTitle(string $title): self
+    public function setTitleFull(string $titleFull): self
     {
-        $this->title = $title;
+        $this->titleFull = $titleFull;
 
         return $this;
     }
