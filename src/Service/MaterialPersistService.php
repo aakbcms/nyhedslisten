@@ -126,15 +126,27 @@ class MaterialPersistService
                     break;
 
                 default:
-                    if ($this->propertyAccessor->isWritable($material, $key)) {
-                        $value = implode(', ', $items);
-                        $value = mb_strlen($value) <= 255 ? $value : mb_substr($value, 0, 251).'...';
-                        $this->propertyAccessor->setValue($material, $key, $value);
-                    }
+                    $this->setValue($material, $key, $items);
                     break;
             }
         }
 
         $material->setDate(new \DateTime());
+    }
+
+    /**
+     * Set value for field.
+     *
+     * @param Material $material
+     * @param string $key
+     * @param array $items
+     */
+    private function setValue(Material $material, string $key, array $items): void
+    {
+        if ($this->propertyAccessor->isWritable($material, $key)) {
+            $value = implode(', ', $items);
+            $value = mb_strlen($value) <= 255 ? $value : mb_substr($value, 0, 251).'...';
+            $this->propertyAccessor->setValue($material, $key, $value);
+        }
     }
 }

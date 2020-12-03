@@ -129,7 +129,7 @@ class CoverServiceService
         $file = '/public/covers/'.$filename;
         try {
             $cover = new BookCover();
-            $cover->setTitle($material->getTitle())
+            $cover->setTitle($material->getTitleFull())
                 ->setCreators($material->getCreator())
                 ->setPublisher($material->getPublisher())
                 ->setDatePublished($material->getDate()->format('Y'))
