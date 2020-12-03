@@ -138,8 +138,11 @@ class MaterialPersistService
      * Set value for field.
      *
      * @param Material $material
+     *   The material to set value on
      * @param string $key
+     *   The field to set on the Material
      * @param array $items
+     *   Array of open platform 'items' to set as value
      */
     private function setValue(Material $material, string $key, array $items): void
     {
