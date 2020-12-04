@@ -6,6 +6,7 @@
 
 namespace App\Controller;
 
+use App\Dto\HeyLoyaltyMaterial;
 use App\Entity\Category;
 use App\Entity\Material;
 use App\Entity\Search;
@@ -48,6 +49,31 @@ class FeedController extends AbstractController
         $data['categories'] = $this->entityManager->getRepository(Category::class)->findBySearchMaterialDate($date);
 
         return $this->json($data, 200, [], ['groups' => ['category', 'material']]);
+    }
+
+    /**
+     * HeyLoyalty feed: Get materials from last 7 days ordered by category, search, creator.
+     *
+     * @Route("/feed/heyloyalty", name="feed_heyloyalty", methods={"GET","HEAD"})
+     */
+    public function heyLoyalty(): JsonResponse
+    {
+        $date = new \DateTimeImmutable('7 days ago');
+
+        $categories = $this->entityManager->getRepository(Category::class)->findBySearchMaterialDate($date);
+
+        $sortKey = 0;
+        $data = [];
+        foreach ($categories as $category) {
+            foreach ($category->getSearches() as $search) {
+                foreach ($search->getMaterials() as $material) {
+                    $data[] = new HeyLoyaltyMaterial($sortKey, $search, $material);
+                    ++$sortKey;
+                }
+            }
+        }
+
+        return $this->json($data, 200, []);
     }
 
     /**
