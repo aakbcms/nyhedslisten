@@ -27,17 +27,11 @@ class Search
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     *
-     * @Groups({"search", "category"})
-     * @SerializedName("search_id")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
-     * @Groups({"search", "category"})
-     * @SerializedName("search_name")
      */
     private $name;
 
@@ -47,18 +41,8 @@ class Search
     private $cqlSearch;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="searches")
-     * @ORM\JoinColumn(nullable=false)
-     *
-     * @Groups({"search"})
-     */
-    private $category;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Material", mappedBy="searches", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"creatorFiltered" = "ASC"})
-     *
-     * @Groups({"material"})
      */
     private $materials;
 
@@ -104,18 +88,6 @@ class Search
     public function setCqlSearch(string $cqlSearch): self
     {
         $this->cqlSearch = $cqlSearch;
-
-        return $this;
-    }
-
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): self
-    {
-        $this->category = $category;
 
         return $this;
     }
