@@ -7,6 +7,7 @@
 namespace App\Repository;
 
 use App\Entity\Category;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -28,7 +29,7 @@ class CategoryRepository extends ServiceEntityRepository
     /**
      * @return Category[]|array
      */
-    public function findAll()
+    public function findAll(): array
     {
         return $this->findBy([], ['name' => 'ASC']);
     }
@@ -42,7 +43,7 @@ class CategoryRepository extends ServiceEntityRepository
      * @return mixed
      *   Array of Categories
      */
-    public function findBySearchMaterialDate(DateTimeImmutable $since)
+    public function findByMaterialDate(DateTimeImmutable $since)
     {
         return $this->createQueryBuilder('c')
             ->select('c', 'm')
