@@ -2,12 +2,12 @@
 
 namespace App\Service\Heyloyalty;
 
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Phpclient\HLClient;
 use Phpclient\HLLists;
 use Phpclient\V2\HLLists as HLListsV2;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Class AuthenticationService.

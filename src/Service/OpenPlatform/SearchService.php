@@ -75,6 +75,7 @@ class SearchService
      *
      * @param string $identifier
      * @param string $type
+     *
      * @return array
      *
      * @throws GuzzleException

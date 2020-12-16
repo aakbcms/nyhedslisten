@@ -7,8 +7,8 @@
 
 namespace App\Service;
 
+use App\Entity\Category;
 use App\Entity\Material;
-use App\Entity\Search;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
@@ -48,14 +48,14 @@ class MaterialPersistService
      *
      * @param array $results
      *   Array of Materials to save
-     * @param Search $search
+     * @param Category $category
      *   The Search that generated the result set
      *
      * @throws GuzzleException
      * @throws InvalidArgumentException
      * @throws Exception
      */
-    public function saveResults(array $results, Search $search): void
+    public function saveResults(array $results, Category $category): void
     {
         $existingMaterials = $this->getExistingMaterials($results);
 
@@ -73,7 +73,7 @@ class MaterialPersistService
 
             $uri = $this->ddbUriService->getUri($material->getPid());
             $material->setUri($uri);
-            $material->addSearch($search);
+            $material->addCategory($category);
 
             // Try to get cover for the material.
             $material->setCoverUrl($covers[$pid] ?? $this->coverServiceService->getGenericCoverUrl($material));

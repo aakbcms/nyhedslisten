@@ -7,7 +7,7 @@
 namespace App\Controller;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
-use App\Entity\Search;
+use App\Entity\Category;
 use App\Entity\User;
 use App\Service\Heyloyalty\HeyloyaltyService;
 use App\Service\OpenPlatform\NewMaterialService;
@@ -61,7 +61,7 @@ class AdminController extends EasyAdminController
         $ids = array_map(static function ($id) {
             return (int) $id;
         }, $ids);
-        $searches = $this->em->getRepository(Search::class)->findBy(['id' => $ids]);
+        $searches = $this->em->getRepository(Category::class)->findBy(['id' => $ids]);
 
         // @TODO Move time interval to config
         $date = new \DateTimeImmutable('7 days ago');
@@ -93,7 +93,7 @@ class AdminController extends EasyAdminController
     public function queryAction(): Response
     {
         $id = $this->request->query->get('id');
-        $search = $this->em->getRepository(Search::class)->find($id);
+        $search = $this->em->getRepository(Category::class)->find($id);
 
         // @TODO Move time interval to config
         $date = new \DateTimeImmutable('7 days ago');

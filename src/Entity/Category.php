@@ -6,16 +6,15 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * @ORM\Entity(repositoryClass="CategoryRepository")
  */
 class Category
 {
@@ -26,31 +25,35 @@ class Category
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     *
-     * @Groups({"category", "search"})
-     * @SerializedName("category_id")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
-     * @Groups({"category", "search"})
-     * @SerializedName("category_name")
      */
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Search", mappedBy="category")
-     * @ORM\OrderBy({"name" = "ASC"})
-     *
-     * @Groups({"category"})
+     * @ORM\Column(type="text")
      */
-    private $searches;
+    private $cqlSearch;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Material", mappedBy="categories", fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"creatorFiltered" = "ASC"})
+     */
+    private $materials;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\SearchRun", mappedBy="category", orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"id" = "DESC"})
+     */
+    private $searchRuns;
 
     public function __construct()
     {
-        $this->searches = new ArrayCollection();
+        $this->materials = new ArrayCollection();
+        $this->searchRuns = new ArrayCollection();
     }
 
     public function __toString()
@@ -75,34 +78,114 @@ class Category
         return $this;
     }
 
-    /**
-     * @return Collection|Search[]
-     */
-    public function getSearches(): Collection
+    public function getCqlSearch(): ?string
     {
-        return $this->searches;
+        return $this->cqlSearch;
     }
 
-    public function addSearch(Search $search): self
+    public function setCqlSearch(string $cqlSearch): self
     {
-        if (!$this->searches->contains($search)) {
-            $this->searches[] = $search;
-            $search->setCategory($this);
+        $this->cqlSearch = $cqlSearch;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Material[]
+     */
+    public function getMaterials(): Collection
+    {
+        return $this->materials;
+    }
+
+    public function addMaterial(Material $material): self
+    {
+        if (!$this->materials->contains($material)) {
+            $this->materials[] = $material;
+            $material->addCategory($this);
         }
 
         return $this;
     }
 
-    public function removeSearch(Search $search): self
+    public function removeMaterial(Material $material): self
     {
-        if ($this->searches->contains($search)) {
-            $this->searches->removeElement($search);
+        if ($this->materials->contains($material)) {
+            $this->materials->removeElement($material);
+            $material->removeCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get search runs.
+     *
+     * @return Collection|SearchRun[]
+     */
+    public function getSearchRuns(): Collection
+    {
+        return $this->searchRuns;
+    }
+
+    /**
+     * Add search run.
+     *
+     * @param SearchRun $searchRun
+     *
+     * @return Category
+     */
+    public function addSearchRun(SearchRun $searchRun): self
+    {
+        if (!$this->searchRuns->contains($searchRun)) {
+            $this->searchRuns[] = $searchRun;
+            $searchRun->setSearch($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove search run.
+     *
+     * @param SearchRun $searchRun
+     *
+     * @return Category
+     */
+    public function removeSearchRun(SearchRun $searchRun): self
+    {
+        if ($this->searchRuns->contains($searchRun)) {
+            $this->searchRuns->removeElement($searchRun);
             // set the owning side to null (unless already changed)
-            if ($search->getCategory() === $this) {
-                $search->setCategory(null);
+            if ($searchRun->getCategory() === $this) {
+                $searchRun->setSearch(null);
             }
         }
 
         return $this;
+    }
+
+    /**
+     * Get the datetime of the latest search run.
+     *
+     * @return DateTimeInterface|null
+     */
+    public function getLastSearchRunAt(): ?DateTimeInterface
+    {
+        $searchRun = $this->searchRuns->first();
+
+        return $searchRun ? $searchRun->getRunAt() : null;
+    }
+
+    /**
+     * Get if the last search run was a success.
+     *
+     * @return bool|null
+     */
+    public function getLastSearchRunSuccess(): ?bool
+    {
+        $searchRun = $this->searchRuns->first();
+
+        return $searchRun ? $searchRun->getIsSuccess() : null;
     }
 }

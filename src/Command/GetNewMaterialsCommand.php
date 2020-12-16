@@ -6,7 +6,7 @@
 
 namespace App\Command;
 
-use App\Repository\SearchRepository;
+use App\Repository\CategoryRepository;
 use App\Service\OpenPlatform\NewMaterialService;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -22,7 +22,7 @@ class GetNewMaterialsCommand extends Command
     protected static $defaultName = 'app:materials:get-new';
 
     private $newMaterialService;
-    private $searchRepository;
+    private $categoryRepository;
     private $parameterBag;
 
     /**
@@ -30,15 +30,15 @@ class GetNewMaterialsCommand extends Command
      *
      * @param NewMaterialService $newMaterialService
      *   Service to query for new materials
-     * @param SearchRepository $searchRepository
+     * @param CategoryRepository $categoryRepository
      *   Search entity repository
      * @param ParameterBagInterface $parameterBag
      *   Application configuration
      */
-    public function __construct(NewMaterialService $newMaterialService, SearchRepository $searchRepository, ParameterBagInterface $parameterBag)
+    public function __construct(NewMaterialService $newMaterialService, CategoryRepository $categoryRepository, ParameterBagInterface $parameterBag)
     {
         $this->newMaterialService = $newMaterialService;
-        $this->searchRepository = $searchRepository;
+        $this->categoryRepository = $categoryRepository;
         $this->parameterBag = $parameterBag;
 
         parent::__construct();
@@ -64,21 +64,21 @@ class GetNewMaterialsCommand extends Command
         $id = $input->getArgument('id');
 
         if ($id) {
-            $searches = $this->searchRepository->findById($id);
+            $categories = $this->categoryRepository->findById($id);
         } else {
-            $searches = $this->searchRepository->findAll();
+            $categories = $this->categoryRepository->findAll();
         }
 
         $dateConfig = $this->parameterBag->get('datawell.default.accessiondate.criteria');
         $date = new \DateTimeImmutable($dateConfig);
 
         $count = 1;
-        $total = \count($searches);
-        foreach ($searches as $search) {
-            if ($search) {
-                $results = $this->newMaterialService->updateNewMaterialsSinceDate($search, $date);
+        $total = \count($categories);
+        foreach ($categories as $category) {
+            if ($category) {
+                $results = $this->newMaterialService->updateNewMaterialsSinceDate($category, $date);
 
-                $output->writeln($count.'/'.$total.' - ['.$search->getId().'] '.$search->getName().': '.\count($results).' materiels found.');
+                $output->writeln($count.'/'.$total.' - ['.$category->getId().'] '.$category->getName().': '.\count($results).' materiels found.');
             } else {
                 $output->writeln('No CQL Search found with id = '.$id);
             }

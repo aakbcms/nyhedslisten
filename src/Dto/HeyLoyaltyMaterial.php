@@ -1,29 +1,27 @@
 <?php
 
-
 namespace App\Dto;
 
-
+use App\Entity\Category;
 use App\Entity\Material;
-use App\Entity\Search;
 
 class HeyLoyaltyMaterial
 {
     private $sortKey;
-    private $search;
+    private $category;
     private $material;
 
     /**
      * HeyLoyaltyMaterial constructor.
      *
      * @param int $sortKey
-     * @param Search $search
+     * @param Category $category
      * @param Material $material
      */
-    public function __construct(int $sortKey, Search $search, Material $material)
+    public function __construct(int $sortKey, Category $category, Material $material)
     {
         $this->sortKey = $sortKey;
-        $this->search = $search;
+        $this->category = $category;
         $this->material = $material;
     }
 
@@ -64,12 +62,12 @@ class HeyLoyaltyMaterial
 
     public function getCategoryId(): int
     {
-        return $this->search->getId();
+        return $this->category->getId();
     }
 
     public function getCategoryName(): ?string
     {
-        return $this->search->getCategory()->getName().': '.$this->search->getName();
+        return $this->category->getName();
     }
 
     public function getUri(): ?string

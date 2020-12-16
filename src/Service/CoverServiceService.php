@@ -13,7 +13,6 @@ use App\Utils\GenericBookCover\BookCover;
 use CoverService\Api\CoverApi;
 use CoverService\Configuration;
 use GuzzleHttp\Client;
-use Symfony\Component\HttpFoundation\UrlHelper;
 
 /**
  * Class CoverServiceService.
