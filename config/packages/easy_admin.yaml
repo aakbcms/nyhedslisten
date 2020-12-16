@@ -3,8 +3,7 @@ easy_admin:
 
     design:
         menu:
-            - { entity: 'Search',  icon: 'search' }
-            - { entity: 'Category', icon: 'tag' }
+            - { entity: 'Category',  icon: 'search' }
             - { entity: 'Material', icon: 'book' }
             - { entity: 'User', icon: 'user' }
 
@@ -18,8 +17,8 @@ easy_admin:
 
     entities:
         # List the entity class name you want to manage
-        Search:
-            class: App\Entity\Search
+        Category:
+            class: App\Entity\Category
             list:
                 batch_actions:
                     - { label: 'Query Open Search', name: 'query' }
@@ -28,7 +27,6 @@ easy_admin:
                 fields:
                     - 'name'
                     - { property: 'cqlSearch', label: 'CQL search' }
-                    - 'category'
                     - { property: 'lastSearchRunAt', label: 'Last run', type: 'datetime' }
                     - { property: 'lastSearchRunSuccess', label: 'Success', type: 'boolean' }
             form:
@@ -61,29 +59,6 @@ easy_admin:
                     - runAt
                     - isSuccess
                     - errorMessage
-        Category:
-            class: App\Entity\Category
-            list:
-                sort: ['name', 'ASC']
-                fields:
-                    - 'name'
-                    - 'searches'
-            edit:
-              fields:
-                - 'name'
-                - 'searches'
-            new:
-              fields:
-                - 'name'
-                - 'searches'
-            show:
-                fields:
-                    - 'name'
-                    - 'searches'
-                    - 'createdAt'
-                    - 'createdBy'
-                    - 'updatedAt'
-                    - 'updatedBy'
         Material:
             class: App\Entity\Material
             disabled_actions: ['new', 'edit', 'delete']
@@ -94,7 +69,7 @@ easy_admin:
                     - pid
                     - type
                     - date
-                    - searches
+                    - categories
             show:
                 fields:
                     - titleFull
@@ -113,7 +88,7 @@ easy_admin:
                     - pid
                     - date
                     - { property: 'coverUrl', label: 'Cover', type: 'image' }
-                    - searches
+                    - categories
 
         User:
             class: App\Entity\User

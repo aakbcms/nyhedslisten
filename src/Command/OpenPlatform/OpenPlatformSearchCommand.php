@@ -7,7 +7,6 @@
 namespace App\Command\OpenPlatform;
 
 use App\Service\OpenPlatform\SearchService;
-use App\Utils\Types\IdentifierType;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

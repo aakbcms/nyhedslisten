@@ -27,10 +27,10 @@ class SearchRun
     private $runAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Search", inversedBy="searchRuns")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="searchRuns")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $search;
+    private $category;
 
     /**
      * @ORM\Column(type="boolean")
@@ -45,12 +45,12 @@ class SearchRun
     /**
      * SearchRun constructor.
      *
-     * @param Search            $search
+     * @param Category            $search
      * @param DateTimeImmutable $runAt
      */
-    public function __construct(Search $search, DateTimeImmutable $runAt)
+    public function __construct(Category $search, DateTimeImmutable $runAt)
     {
-        $this->search = $search;
+        $this->category = $search;
         $this->runAt = $runAt;
     }
 
@@ -64,9 +64,9 @@ class SearchRun
         return $this->runAt;
     }
 
-    public function getSearch(): ?Search
+    public function getCategory(): ?Category
     {
-        return $this->search;
+        return $this->category;
     }
 
     public function getIsSuccess(): ?bool

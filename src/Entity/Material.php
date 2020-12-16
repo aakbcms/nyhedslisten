@@ -9,8 +9,6 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * @ORM\Table(name="material",
@@ -20,7 +18,7 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  *    },
  *    indexes={
  *        @ORM\Index(name="pid_material_idx", columns={"pid"}),
- *        @ORM\Index(name="title_idx", columns={"title"}),
+ *        @ORM\Index(name="title_idx", columns={"title_full"}),
  *        @ORM\Index(name="creator_idx", columns={"creator"}),
  *    }
  * )
@@ -33,25 +31,16 @@ class Material
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     *
-     * @Groups({"material", "feed_materials"})
-     * @SerializedName("material_id")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
-     * @Groups({"material", "feed_materials"})
-     * @SerializedName("title")
      */
     private $titleFull;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @Groups({"material", "feed_materials"})
-     * @SerializedName("creator")
      */
     private $creatorFiltered;
 
@@ -97,22 +86,16 @@ class Material
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     *
-     * @Groups({"material", "feed_materials"})
      */
     private $abstract;
 
     /**
      * @ORM\Column(type="string", length=25)
-     *
-     * @Groups({"material", "feed_materials"})
      */
     private $pid;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
-     * @Groups({"material", "feed_materials"})
      */
     private $publisher;
 
@@ -122,36 +105,28 @@ class Material
     private $date;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Search", inversedBy="materials")
-     *
-     * @Groups("search")
+     * @ORM\ManyToMany(targetEntity="Category", inversedBy="materials")
      */
-    private $searches;
+    private $categories;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
-     * @Groups({"material", "feed_materials"})
      */
     private $uri;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
-     * @Groups({"material", "feed_materials"})
      */
     private $coverUrl;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @Groups({"material", "feed_materials"})
      */
     private $type;
 
     public function __construct()
     {
-        $this->searches = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function __toString()
@@ -258,26 +233,26 @@ class Material
     }
 
     /**
-     * @return Collection|Search[]
+     * @return Collection|Category[]
      */
-    public function getSearches(): Collection
+    public function getCategories(): Collection
     {
-        return $this->searches;
+        return $this->categories;
     }
 
-    public function addSearch(Search $search): self
+    public function addCategory(Category $category): self
     {
-        if (!$this->searches->contains($search)) {
-            $this->searches[] = $search;
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
         }
 
         return $this;
     }
 
-    public function removeSearch(Search $search): self
+    public function removeCategory(Category $category): self
     {
-        if ($this->searches->contains($search)) {
-            $this->searches->removeElement($search);
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
         }
 
         return $this;

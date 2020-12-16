@@ -7,7 +7,7 @@
 
 namespace App\Service\OpenPlatform;
 
-use App\Entity\Search;
+use App\Entity\Category;
 use App\Entity\SearchRun;
 use App\Exception\PlatformAuthException;
 use App\Service\MaterialPersistService;
@@ -72,8 +72,8 @@ class NewMaterialService
     /**
      * Update materials received since date.
      *
-     * @param Search $search
-     *   The Search to check for new materials to
+     * @param Category $category
+     *   The Category to check for new materials to
      * @param DateTimeImmutable $since
      *   The date since when materials should be received
      *
@@ -83,13 +83,13 @@ class NewMaterialService
      * @throws GuzzleException
      * @throws InvalidArgumentException
      */
-    public function updateNewMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
+    public function updateNewMaterialsSinceDate(Category $category, DateTimeImmutable $since): array
     {
-        $searchRun = new SearchRun($search, new DateTimeImmutable());
+        $searchRun = new SearchRun($category, new DateTimeImmutable());
 
         try {
-            $newMaterials = $this->getNewMaterialsSinceDate($search, $since);
-            $this->materialPersistService->saveResults($newMaterials, $search);
+            $newMaterials = $this->getNewMaterialsSinceDate($category, $since);
+            $this->materialPersistService->saveResults($newMaterials, $category);
 
             $searchRun->setIsSuccess(true);
         } catch (Exception $exception) {
@@ -106,8 +106,8 @@ class NewMaterialService
     /**
      * Get new materials received since date.
      *
-     * @param Search $search
-     *   The Search to check for new materials to
+     * @param Category $category
+     *   The Category to check for new materials to
      * @param DateTimeImmutable $since
      *   The date since when materials should be received
      *
@@ -118,25 +118,25 @@ class NewMaterialService
      * @throws InvalidArgumentException'
      * @throws PlatformAuthException
      */
-    public function getNewMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
+    public function getNewMaterialsSinceDate(Category $category, DateTimeImmutable $since): array
     {
-        $allMaterials = $this->getAllMaterialsSinceDate($search, $since);
+        $allMaterials = $this->getAllMaterialsSinceDate($category, $since);
 
         return $this->excludeMaterialsWithExistingCopy($allMaterials, $since);
     }
 
     /**
-     * Get the complete CQL query thar will be preformed against OPen Search for the given Search and Date.
+     * Get the complete CQL query thar will be preformed against Open Search for the given Category and Date.
      *
-     * @param Search $search
+     * @param Category $category
      * @param DateTimeImmutable $since
      *
      * @return string
      *   CQL query string
      */
-    public function getCompleteCqlQuery(Search $search, DateTimeImmutable $since): string
+    public function getCompleteCqlQuery(Category $category, DateTimeImmutable $since): string
     {
-        $query = $search->getCqlSearch();
+        $query = $category->getCqlSearch();
 
         $query .= sprintf(self::BASE_QUERY, $this->agencyId, $this->buildExcludeSearchString($this->excludedBranches), $this->buildExcludeSearchString($this->excludedCirculationRules));
         $query .= sprintf(self::DATE_QUERY_AFTER, $since->format(self::DATAWELL_DATE_FORMAT));
@@ -149,8 +149,8 @@ class NewMaterialService
      *
      * Note: This includes materials where there is already an exiting copy in the collection
      *
-     * @param Search $search
-     *   The Search to check for new materials to
+     * @param Category $category
+     *   The Category to check for new materials to
      * @param DateTimeImmutable $since
      *   The date since when materials should be received
      *
@@ -161,9 +161,9 @@ class NewMaterialService
      * @throws GuzzleException
      * @throws InvalidArgumentException
      */
-    private function getAllMaterialsSinceDate(Search $search, DateTimeImmutable $since): array
+    private function getAllMaterialsSinceDate(Category $category, DateTimeImmutable $since): array
     {
-        $query = $this->getCompleteCqlQuery($search, $since);
+        $query = $this->getCompleteCqlQuery($category, $since);
 
         return $this->searchService->query($query);
     }

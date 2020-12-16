@@ -7,7 +7,6 @@
 namespace App\Repository;
 
 use App\Entity\Material;
-use App\Entity\Search;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -31,8 +30,8 @@ class MaterialRepository extends ServiceEntityRepository
     /**
      * Find materials from list of match PIDs.
      *
-     * @param array $pidList T
-     *   he array of PID's to search for
+     * @param array $pidList
+     *   The array of PID's to search for
      *
      * @return mixed
      *   Array of materials indexed by match PID

@@ -12,13 +12,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\SearchRepository")
+ * @ORM\Entity(repositoryClass="CategoryRepository")
  */
-class Search
+class Category
 {
     use BlameableEntity;
     use TimestampableEntity;
@@ -41,13 +39,13 @@ class Search
     private $cqlSearch;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Material", mappedBy="searches", fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Material", mappedBy="categories", fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"creatorFiltered" = "ASC"})
      */
     private $materials;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SearchRun", mappedBy="search", orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OneToMany(targetEntity="App\Entity\SearchRun", mappedBy="category", orphanRemoval=true, fetch="EXTRA_LAZY")
      * @ORM\OrderBy({"id" = "DESC"})
      */
     private $searchRuns;
@@ -104,7 +102,7 @@ class Search
     {
         if (!$this->materials->contains($material)) {
             $this->materials[] = $material;
-            $material->addSearch($this);
+            $material->addCategory($this);
         }
 
         return $this;
@@ -114,7 +112,7 @@ class Search
     {
         if ($this->materials->contains($material)) {
             $this->materials->removeElement($material);
-            $material->removeSearch($this);
+            $material->removeCategory($this);
         }
 
         return $this;
@@ -135,7 +133,7 @@ class Search
      *
      * @param SearchRun $searchRun
      *
-     * @return Search
+     * @return Category
      */
     public function addSearchRun(SearchRun $searchRun): self
     {
@@ -152,14 +150,14 @@ class Search
      *
      * @param SearchRun $searchRun
      *
-     * @return Search
+     * @return Category
      */
     public function removeSearchRun(SearchRun $searchRun): self
     {
         if ($this->searchRuns->contains($searchRun)) {
             $this->searchRuns->removeElement($searchRun);
             // set the owning side to null (unless already changed)
-            if ($searchRun->getSearch() === $this) {
+            if ($searchRun->getCategory() === $this) {
                 $searchRun->setSearch(null);
             }
         }

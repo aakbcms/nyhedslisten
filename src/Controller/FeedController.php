@@ -9,7 +9,6 @@ namespace App\Controller;
 use App\Dto\HeyLoyaltyMaterial;
 use App\Entity\Category;
 use App\Entity\Material;
-use App\Entity\Search;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -65,11 +64,9 @@ class FeedController extends AbstractController
         $sortKey = 0;
         $data = [];
         foreach ($categories as $category) {
-            foreach ($category->getSearches() as $search) {
-                foreach ($search->getMaterials() as $material) {
-                    $data[] = new HeyLoyaltyMaterial($sortKey, $search, $material);
-                    ++$sortKey;
-                }
+            foreach ($category->getMaterials() as $material) {
+                $data[] = new HeyLoyaltyMaterial($sortKey, $category, $material);
+                ++$sortKey;
             }
         }
 
@@ -95,7 +92,7 @@ class FeedController extends AbstractController
      */
     public function searches(): JsonResponse
     {
-        $data = $this->entityManager->getRepository(Search::class)->findAll();
+        $data = $this->entityManager->getRepository(Category::class)->findAll();
 
         return $this->json($data, 200, [], ['groups' => ['search']]);
     }
@@ -125,7 +122,7 @@ class FeedController extends AbstractController
      */
     public function search(int $id): JsonResponse
     {
-        $data = $this->entityManager->getRepository(Search::class)->findBy(['id' => $id]);
+        $data = $this->entityManager->getRepository(Category::class)->findBy(['id' => $id]);
 
         return $this->json($data, 200, [], ['groups' => ['search']]);
     }
