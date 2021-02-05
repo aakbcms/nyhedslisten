@@ -329,16 +329,10 @@
     "symfony/deprecation-contracts": {
         "version": "v2.2.0"
     },
-    "symfony/deprecation-contracts": {
-        "version": "v2.2.0"
-    },
     "symfony/doctrine-bridge": {
         "version": "v4.4.16"
     },
     "symfony/dotenv": {
-        "version": "v4.4.16"
-    },
-    "symfony/error-handler": {
         "version": "v4.4.16"
     },
     "symfony/error-handler": {
@@ -444,9 +438,6 @@
         "version": "v1.20.0"
     },
     "symfony/polyfill-php73": {
-        "version": "v1.20.0"
-    },
-    "symfony/polyfill-php80": {
         "version": "v1.20.0"
     },
     "symfony/polyfill-php80": {
@@ -596,9 +587,6 @@
     },
     "twig/twig": {
         "version": "v2.14.1"
-    },
-    "webimpress/safe-writer": {
-        "version": "2.1.0"
     },
     "webmozart/assert": {
         "version": "1.9.1"
