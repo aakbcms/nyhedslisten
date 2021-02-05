@@ -45,7 +45,8 @@ class FeedController extends AbstractController
 
         $categories = $this->entityManager->getRepository(Category::class)->findByMaterialDate($date);
 
-        $sortKey = 0;
+        // heyloyalty does text sort, so we need to 'pad' the sort key
+        $sortKey = 100000;
         $data = [];
         foreach ($categories as $category) {
             foreach ($category->getMaterials() as $material) {
