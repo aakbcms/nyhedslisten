@@ -33,7 +33,6 @@ easy_admin:
                 fields:
                     - 'name'
                     - { property: 'cqlSearch', label: 'CQL search', help: 'Do not include "holdingsitem.accessionDate" ("bad") or "facet.acSource" parameters in the CQL statement. These will be added automatically.' }
-                    - 'category'
             show:
                 actions:
                     - { label: 'Test search', name: 'query', icon: 'search', css_class: 'btn btn-light' }
