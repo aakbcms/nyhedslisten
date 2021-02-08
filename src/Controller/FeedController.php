@@ -45,7 +45,15 @@ class FeedController extends AbstractController
 
         $categories = $this->entityManager->getRepository(Category::class)->findByMaterialDate($date);
 
-        $sortKey = 0;
+        // HeyLoyalty doesn't support sorting on multiple values like SQL does
+        // ( E.g "ORDER BY author ASC, year DESC"). HeyLoyalty only allows sorting on one
+        // key in the json feed. "sortkey" is used in the HeyLoyalty setup to force HeyLoyalty
+        // to maintain the order the materiels have in the feed.
+        // However HeyLoyalty does "text" sort, not "numeric" sort, so "15" comes after "149"
+        // in their sorting. To guard against this we start the sortKey counter at 1000000
+        // to avoid leading zeros and to avoid sortkeys of different str length.
+        // (Depends on feed never having more than 999999 items)
+        $sortKey = 100000;
         $data = [];
         foreach ($categories as $category) {
             foreach ($category->getMaterials() as $material) {
