@@ -174,7 +174,7 @@ class AdminController extends EasyAdminController
     /**
      * {@inheritdoc}
      */
-    protected function updateSearchEntity($entity)
+    protected function updateCategoryEntity($entity)
     {
         $uof = $this->em->getUnitOfWork();
         $originalEntity = $uof->getOriginalEntityData($entity);
@@ -193,7 +193,7 @@ class AdminController extends EasyAdminController
     /**
      * {@inheritdoc}
      */
-    protected function persistSearchEntity($entity)
+    protected function persistCategoryEntity($entity)
     {
         parent::persistEntity($entity);
 
