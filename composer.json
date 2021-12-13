@@ -19,7 +19,6 @@
         "heyloyalty/hl-phpclient": "^1.6",
         "rollerworks/password-strength-bundle": "^2.1",
         "stof/doctrine-extensions-bundle": "^1.3",
-        "symfony/apache-pack": "^1.0",
         "symfony/console": "4.4.*",
         "symfony/dotenv": "4.4.*",
         "symfony/flex": "^1.3.1",
@@ -89,7 +88,7 @@
         "check-coding-standards/twigcs": [
             "twigcs lint templates"
         ],
-        "check-coding-standards": [
+        "coding-standards-check": [
             "@check-coding-standards/php-cs-fixer",
             "@check-coding-standards/phpcs",
             "@check-coding-standards/twigcs"
@@ -100,7 +99,7 @@
         "apply-coding-standards/phpcs": [
             "phpcbf --standard=phpcs.xml.dist"
         ],
-        "apply-coding-standards": [
+        "coding-standards-apply": [
             "@apply-coding-standards/php-cs-fixer",
             "@apply-coding-standards/phpcs"
         ]

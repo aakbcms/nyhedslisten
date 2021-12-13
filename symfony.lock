@@ -131,15 +131,15 @@
         "version": "v3.1.1"
     },
     "friendsofphp/php-cs-fixer": {
-        "version": "2.2",
+        "version": "2.19",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
-            "version": "2.2",
-            "ref": "cc05ab6abf6894bddb9bbd6a252459010ebe040b"
+            "version": "2.19",
+            "ref": "34d1a22f840953909c581b8f993093b14cc9491b"
         },
         "files": [
-            ".php_cs.dist"
+            ".php-cs-fixer.dist.php"
         ]
     },
     "friendsofsymfony/user-bundle": {
@@ -266,13 +266,16 @@
         "version": "5.1.2"
     },
     "squizlabs/php_codesniffer": {
-        "version": "3.0",
+        "version": "3.6",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
             "branch": "master",
-            "version": "3.0",
-            "ref": "0dc9cceda799fd3a08b96987e176a261028a3709"
-        }
+            "version": "3.6",
+            "ref": "1019e5c08d4821cb9b77f4891f8e9c31ff20ac6f"
+        },
+        "files": [
+            "phpcs.xml.dist"
+        ]
     },
     "stof/doctrine-extensions-bundle": {
         "version": "1.2",
@@ -288,15 +291,6 @@
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.2.3"
-    },
-    "symfony/apache-pack": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "71599f5b0fdeeeec0fb90e9b17c85e6f5e1350c1"
-        }
     },
     "symfony/asset": {
         "version": "v4.4.16"
@@ -316,7 +310,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "4.4",
-            "ref": "ea8c0eda34fda57e7d5cd8cbd889e2a387e3472c"
+            "ref": "fd5340d07d4c90504843b53da41525cf42e31f5c"
         },
         "files": [
             "bin/console",
@@ -377,7 +371,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "4.4",
-            "ref": "df1f2fe60b8fbb5cf7e26a7af19445c128a13b90"
+            "ref": "3b9c85f14cad439042f88f94a1fd15fb8ed923c9"
         },
         "files": [
             "config/bootstrap.php",
@@ -500,12 +494,12 @@
         "version": "v4.4.16"
     },
     "symfony/swiftmailer-bundle": {
-        "version": "2.5",
+        "version": "3.5",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "2.5",
-            "ref": "ae4d22af30bbd484506bc1817c5a3ef72c855b93"
+            "ref": "f0b2fccdca2dfd97dc2fd5ad216d5e27c4f895ac"
         },
         "files": [
             "config/packages/dev/swiftmailer.yaml",
@@ -541,7 +535,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "4.4",
-            "ref": "15a41bbd66a1323d09824a189b485c126bbefa51"
+            "ref": "73baff3f7b3cea12a73812a7cfd2c0924a9e250f"
         },
         "files": [
             "config/packages/test/twig.yaml",
@@ -550,12 +544,12 @@
         ]
     },
     "symfony/validator": {
-        "version": "4.3",
+        "version": "4.4",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "4.3",
-            "ref": "d902da3e4952f18d3bf05aab29512eb61cabd869"
+            "ref": "3eb8df139ec05414489d55b97603c5f6ca0c44cb"
         },
         "files": [
             "config/packages/test/validator.yaml",
