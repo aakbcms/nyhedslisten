@@ -5,10 +5,13 @@
         "php": "^7.2.0",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "ext-json": "*",
         "ext-imagick": "*",
+        "ext-json": "*",
         "alterphp/easyadmin-extension-bundle": "^2.1",
         "danskernesdigitalebibliotek/ddb-cover-service-php-client": "dev-master#1.0.0",
+        "doctrine/doctrine-bundle": "^1.12",
+        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "doctrine/orm": "^2.7",
         "easycorp/easyadmin-bundle": "^2.3",
         "eightpoints/guzzle-bundle": "^7.5",
         "friendsofsymfony/user-bundle": "^2.1",
@@ -21,7 +24,6 @@
         "symfony/dotenv": "4.4.*",
         "symfony/flex": "^1.3.1",
         "symfony/framework-bundle": "4.4.*",
-        "symfony/orm-pack": "^1.0",
         "symfony/property-access": "4.4.*",
         "symfony/serializer": "4.4.*",
         "symfony/swiftmailer-bundle": "^3.2",
@@ -35,7 +37,8 @@
         "phan/phan": "^2.2",
         "phpmd/phpmd": "^2.7",
         "symfony/maker-bundle": "^1.13",
-        "symfony/profiler-pack": "^1.0"
+        "symfony/stopwatch": "^4.4",
+        "symfony/web-profiler-bundle": "^4.4"
     },
     "config": {
         "preferred-install": {
