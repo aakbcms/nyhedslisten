@@ -24,11 +24,11 @@ class AuthenticationService
     // limit to be 1 day, so it will be refresh before it expires.
     const TOKEN_EXPIRE_LIMIT = 86400;
 
-    private $params;
-    private $cache;
-    private $statsLogger;
-    private $accessToken = '';
-    private $client;
+    private ParameterBagInterface $params;
+    private AdapterInterface $cache;
+    private LoggerInterface $statsLogger;
+    private ClientInterface $client;
+    private string $accessToken = '';
 
     /**
      * Authentication constructor.

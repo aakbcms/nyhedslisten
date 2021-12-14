@@ -20,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FeedController extends AbstractController
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * FeedController constructor.
@@ -47,9 +47,9 @@ class FeedController extends AbstractController
         // ( E.g "ORDER BY author ASC, year DESC"). HeyLoyalty only allows sorting on one
         // key in the json feed. "sortkey" is used in the HeyLoyalty setup to force HeyLoyalty
         // to maintain the order the materiels have in the feed.
-        // However HeyLoyalty does "text" sort, not "numeric" sort, so "15" comes after "149"
+        // However, HeyLoyalty does "text" sort, not "numeric" sort, so "15" comes after "149"
         // in their sorting. To guard against this we start the sortKey counter at 1000000
-        // to avoid leading zeros and to avoid sortkeys of different str length.
+        // to avoid leading zeros and to avoid sort-keys of different str length.
         // (Depends on feed never having more than 999999 items)
         $sortKey = 100000;
         $data = [];

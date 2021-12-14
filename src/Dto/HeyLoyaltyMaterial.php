@@ -7,9 +7,9 @@ use App\Entity\Material;
 
 class HeyLoyaltyMaterial
 {
-    private $sortKey;
-    private $category;
-    private $material;
+    private int $sortKey;
+    private Category $category;
+    private Material $material;
 
     /**
      * HeyLoyaltyMaterial constructor.

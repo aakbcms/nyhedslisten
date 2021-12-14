@@ -23,13 +23,13 @@ class SearchService
 {
     private const SEARCH_LIMIT = 50;
 
-    private $authenticationService;
-    private $client;
+    private AuthenticationService$authenticationService;
+    private ClientInterface $client;
 
-    private $searchFields;
-    private $searchURL;
+    private array $searchFields;
+    private string $searchURL;
 
-    private $profile;
+    private string $profile;
 
     /**
      * SearchService constructor.

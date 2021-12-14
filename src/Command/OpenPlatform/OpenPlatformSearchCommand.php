@@ -20,8 +20,8 @@ class OpenPlatformSearchCommand extends Command
 {
     protected static $defaultName = 'app:openplatform:search';
 
-    private $searchService;
-    private $refresh = false;
+    private SearchService $searchService;
+    private bool $refresh = false;
 
     /**
      * OpenPlatformSearchCommand constructor.

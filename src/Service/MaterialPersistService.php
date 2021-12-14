@@ -14,6 +14,7 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
  * Class MaterialPersistService.
@@ -22,10 +23,10 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  */
 class MaterialPersistService
 {
-    private $entityManager;
-    private $propertyAccessor;
-    private $ddbUriService;
-    private $coverServiceService;
+    private EntityManagerInterface $entityManager;
+    private PropertyAccessor $propertyAccessor;
+    private DdbUriService $ddbUriService;
+    private CoverServiceService $coverServiceService;
 
     /**
      * MaterialPersistService constructor.

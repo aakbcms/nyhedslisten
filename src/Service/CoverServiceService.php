@@ -19,12 +19,11 @@ use GuzzleHttp\Client;
  */
 class CoverServiceService
 {
-    private $authenticationService;
-    private $urlHelper;
-    private $bindCoverServiceUrl;
-    private $bindCoverServiceDefaultUrl;
-    private $bindCoverServiceGenerateDomain;
-    private $bindProjectDir;
+    private AuthenticationService $authenticationService;
+    private string $bindCoverServiceUrl;
+    private string $bindCoverServiceDefaultUrl;
+    private string $bindCoverServiceGenerateDomain;
+    private string $bindProjectDir;
 
     /**
      * CoverServiceService constructor.
@@ -57,7 +56,7 @@ class CoverServiceService
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getCovers(array $identifiers)
+    public function getCovers(array $identifiers): array
     {
         $covers = [];
 
@@ -137,7 +136,7 @@ class CoverServiceService
 
             $url = $this->bindCoverServiceGenerateDomain.'/covers/'.$filename;
         } catch (\Exception $e) {
-            // Don't do anything. Will fallback to default cover missing image.
+            // Don't do anything. Will fall back to default cover missing image.
         }
 
         return $url;
@@ -146,14 +145,14 @@ class CoverServiceService
     /**
      * Get configuration for the CoverService client.
      *
-     * @return configuration
+     * @return Configuration
      *   The configuration,
      *
      * @throws \App\Exception\PlatformAuthException
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    private function getConfig()
+    private function getConfig(): Configuration
     {
         $config = Configuration::getDefaultConfiguration();
 

@@ -142,7 +142,7 @@ class AdminController extends EasyAdminController
      *
      * EasyAdmin custom action to integrate FOSUserBundle and EasyAdminBundle
      *
-     * @param $user
+     * @param User $user
      */
     public function persistUserEntity(User $user): void
     {
@@ -155,7 +155,7 @@ class AdminController extends EasyAdminController
      *
      * EasyAdmin custom action to integrate FOSUserBundle and EasyAdminBundle
      *
-     * @param $user
+     * @param User $user
      */
     public function updateUserEntity(User $user): void
     {

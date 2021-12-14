@@ -19,8 +19,8 @@ class HeyloyaltyTestCommand extends Command
 {
     protected static $defaultName = 'app:heyloyalty:test';
 
-    private $parameterBag;
-    private $hlService;
+    private ParameterBagInterface $parameterBag;
+    private HeyloyaltyService $hlService;
 
     /**
      * HeyloyaltyCommand constructor.

@@ -13,27 +13,27 @@ class BookCover
     /**
      * @var bool  Whether the ImageMagick image must be re-generated
      */
-    protected $dirty = true;
+    protected bool $dirty = true;
 
     /**
      * @var \Imagick  The current ImageMagick image object
      */
-    protected $image;
+    protected \Imagick $image;
 
     /**
      * @var int  Canvas width in pixels
      */
-    protected $pageWidth;
+    protected int $pageWidth;
 
     /**
      * @var int  Canvas height in pixels
      */
-    protected $pageHeight;
+    protected int $pageHeight;
 
     /**
      * @var FontMetrics
      */
-    protected $fontMetrics;
+    protected FontMetrics $fontMetrics;
 
     /*
     |--------------------------------------------------------------------------
@@ -41,12 +41,12 @@ class BookCover
     |--------------------------------------------------------------------------
     */
 
-    protected $creators = '';
-    protected $title = '';
-    protected $subtitle = '';
-    protected $edition = '';
-    protected $publisher = '';
-    protected $datePublished = '';
+    protected string $creators = '';
+    protected string $title = '';
+    protected string $subtitle = '';
+    protected string $edition = '';
+    protected string $publisher = '';
+    protected string $datePublished = '';
 
     /*
     |--------------------------------------------------------------------------
@@ -54,30 +54,11 @@ class BookCover
     |--------------------------------------------------------------------------
     */
 
-    /**
-     * @var \ImagickPixel  Background color
-     */
-    protected $backgroundColor;
-
-    /**
-     * @var \ImagickPixel  Text color
-     */
-    protected $textColor;
-
-    /**
-     * @var string  Font name
-     */
-    protected $primaryFont = 'AvantGarde-Book';  // 'AvantGarde-Book'
-
-    /**
-     * @var string  Font name
-     */
-    protected $secondaryFont = 'Helvetica-Oblique';
-
-    /**
-     * @var string  Base cover filename
-     */
-    protected $baseCover;
+    protected \ImagickPixel $backgroundColor;
+    protected \ImagickPixel $textColor;
+    protected string $primaryFont = 'AvantGarde-Book';  // 'AvantGarde-Book'
+    protected string $secondaryFont = 'Helvetica-Oblique';
+    protected string $baseCover;
 
     public function __construct()
     {

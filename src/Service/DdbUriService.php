@@ -15,7 +15,7 @@ class DdbUriService
     // Example url https://www.aakb.dk/ting/object/870970-basis:47791596
     private const URL_PATTERN = '%s/ting/object/%s';
 
-    private $basePath;
+    private string $basePath;
 
     /**
      * DdbUriService constructor.

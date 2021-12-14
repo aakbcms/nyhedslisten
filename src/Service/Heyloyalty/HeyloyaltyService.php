@@ -14,17 +14,12 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  */
 class HeyloyaltyService
 {
-    private $params;
-    private $cache;
-    private $statsLogger;
+    private ParameterBagInterface $params;
+    private HLClient $client;
 
-    private $client;
-
-    public function __construct(ParameterBagInterface $params, AdapterInterface $cache, LoggerInterface $statsLogger)
+    public function __construct(ParameterBagInterface $params)
     {
         $this->params = $params;
-        $this->cache = $cache;
-        $this->statsLogger = $statsLogger;
     }
 
     /**
@@ -53,7 +48,7 @@ class HeyloyaltyService
         $field = $this->getListField($listId, $this->params->get('heyloyalty.field.id'));
         $id = array_search($oldOption, $list['fields'][$field['name']]['options']);
 
-        if ($id == !false) {
+        if ($id !== false) {
             $list['fields'][$field['name']]['options'] = [
                 [
                     'id' => $id,
@@ -209,11 +204,11 @@ class HeyloyaltyService
     /**
      * Get client to communicate with Heyloyalty.
      *
-     * @return \Phpclient\HLClient|null
+     * @return \Phpclient\HLClient
      */
     private function getClient()
     {
-        if (is_null($this->client)) {
+        if (!isset($this->client)) {
             $this->client = new HLClient($this->params->get('heyloyalty.apikey'), $this->params->get('heyloyalty.secret'));
         }
 

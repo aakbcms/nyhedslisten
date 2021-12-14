@@ -21,9 +21,9 @@ class GetNewMaterialsCommand extends Command
 {
     protected static $defaultName = 'app:materials:get-new';
 
-    private $newMaterialService;
-    private $categoryRepository;
-    private $parameterBag;
+    private NewMaterialService $newMaterialService;
+    private CategoryRepository $categoryRepository;
+    private ParameterBagInterface $parameterBag;
 
     /**
      * OpenPlatformQueryCommand constructor.

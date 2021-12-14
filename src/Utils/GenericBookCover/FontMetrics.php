@@ -10,8 +10,8 @@ namespace App\Utils\GenericBookCover;
 
 class FontMetrics
 {
-    protected $baseFontFactor = 205;
-    protected $titleFontSize = 0;
+    protected int $baseFontFactor = 205;
+    protected int $titleFontSize = 0;
 
     /**
      * Get the max number of characters that can be fitted in the width
