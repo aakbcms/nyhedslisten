@@ -74,7 +74,7 @@ class AdminController extends EasyAdminController
         if (!empty($searches)) {
             $this->addFlash(
                 'info',
-                \count($searches).' CQL queries performed, '.$materialCount.' materials fetched'
+                (is_countable($searches) ? \count($searches) : 0).' CQL queries performed, '.$materialCount.' materials fetched'
             );
         }
     }
