@@ -8,8 +8,7 @@ security:
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        fos_userbundle:
-            id: fos_user.user_provider.username_email
+        users_in_memory: { memory: null }
 
     firewalls:
         dev:
@@ -20,9 +19,6 @@ security:
             security: false
         main:
             pattern: ^/
-            form_login:
-                provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager
 
             logout:       true
             anonymous:    true

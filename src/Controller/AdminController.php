@@ -25,7 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AdminController extends EasyAdminController
 {
-    private $userManager;
     private $newMaterialService;
     private $heyloyaltyService;
 
@@ -39,9 +38,8 @@ class AdminController extends EasyAdminController
      * @param heyloyaltyService $heyloyaltyService
      *   Integration with HL
      */
-    public function __construct(UserManagerInterface $userManager, NewMaterialService $newMaterialService, HeyloyaltyService $heyloyaltyService)
+    public function __construct(NewMaterialService $newMaterialService, HeyloyaltyService $heyloyaltyService)
     {
-        $this->userManager = $userManager;
         $this->newMaterialService = $newMaterialService;
         $this->heyloyaltyService = $heyloyaltyService;
     }

@@ -24,7 +24,7 @@ use Rollerworks\Component\PasswordStrength\Validator\Constraints as RollerworksP
  *
  * @Gedmo\Loggable
  */
-class User extends BaseUser
+class User
 {
     use BlameableEntity;
     use TimestampableEntity;
