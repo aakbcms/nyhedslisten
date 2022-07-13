@@ -15,7 +15,6 @@ use App\Utils\Types\IdentifierType;
 class MaterialIdentifier
 {
     private string $type;
-    private string $id;
 
     // The valid IS types in the data well.
     private array $types = [];
@@ -31,7 +30,7 @@ class MaterialIdentifier
      * @throws MaterialTypeException
      * @throws \ReflectionException
      */
-    public function __construct(string $type, string $id)
+    public function __construct(string $type, private string $id)
     {
         // Build types array.
         $obj = new \ReflectionClass(IdentifierType::class);
@@ -43,13 +42,10 @@ class MaterialIdentifier
         }
 
         $this->type = $type;
-        $this->id = $id;
     }
 
     /**
      * Get the identifier.
-     *
-     * @return string
      */
     public function getId(): string
     {
@@ -58,8 +54,6 @@ class MaterialIdentifier
 
     /**
      * Get the type of identifier.
-     *
-     * @return string
      */
     public function getType(): string
     {

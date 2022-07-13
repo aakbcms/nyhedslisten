@@ -8,11 +8,13 @@
 namespace App\Service\OpenPlatform;
 
 use App\Exception\PlatformAuthException;
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * Class AuthenticationService.
@@ -23,11 +25,6 @@ class AuthenticationService
     // being used. Currently the token is valid for 30 days. So we set the
     // limit to be 1 day, so it will be refresh before it expires.
     public const TOKEN_EXPIRE_LIMIT = 86400;
-
-    private ParameterBagInterface $params;
-    private AdapterInterface $cache;
-    private LoggerInterface $statsLogger;
-    private ClientInterface $client;
     private string $accessToken = '';
 
     /**
@@ -39,15 +36,11 @@ class AuthenticationService
      *   Cache to store access token
      * @param loggerInterface $statsLogger
      *   Logger object to send stats to ES
-     * @param ClientInterface $httpClient
+     * @param ClientInterface $guzzleClient
      *  Guzzle Client
      */
-    public function __construct(ParameterBagInterface $params, AdapterInterface $cache, LoggerInterface $statsLogger, ClientInterface $httpClient)
+    public function __construct(private ParameterBagInterface $params, private CacheInterface $cache, private LoggerInterface $statsLogger, private ClientInterface $guzzleClient)
     {
-        $this->params = $params;
-        $this->cache = $cache;
-        $this->statsLogger = $statsLogger;
-        $this->client = $httpClient;
     }
 
     /**
@@ -104,7 +97,7 @@ class AuthenticationService
             return $item->get();
         } else {
             try {
-                $response = $this->client->request('POST', $this->params->get('openPlatform.auth.url'), [
+                $response = $this->guzzleClient->request('POST', $this->params->get('openPlatform.auth.url'), [
                     'form_params' => [
                         'grant_type' => 'password',
                         'username' => '@'.$this->params->get('datawell.vendor.agency'),

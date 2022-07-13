@@ -19,12 +19,6 @@ use GuzzleHttp\Client;
  */
 class CoverServiceService
 {
-    private AuthenticationService $authenticationService;
-    private string $bindCoverServiceUrl;
-    private string $bindCoverServiceDefaultUrl;
-    private string $bindCoverServiceGenerateDomain;
-    private string $bindProjectDir;
-
     /**
      * CoverServiceService constructor.
      *
@@ -34,14 +28,8 @@ class CoverServiceService
      * @param string $bindCoverServiceGenerateDomain
      * @param string $bindProjectDir
      */
-    public function __construct(AuthenticationService $authenticationService, string $bindCoverServiceUrl, string $bindCoverServiceDefaultUrl, string $bindCoverServiceGenerateDomain, string $bindProjectDir)
+    public function __construct(private AuthenticationService $authenticationService, private string $bindCoverServiceUrl, private string $bindCoverServiceDefaultUrl, private string $bindCoverServiceGenerateDomain, private string $bindProjectDir)
     {
-        // This reuse of the authentication service assumes that the token is an agency token (auth with an agency).
-        $this->authenticationService = $authenticationService;
-        $this->bindCoverServiceUrl = $bindCoverServiceUrl;
-        $this->bindCoverServiceDefaultUrl = $bindCoverServiceDefaultUrl;
-        $this->bindCoverServiceGenerateDomain = $bindCoverServiceGenerateDomain;
-        $this->bindProjectDir = $bindProjectDir;
     }
 
     /**
@@ -67,7 +55,7 @@ class CoverServiceService
                 $config
             );
             $retrieved = $apiInstance->getCoverCollection('pid', $identifiers, ['original', 'small']);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             return $covers;
         }
 
@@ -135,7 +123,7 @@ class CoverServiceService
                 ->save($this->bindProjectDir.$file, 350);
 
             $url = $this->bindCoverServiceGenerateDomain.'/covers/'.$filename;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // Don't do anything. Will fall back to default cover missing image.
         }
 

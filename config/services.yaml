@@ -30,7 +30,7 @@ services:
 
         bind:
             $httpClient: '@eight_points_guzzle.client.guzzle_client'
-            $bindDdbcmsBaseUrl: '%env(DDBCMS_BASE_URL)%'
+            $basePath: '%env(DDBCMS_BASE_URL)%'
             $bindCoverServiceUrl: '%env(COVER_SERVICE_URL)%'
             $bindCoverServiceDefaultUrl: '%env(COVER_SERVICE_DEFAULT_URL)%'
             $bindCoverServiceGenerateDomain: '%env(COVER_SERVICE_GENERATE_DOMAIN)%'

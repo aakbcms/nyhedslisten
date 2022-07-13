@@ -10,7 +10,6 @@ use App\Entity\Category;
 use App\Entity\User;
 use App\Service\Heyloyalty\HeyloyaltyService;
 use App\Service\OpenPlatform\NewMaterialService;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -23,11 +22,8 @@ use Symfony\Component\HttpFoundation\Response;
  * Used to integrate FOSUserBundle and EasyAdminBundle
  * https://symfony.com/doc/master/bundles/EasyAdminBundle/integration/fosuserbundle.html
  */
-class AdminController extends EasyAdminController
+class AdminController
 {
-    private $newMaterialService;
-    private $heyloyaltyService;
-
     /**
      * AdminController constructor.
      *
@@ -38,10 +34,8 @@ class AdminController extends EasyAdminController
      * @param heyloyaltyService $heyloyaltyService
      *   Integration with HL
      */
-    public function __construct(NewMaterialService $newMaterialService, HeyloyaltyService $heyloyaltyService)
+    public function __construct(private NewMaterialService $newMaterialService, private HeyloyaltyService $heyloyaltyService)
     {
-        $this->newMaterialService = $newMaterialService;
-        $this->heyloyaltyService = $heyloyaltyService;
     }
 
     /**
@@ -80,7 +74,6 @@ class AdminController extends EasyAdminController
     /**
      * Custom action to test CQL Query.
      *
-     * @return Response
      *
      * @throws GuzzleException
      *   If the Search query is malformed or the Open Search calls fails
@@ -143,7 +136,6 @@ class AdminController extends EasyAdminController
     public function persistUserEntity(User $user): void
     {
         $this->userManager->updateUser($user, false);
-        parent::persistEntity($user);
     }
 
     /**
@@ -156,7 +148,6 @@ class AdminController extends EasyAdminController
     public function updateUserEntity(User $user): void
     {
         $this->userManager->updateUser($user, false);
-        parent::updateEntity($user);
     }
 
     /**
@@ -164,7 +155,6 @@ class AdminController extends EasyAdminController
      */
     protected function removeEntity($entity)
     {
-        parent::removeEntity($entity);
     }
 
     /**
@@ -174,8 +164,6 @@ class AdminController extends EasyAdminController
     {
         $uof = $this->em->getUnitOfWork();
         $originalEntity = $uof->getOriginalEntityData($entity);
-
-        parent::updateEntity($entity);
 
         try {
             $this->heyloyaltyService->updateOption($originalEntity['name'], $entity->getName());
@@ -191,8 +179,6 @@ class AdminController extends EasyAdminController
      */
     protected function persistCategoryEntity($entity)
     {
-        parent::persistEntity($entity);
-
         $this->heyloyaltyService->addOption($entity->getName());
     }
 }

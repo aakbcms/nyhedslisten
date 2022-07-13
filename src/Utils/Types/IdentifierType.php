@@ -24,8 +24,6 @@ class IdentifierType
      *
      * @return array
      *   An array of known identifiers. Uppercase identifier name in key, lower case identifier in value.
-     *
-     * @throws \ReflectionException
      */
     public static function getTypeList(): array
     {

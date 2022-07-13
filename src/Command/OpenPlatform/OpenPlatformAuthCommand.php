@@ -18,8 +18,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class OpenPlatformAuthCommand extends Command
 {
     protected static $defaultName = 'app:openplatform:auth';
-
-    private AuthenticationService$authentication;
     private bool $refresh = false;
 
     /**
@@ -28,10 +26,8 @@ class OpenPlatformAuthCommand extends Command
      * @param authenticationService $authentication
      *   Open Platform authentication service
      */
-    public function __construct(AuthenticationService $authentication)
+    public function __construct(private AuthenticationService $authentication)
     {
-        $this->authentication = $authentication;
-
         parent::__construct();
     }
 
@@ -51,7 +47,7 @@ class OpenPlatformAuthCommand extends Command
      * Uses the authentication service to get an access token form the open
      * platform.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $arg = $input->getArgument('refresh');
         $this->refresh = $arg ? (bool) $arg : $this->refresh;

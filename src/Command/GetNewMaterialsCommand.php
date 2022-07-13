@@ -21,10 +21,6 @@ class GetNewMaterialsCommand extends Command
 {
     protected static $defaultName = 'app:materials:get-new';
 
-    private NewMaterialService $newMaterialService;
-    private CategoryRepository $categoryRepository;
-    private ParameterBagInterface $parameterBag;
-
     /**
      * OpenPlatformQueryCommand constructor.
      *
@@ -35,12 +31,8 @@ class GetNewMaterialsCommand extends Command
      * @param ParameterBagInterface $parameterBag
      *   Application configuration
      */
-    public function __construct(NewMaterialService $newMaterialService, CategoryRepository $categoryRepository, ParameterBagInterface $parameterBag)
+    public function __construct(private NewMaterialService $newMaterialService, private CategoryRepository $categoryRepository, private ParameterBagInterface $parameterBag)
     {
-        $this->newMaterialService = $newMaterialService;
-        $this->categoryRepository = $categoryRepository;
-        $this->parameterBag = $parameterBag;
-
         parent::__construct();
     }
 
@@ -59,7 +51,7 @@ class GetNewMaterialsCommand extends Command
      *
      * Execute an data well search and output the result.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $id = $input->getArgument('id');
 

@@ -19,8 +19,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class OpenPlatformSearchCommand extends Command
 {
     protected static $defaultName = 'app:openplatform:search';
-
-    private SearchService $searchService;
     private bool $refresh = false;
 
     /**
@@ -29,10 +27,8 @@ class OpenPlatformSearchCommand extends Command
      * @param searchService $searchService
      *   The open platform search service
      */
-    public function __construct(SearchService $searchService)
+    public function __construct(private SearchService $searchService)
     {
-        $this->searchService = $searchService;
-
         parent::__construct();
     }
 
@@ -53,7 +49,7 @@ class OpenPlatformSearchCommand extends Command
      *
      * Execute an data well search and output the result.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $refresh = $input->getArgument('refresh');
         $this->refresh = $refresh ? (bool) $refresh : $this->refresh;

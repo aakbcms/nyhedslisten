@@ -42,10 +42,6 @@ class NewMaterialService
 
     private const DATAWELL_DATE_FORMAT = 'Y-m-d\T00:00:00\Z';
 
-    private SearchService $searchService;
-    private MaterialPersistService $materialPersistService;
-    private EntityManagerInterface $entityManager;
-
     private string $agencyId;
     private array $excludedBranches;
     private array $excludedCirculationRules;
@@ -58,12 +54,8 @@ class NewMaterialService
      * @param EntityManagerInterface $entityManager
      * @param ParameterBagInterface  $params
      */
-    public function __construct(SearchService $searchService, MaterialPersistService $materialPersistService, EntityManagerInterface $entityManager, ParameterBagInterface $params)
+    public function __construct(private SearchService $searchService, private MaterialPersistService $materialPersistService, private EntityManagerInterface $entityManager, ParameterBagInterface $params)
     {
-        $this->searchService = $searchService;
-        $this->materialPersistService = $materialPersistService;
-        $this->entityManager = $entityManager;
-
         $this->agencyId = $params->get('datawell.vendor.agency');
         $this->excludedBranches = explode(',', $params->get('datawell.vendor.excluded.branches'));
         $this->excludedCirculationRules = explode(',', $params->get('datawell.vendor.excluded.circulationRules'));

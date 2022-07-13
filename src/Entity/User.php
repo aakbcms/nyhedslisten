@@ -24,7 +24,7 @@ use Rollerworks\Component\PasswordStrength\Validator\Constraints as RollerworksP
  *
  * @Gedmo\Loggable
  */
-class User
+class User implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
@@ -96,7 +96,6 @@ class User
      */
     public function __construct()
     {
-        parent::__construct();
         $this->setEnabled(true);
     }
 
@@ -104,8 +103,6 @@ class User
      * Set name.
      *
      * @param string $name
-     *
-     * @return User
      */
     public function setName($name): self
     {
@@ -129,8 +126,8 @@ class User
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->name ?? $this->getUsernameCanonical();
+        return (string) ($this->name ?? $this->getUsernameCanonical());
     }
 }

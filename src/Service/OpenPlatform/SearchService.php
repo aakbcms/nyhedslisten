@@ -23,9 +23,6 @@ class SearchService
 {
     private const SEARCH_LIMIT = 50;
 
-    private AuthenticationService$authenticationService;
-    private ClientInterface $client;
-
     private array $searchFields;
     private string $searchURL;
 
@@ -38,14 +35,11 @@ class SearchService
      *   Access to environment variables
      * @param authenticationService $authenticationService
      *   The Open Platform authentication service
-     * @param ClientInterface $httpClient
+     * @param ClientInterface $guzzleClient
      *   Guzzle Client
      */
-    public function __construct(ParameterBagInterface $params, AuthenticationService $authenticationService, ClientInterface $httpClient)
+    public function __construct(ParameterBagInterface $params, private AuthenticationService $authenticationService, private ClientInterface $guzzleClient)
     {
-        $this->authenticationService = $authenticationService;
-        $this->client = $httpClient;
-
         $this->searchURL = $params->get('openPlatform.search.url');
         $this->searchFields = explode(',', $params->get('openPlatform.search.fields'));
 
@@ -73,10 +67,7 @@ class SearchService
     /**
      * Search by identifier of type.
      *
-     * @param string $identifier
-     * @param string $type
      *
-     * @return array
      *
      * @throws GuzzleException
      * @throws InvalidArgumentException
@@ -128,7 +119,7 @@ class SearchService
     private function recursiveQuery(string $query, int $offset = 0, array &$results = []): array
     {
         $token = $this->authenticationService->getAccessToken();
-        $response = $this->client->request('POST', $this->searchURL, [
+        $response = $this->guzzleClient->request('POST', $this->searchURL, [
             RequestOptions::JSON => [
                 'fields' => $this->searchFields,
                 'access_token' => $token,

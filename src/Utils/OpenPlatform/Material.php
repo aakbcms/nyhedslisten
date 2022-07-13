@@ -11,7 +11,7 @@ use App\Exception\MaterialTypeException;
 /**
  * Class Material.
  */
-class Material
+class Material implements \Stringable
 {
     private string $title = 'Unknown';
     private string $creator = 'Unknown';
@@ -24,7 +24,7 @@ class Material
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $output = [];
 
@@ -50,8 +50,6 @@ class Material
 
     /**
      * Get the material title.
-     *
-     * @return string
      */
     public function getTitle(): string
     {
@@ -74,8 +72,6 @@ class Material
 
     /**
      * Get the creator.
-     *
-     * @return string
      */
     public function getCreator(): string
     {
@@ -84,8 +80,6 @@ class Material
 
     /**
      * Set the material creators name.
-     *
-     * @param string $creator
      *
      * @return $this
      */
@@ -98,8 +92,6 @@ class Material
 
     /**
      * Get the date.
-     *
-     * @return string
      */
     public function getDate(): string
     {
@@ -108,8 +100,6 @@ class Material
 
     /**
      * Set the material date.
-     *
-     * @param string $date
      *
      * @return $this
      */
@@ -122,8 +112,6 @@ class Material
 
     /**
      * Get the publisher.
-     *
-     * @return string
      */
     public function getPublisher(): string
     {
@@ -132,8 +120,6 @@ class Material
 
     /**
      * Set the publisher.
-     *
-     * @param string $publisher
      *
      * @return $this
      */
@@ -158,7 +144,7 @@ class Material
      * Get material identifier base on type.
      *
      * @param string $type
-     *                     The type of id (ISBN, ISSN, ISMN, ISRC, PID)
+     *   The type of id (ISBN, ISSN, ISMN, ISRC, PID)
      *
      * @return MaterialIdentifier[]
      */
@@ -171,12 +157,12 @@ class Material
      * Check if identifier exists for this material.
      *
      * @param string $type
-     *                           The type of id (ISBN, ISSN, ISMN, ISRC, PID)
+     *   The type of id (ISBN, ISSN, ISMN, ISRC, PID)
      * @param string $identifier
-     *                           The identifier to check for
+     *   The identifier to check for
      *
      * @return bool
-     *              TRUE if it exists else FALSE
+     *   TRUE if it exists else FALSE
      */
     public function hasIdentifier(string $type, string $identifier): bool
     {

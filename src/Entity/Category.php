@@ -16,7 +16,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  */
-class Category
+class Category implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
@@ -56,9 +56,9 @@ class Category
         $this->searchRuns = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->name;
+        return (string) $this->name;
     }
 
     public function getId(): ?int
@@ -131,9 +131,7 @@ class Category
     /**
      * Add search run.
      *
-     * @param SearchRun $searchRun
      *
-     * @return Category
      */
     public function addSearchRun(SearchRun $searchRun): self
     {
@@ -148,9 +146,7 @@ class Category
     /**
      * Remove search run.
      *
-     * @param SearchRun $searchRun
      *
-     * @return Category
      */
     public function removeSearchRun(SearchRun $searchRun): self
     {
@@ -167,8 +163,6 @@ class Category
 
     /**
      * Get the datetime of the latest search run.
-     *
-     * @return DateTimeInterface|null
      */
     public function getLastSearchRunAt(): ?DateTimeInterface
     {
@@ -179,8 +173,6 @@ class Category
 
     /**
      * Get if the last search run was a success.
-     *
-     * @return bool|null
      */
     public function getLastSearchRunSuccess(): ?bool
     {

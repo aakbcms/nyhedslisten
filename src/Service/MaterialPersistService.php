@@ -23,10 +23,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class MaterialPersistService
 {
-    private EntityManagerInterface $entityManager;
     private PropertyAccessor $propertyAccessor;
-    private DdbUriService $ddbUriService;
-    private CoverServiceService $coverServiceService;
 
     /**
      * MaterialPersistService constructor.
@@ -35,12 +32,8 @@ class MaterialPersistService
      * @param DdbUriService $ddbUriService
      * @param CoverServiceService $coverServiceService
      */
-    public function __construct(EntityManagerInterface $entityManager, DdbUriService $ddbUriService, CoverServiceService $coverServiceService)
+    public function __construct(private EntityManagerInterface $entityManager, private DdbUriService $ddbUriService, private CoverServiceService $coverServiceService)
     {
-        $this->entityManager = $entityManager;
-        $this->ddbUriService = $ddbUriService;
-        $this->coverServiceService = $coverServiceService;
-
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 

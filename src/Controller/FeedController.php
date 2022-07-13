@@ -20,29 +20,23 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FeedController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
-
     /**
      * FeedController constructor.
      *
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     /**
      * HeyLoyalty feed: Get materials from last 7 days ordered by category, search, creator.
-     *
-     * @Route("/feed/heyloyalty", name="feed_heyloyalty", methods={"GET","HEAD"})
      */
-    public function heyLoyalty(): JsonResponse
+    #[Route(path: '/feed/heyloyalty', name: 'feed_heyloyalty', methods: ['GET', 'HEAD'])]
+    public function heyLoyalty() : JsonResponse
     {
         $date = new \DateTimeImmutable('7 days ago');
-
         $categories = $this->entityManager->getRepository(Category::class)->findByMaterialDate($date);
-
         // HeyLoyalty doesn't support sorting on multiple values like SQL does
         // ( E.g "ORDER BY author ASC, year DESC"). HeyLoyalty only allows sorting on one
         // key in the json feed. "sortkey" is used in the HeyLoyalty setup to force HeyLoyalty
@@ -59,7 +53,6 @@ class FeedController extends AbstractController
                 ++$sortKey;
             }
         }
-
         return $this->json($data, 200, []);
     }
 }

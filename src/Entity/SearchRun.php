@@ -22,17 +22,6 @@ class SearchRun
     private $id;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $runAt;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="searchRuns")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $category;
-
-    /**
      * @ORM\Column(type="boolean")
      */
     private $isSuccess;
@@ -45,13 +34,21 @@ class SearchRun
     /**
      * SearchRun constructor.
      *
-     * @param Category            $search
+     * @param Category $category
      * @param DateTimeImmutable $runAt
      */
-    public function __construct(Category $search, DateTimeImmutable $runAt)
+    public function __construct(
+        /**
+         * @ORM\ManyToOne(targetEntity="Category", inversedBy="searchRuns")
+         * @ORM\JoinColumn(nullable=false)
+         */
+        private Category $category,
+        /**
+         * @ORM\Column(type="datetime")
+         */
+        private DateTimeImmutable $runAt
+    )
     {
-        $this->category = $search;
-        $this->runAt = $runAt;
     }
 
     public function getId(): ?int

@@ -19,20 +19,14 @@ class HeyloyaltyTestCommand extends Command
 {
     protected static $defaultName = 'app:heyloyalty:test';
 
-    private ParameterBagInterface $parameterBag;
-    private HeyloyaltyService $hlService;
-
     /**
      * HeyloyaltyCommand constructor.
      *
      * @param ParameterBagInterface $parameterBag
      * @param HeyloyaltyService $hlService
      */
-    public function __construct(ParameterBagInterface $parameterBag, HeyloyaltyService $hlService)
+    public function __construct(private ParameterBagInterface $parameterBag, private HeyloyaltyService $hlService)
     {
-        $this->parameterBag = $parameterBag;
-        $this->hlService = $hlService;
-
         parent::__construct();
     }
 
@@ -48,7 +42,7 @@ class HeyloyaltyTestCommand extends Command
      *
      * Execute an data well search and output the result.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->hlService->addOption('TEST 42');
     }

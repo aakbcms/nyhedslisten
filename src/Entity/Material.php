@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass="App\Repository\MaterialRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class Material
+class Material implements \Stringable
 {
     /**
      * @ORM\Id()
@@ -129,9 +129,9 @@ class Material
         $this->categories = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->titleFull ?? '';
+        return (string) ($this->titleFull ?? '');
     }
 
     /**

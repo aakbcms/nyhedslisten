@@ -7,10 +7,6 @@ use App\Entity\Material;
 
 class HeyLoyaltyMaterial
 {
-    private int $sortKey;
-    private Category $category;
-    private Material $material;
-
     /**
      * HeyLoyaltyMaterial constructor.
      *
@@ -18,11 +14,8 @@ class HeyLoyaltyMaterial
      * @param Category $category
      * @param Material $material
      */
-    public function __construct(int $sortKey, Category $category, Material $material)
+    public function __construct(private int $sortKey, private Category $category, private Material $material)
     {
-        $this->sortKey = $sortKey;
-        $this->category = $category;
-        $this->material = $material;
     }
 
     public function getSortKey(): int
