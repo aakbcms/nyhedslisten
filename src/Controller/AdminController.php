@@ -6,11 +6,11 @@
 
 namespace App\Controller;
 
-use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
 use App\Entity\Category;
 use App\Entity\User;
 use App\Service\Heyloyalty\HeyloyaltyService;
 use App\Service\OpenPlatform\NewMaterialService;
+use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 use GuzzleHttp\Exception\GuzzleException;
