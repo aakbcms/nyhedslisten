@@ -29,7 +29,7 @@ class IdentifierType
      */
     public static function getTypeList(): array
     {
-        $oClass = new \ReflectionClass(__CLASS__);
+        $oClass = new \ReflectionClass(self::class);
 
         return $oClass->getConstants();
     }

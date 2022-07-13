@@ -73,7 +73,7 @@ class GetNewMaterialsCommand extends Command
         $date = new \DateTimeImmutable($dateConfig);
 
         $count = 1;
-        $total = \count($categories);
+        $total = is_countable($categories) ? \count($categories) : 0;
         foreach ($categories as $category) {
             if ($category) {
                 $results = $this->newMaterialService->updateNewMaterialsSinceDate($category, $date);

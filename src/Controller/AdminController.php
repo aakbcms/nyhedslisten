@@ -58,9 +58,7 @@ class AdminController extends EasyAdminController
      */
     public function queryBatchAction(array $ids): void
     {
-        $ids = array_map(static function ($id) {
-            return (int) $id;
-        }, $ids);
+        $ids = array_map(static fn($id) => (int) $id, $ids);
         $searches = $this->em->getRepository(Category::class)->findBy(['id' => $ids]);
 
         // @TODO Move time interval to config

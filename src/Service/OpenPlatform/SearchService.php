@@ -142,7 +142,7 @@ class SearchService
         ]);
 
         $content = $response->getBody()->getContents();
-        $json = json_decode($content, true);
+        $json = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
 
         if (isset($json['data']) && !empty($json['data'])) {
             ArrayMerge::mergeArraysByReference($results, $json['data']);

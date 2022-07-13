@@ -216,7 +216,7 @@ class FontMetrics
         $str = trim($str);
         $longestToken = $this->getLongest(explode(' ', $str));
 
-        $fontSize = round($this->baseFontFactor / pow(strlen($str), 0.465), 0);
+        $fontSize = round($this->baseFontFactor / strlen($str) ** 0.465, 0);
         $width = $this->maxWidthFromFontSize($fontSize);
 
         if (strlen($longestToken) > $width) {
@@ -237,7 +237,7 @@ class FontMetrics
         $str = trim($str);
         $longestToken = $this->getLongest(explode(' ', $str));
 
-        $fontSize = round(0.68 * $this->baseFontFactor / pow(strlen($str), 0.465), 0);
+        $fontSize = round(0.68 * $this->baseFontFactor / strlen($str) ** 0.465, 0);
 
         // Size of subtitle should never be more than 0.9 times the title size
         $fontSize = min($fontSize, $this->titleFontSize * 0.9);
@@ -260,7 +260,7 @@ class FontMetrics
         $items = preg_split('/,\s*/', $str);
         $longestToken = $this->getLongest($items);
 
-        $fontSize = round(0.45 * $this->baseFontFactor / pow(strlen($str), 0.33), 0);
+        $fontSize = round(0.45 * $this->baseFontFactor / strlen($str) ** 0.33, 0);
         $fontSize = min($fontSize, $this->maxFontSizeFromWidth(strlen($longestToken)));
 
         $str = trim(implode("\n", $items));

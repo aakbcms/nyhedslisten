@@ -61,9 +61,7 @@ class MaterialPersistService
         $existingMaterials = $this->getExistingMaterials($results);
 
         // Try to get covers for the materials.
-        $pids = array_map(function ($item) {
-            return $item['pid'][0];
-        }, $results);
+        $pids = array_map(fn($item) => $item['pid'][0], $results);
         $covers = $this->coverServiceService->getCovers($pids);
 
         foreach ($results as $result) {
@@ -98,9 +96,7 @@ class MaterialPersistService
      */
     private function getExistingMaterials(array $results): array
     {
-        $pidArray = array_map(static function ($result) {
-            return reset($result['pid']);
-        }, $results);
+        $pidArray = array_map(static fn($result) => reset($result['pid']), $results);
 
         return $this->entityManager->getRepository(Material::class)->findByPidList($pidArray);
     }

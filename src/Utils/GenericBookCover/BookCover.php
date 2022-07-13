@@ -63,14 +63,14 @@ class BookCover
     public function __construct()
     {
         $this->fontMetrics = new FontMetrics();
-        $this->baseCover = dirname(__FILE__).'/autocover5.png';
+        $this->baseCover = __DIR__.'/autocover5.png';
         $this->setTextColor('white');
         $this->setBackgroundColor('#c10001');
     }
 
     public function __get($key)
     {
-        return isset($this->$key) ? $this->$key : null;
+        return $this->$key ?? null;
     }
 
     public function __set($key, $value)
@@ -103,6 +103,7 @@ class BookCover
 
     public function randomizeBackgroundColor()
     {
+        $colors = [];
         $colors[0] = '#c10001';
         $colors[1] = '#fc331c';
         $colors[2] = '#ff8f00';
@@ -221,7 +222,7 @@ class BookCover
         }
 
         $draw = $this->getDraw();
-        list($fontSize, $text) = $this->fontMetrics->getFontDataForTitle($text, $this->pageWidth - $right - $left);
+        [$fontSize, $text] = $this->fontMetrics->getFontDataForTitle($text, $this->pageWidth - $right - $left);
         $draw->setFontSize($fontSize);
 
         $this->image->annotateImage($draw, $left, $top, 0, $text);
@@ -244,7 +245,7 @@ class BookCover
         }
 
         $draw = $this->getDraw();
-        list($fontSize, $text) = $this->fontMetrics->getFontDataForSubtitle($text, $this->pageWidth - $right - $left);
+        [$fontSize, $text] = $this->fontMetrics->getFontDataForSubtitle($text, $this->pageWidth - $right - $left);
         $draw->setFontSize($fontSize);
 
         $this->image->annotateImage($draw, $left, $top, 0, $text);
@@ -282,7 +283,7 @@ class BookCover
 
         $draw = $this->getDraw();
 
-        list($fontSize, $text) = $this->fontMetrics->getFontDataForCreators($text);
+        [$fontSize, $text] = $this->fontMetrics->getFontDataForCreators($text);
         $draw->setFontSize($fontSize);
 
         $margin = 50;
@@ -320,7 +321,7 @@ class BookCover
         $bottom = 20;
 
         $background = new \Imagick($this->baseCover);
-        list($width, $height) = array_values($background->getImageGeometry());
+        [$width, $height] = array_values($background->getImageGeometry());
         $this->pageWidth = $width;
         $this->pageHeight = $height;
 

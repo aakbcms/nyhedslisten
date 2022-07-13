@@ -22,7 +22,7 @@ class AuthenticationService
     // Used to give the token some grace-period so it will not expire will
     // being used. Currently the token is valid for 30 days. So we set the
     // limit to be 1 day, so it will be refresh before it expires.
-    const TOKEN_EXPIRE_LIMIT = 86400;
+    public const TOKEN_EXPIRE_LIMIT = 86400;
 
     private ParameterBagInterface $params;
     private AdapterInterface $cache;
@@ -134,7 +134,7 @@ class AuthenticationService
 
             // Get the content and parse json object as an array.
             $content = $response->getBody()->getContents();
-            $json = json_decode($content, true);
+            $json = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
 
             $this->statsLogger->info('Access token acquired', [
                 'service' => 'AuthenticationService',

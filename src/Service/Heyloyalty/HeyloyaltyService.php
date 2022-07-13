@@ -136,9 +136,7 @@ class HeyloyaltyService
     private function getListField(int $listId, int $fieldId)
     {
         $list = $this->getList($listId);
-        $field = array_filter($list['fields'], function ($val, $id) use ($fieldId) {
-            return $val['id'] == $fieldId;
-        }, ARRAY_FILTER_USE_BOTH);
+        $field = array_filter($list['fields'], fn($val, $id) => $val['id'] == $fieldId, ARRAY_FILTER_USE_BOTH);
 
         return is_array($field) ? reset($field) : null;
     }
@@ -184,7 +182,7 @@ class HeyloyaltyService
      */
     private function jsonDecode($string, $assoc = false)
     {
-        $json = json_decode($string, $assoc);
+        $json = json_decode($string, $assoc, 512, JSON_THROW_ON_ERROR);
         if (array_key_exists('error', $json)) {
             if ($assoc) {
                 $error = $json['error'];

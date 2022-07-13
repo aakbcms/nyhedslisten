@@ -251,9 +251,7 @@ class NewMaterialService
      */
     private function buildPidIncludeString(array $results): string
     {
-        $pidArray = array_map(static function ($element) {
-            return implode(' ', $element['pid']);
-        }, $results);
+        $pidArray = array_map(static fn($element) => implode(' ', $element['pid']), $results);
 
         return implode(' ', $pidArray);
     }
@@ -269,9 +267,7 @@ class NewMaterialService
      */
     private function buildExcludeSearchString(array $excluded): string
     {
-        $excluded = array_map(static function ($element) {
-            return sprintf('"%s"', $element);
-        }, $excluded);
+        $excluded = array_map(static fn($element) => sprintf('"%s"', $element), $excluded);
 
         return 'not '.implode(' not ', $excluded);
     }

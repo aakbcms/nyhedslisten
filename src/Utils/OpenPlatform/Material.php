@@ -164,9 +164,7 @@ class Material
      */
     public function getIdentifierByType(string $type): array
     {
-        return array_filter($this->identifiers, static function (MaterialIdentifier $identifier) use ($type) {
-            return $identifier->getType() === $type;
-        });
+        return array_filter($this->identifiers, static fn(MaterialIdentifier $identifier) => $identifier->getType() === $type);
     }
 
     /**

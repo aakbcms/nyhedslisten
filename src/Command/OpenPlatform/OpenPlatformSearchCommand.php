@@ -60,7 +60,7 @@ class OpenPlatformSearchCommand extends Command
         $is = $input->getArgument('is');
         $type = $input->getArgument('type');
 
-        $material = $this->searchService->searchByIdentifier($is, $type, $this->refresh);
+        $material = $this->searchService->searchByIdentifier($is, $type);
 
         $io = new SymfonyStyle($input, $output);
         $io->text(json_encode($material, JSON_PRETTY_PRINT));
