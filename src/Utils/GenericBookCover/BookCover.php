@@ -75,7 +75,7 @@ class BookCover
 
     public function __set($key, $value)
     {
-        $method = 'get'.ucfirst($key);
+        $method = 'get'.ucfirst((string) $key);
         if (method_exists($this, $method)) {
             $this->$method($value);
         }
@@ -198,7 +198,7 @@ class BookCover
     public function save($filename, $maxWidth = 0)
     {
         $fp = fopen($filename, 'w');
-        fwrite($fp, $this->getImageBlob($maxWidth));
+        fwrite($fp, (string) $this->getImageBlob($maxWidth));
         fclose($fp);
 
         return $this;

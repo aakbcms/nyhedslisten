@@ -31,7 +31,7 @@ class GetNewMaterialsCommand extends Command
      * @param ParameterBagInterface $parameterBag
      *   Application configuration
      */
-    public function __construct(private NewMaterialService $newMaterialService, private CategoryRepository $categoryRepository, private ParameterBagInterface $parameterBag)
+    public function __construct(private readonly NewMaterialService $newMaterialService, private readonly CategoryRepository $categoryRepository, private readonly ParameterBagInterface $parameterBag)
     {
         parent::__construct();
     }

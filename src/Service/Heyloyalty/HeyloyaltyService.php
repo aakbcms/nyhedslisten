@@ -16,14 +16,14 @@ class HeyloyaltyService
 {
     private HLClient $client;
 
-    public function __construct(private ParameterBagInterface $params)
+    public function __construct(private readonly ParameterBagInterface $params)
     {
     }
 
     /**
      * Remove option from list field.
      */
-    public function removeOption()
+    public function removeOption(): never
     {
         throw new \Exception('Not supported yet');
     }
@@ -180,7 +180,7 @@ class HeyloyaltyService
      */
     private function jsonDecode($string, $assoc = false)
     {
-        $json = json_decode($string, $assoc, 512, JSON_THROW_ON_ERROR);
+        $json = json_decode((string) $string, $assoc, 512, JSON_THROW_ON_ERROR);
         if (array_key_exists('error', $json)) {
             if ($assoc) {
                 $error = $json['error'];

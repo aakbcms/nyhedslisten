@@ -12,12 +12,12 @@ namespace App\Utils\Types;
 
 class IdentifierType
 {
-    public const PID = 'pid';
-    public const ISBN = 'isbn';
-    public const ISSN = 'issn';
-    public const ISMN = 'ismn';
-    public const ISRC = 'isrc';
-    public const FAUST = 'faust';
+    final public const PID = 'pid';
+    final public const ISBN = 'isbn';
+    final public const ISSN = 'issn';
+    final public const ISMN = 'ismn';
+    final public const ISRC = 'isrc';
+    final public const FAUST = 'faust';
 
     /**
      * Get array of all defined identifier types.

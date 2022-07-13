@@ -25,7 +25,7 @@ class FeedController extends AbstractController
      *
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(private EntityManagerInterface $entityManager)
+    public function __construct(private readonly EntityManagerInterface $entityManager)
     {
     }
 

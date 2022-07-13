@@ -23,10 +23,10 @@ class SearchService
 {
     private const SEARCH_LIMIT = 50;
 
-    private array $searchFields;
-    private string $searchURL;
+    private readonly array $searchFields;
+    private readonly string $searchURL;
 
-    private string $profile;
+    private readonly string $profile;
 
     /**
      * SearchService constructor.
@@ -38,7 +38,7 @@ class SearchService
      * @param ClientInterface $guzzleClient
      *   Guzzle Client
      */
-    public function __construct(ParameterBagInterface $params, private AuthenticationService $authenticationService, private ClientInterface $guzzleClient)
+    public function __construct(ParameterBagInterface $params, private readonly AuthenticationService $authenticationService, private readonly ClientInterface $guzzleClient)
     {
         $this->searchURL = $params->get('openPlatform.search.url');
         $this->searchFields = explode(',', $params->get('openPlatform.search.fields'));

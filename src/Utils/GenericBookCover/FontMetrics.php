@@ -186,7 +186,7 @@ class FontMetrics
     {
         $longestToken = '';
         foreach ($tokens as $token) {
-            $token = trim($token);
+            $token = trim((string) $token);
             if (strlen($token) > strlen($longestToken)) {
                 $longestToken = $token;
             }
@@ -213,14 +213,14 @@ class FontMetrics
 
     public function getFontDataForTitle($str, $pageWidth)
     {
-        $str = trim($str);
+        $str = trim((string) $str);
         $longestToken = $this->getLongest(explode(' ', $str));
 
         $fontSize = round($this->baseFontFactor / strlen($str) ** 0.465, 0);
         $width = $this->maxWidthFromFontSize($fontSize);
 
-        if (strlen($longestToken) > $width) {
-            $width = strlen($longestToken);
+        if (strlen((string) $longestToken) > $width) {
+            $width = strlen((string) $longestToken);
             $fontSize = min($fontSize, $this->maxFontSizeFromWidth($width));
         }
 
@@ -234,7 +234,7 @@ class FontMetrics
 
     public function getFontDataForSubtitle($str, $pageWidth)
     {
-        $str = trim($str);
+        $str = trim((string) $str);
         $longestToken = $this->getLongest(explode(' ', $str));
 
         $fontSize = round(0.68 * $this->baseFontFactor / strlen($str) ** 0.465, 0);
@@ -243,8 +243,8 @@ class FontMetrics
         $fontSize = min($fontSize, $this->titleFontSize * 0.9);
 
         $width = $this->maxWidthFromFontSize($fontSize);
-        if (strlen($longestToken) > $width) {
-            $width = strlen($longestToken);
+        if (strlen((string) $longestToken) > $width) {
+            $width = strlen((string) $longestToken);
             $fontSize = min($fontSize, $this->maxFontSizeFromWidth($width));
         }
 
@@ -256,12 +256,12 @@ class FontMetrics
 
     public function getFontDataForCreators($str)
     {
-        $str = trim($str);
+        $str = trim((string) $str);
         $items = preg_split('/,\s*/', $str);
         $longestToken = $this->getLongest($items);
 
         $fontSize = round(0.45 * $this->baseFontFactor / strlen($str) ** 0.33, 0);
-        $fontSize = min($fontSize, $this->maxFontSizeFromWidth(strlen($longestToken)));
+        $fontSize = min($fontSize, $this->maxFontSizeFromWidth(strlen((string) $longestToken)));
 
         $str = trim(implode("\n", $items));
 

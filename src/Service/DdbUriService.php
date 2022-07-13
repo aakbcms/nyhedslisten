@@ -21,7 +21,7 @@ class DdbUriService
      * @param string $basePath
      *   DDB CMS base URL from configuration
      */
-    public function __construct(private string $basePath)
+    public function __construct(private readonly string $basePath)
     {
     }
 

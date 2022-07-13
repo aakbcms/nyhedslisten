@@ -28,7 +28,7 @@ class CoverServiceService
      * @param string $bindCoverServiceGenerateDomain
      * @param string $bindProjectDir
      */
-    public function __construct(private AuthenticationService $authenticationService, private string $bindCoverServiceUrl, private string $bindCoverServiceDefaultUrl, private string $bindCoverServiceGenerateDomain, private string $bindProjectDir)
+    public function __construct(private readonly AuthenticationService $authenticationService, private readonly string $bindCoverServiceUrl, private readonly string $bindCoverServiceDefaultUrl, private readonly string $bindCoverServiceGenerateDomain, private readonly string $bindProjectDir)
     {
     }
 

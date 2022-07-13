@@ -24,7 +24,7 @@ class AuthenticationService
     // Used to give the token some grace-period so it will not expire will
     // being used. Currently the token is valid for 30 days. So we set the
     // limit to be 1 day, so it will be refresh before it expires.
-    public const TOKEN_EXPIRE_LIMIT = 86400;
+    final public const TOKEN_EXPIRE_LIMIT = 86400;
     private string $accessToken = '';
 
     /**
@@ -39,7 +39,7 @@ class AuthenticationService
      * @param ClientInterface $guzzleClient
      *  Guzzle Client
      */
-    public function __construct(private ParameterBagInterface $params, private CacheInterface $cache, private LoggerInterface $statsLogger, private ClientInterface $guzzleClient)
+    public function __construct(private readonly ParameterBagInterface $params, private readonly CacheInterface $cache, private readonly LoggerInterface $statsLogger, private readonly ClientInterface $guzzleClient)
     {
     }
 
