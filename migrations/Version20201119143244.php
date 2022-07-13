@@ -20,7 +20,7 @@ final class Version20201119143244 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP TABLE migration_versions');
+        $this->addSql('DROP TABLE  IF EXISTS migration_versions');
         $this->addSql('ALTER TABLE material ADD creator_aut VARCHAR(255) DEFAULT NULL, ADD creator_cre VARCHAR(255) DEFAULT NULL, ADD contributor VARCHAR(255) DEFAULT NULL, ADD contributor_act VARCHAR(255) DEFAULT NULL, ADD contributor_aut VARCHAR(255) DEFAULT NULL, ADD contributor_ctb VARCHAR(255) DEFAULT NULL, ADD contributor_dkfig VARCHAR(255) DEFAULT NULL, ADD type VARCHAR(255) DEFAULT NULL');
     }
 

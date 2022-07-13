@@ -55,6 +55,7 @@ class FeedController extends AbstractController
         // (Depends on feed never having more than 999999 items)
         $sortKey = 100000;
         $data = [];
+
         foreach ($categories as $category) {
             foreach ($category->getMaterials() as $material) {
                 $data[] = new HeyLoyaltyMaterial($sortKey, $category, $material);
