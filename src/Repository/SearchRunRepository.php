@@ -8,7 +8,7 @@ namespace App\Repository;
 
 use App\Entity\SearchRun;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Repository for SearchRun Entity.
