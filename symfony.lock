@@ -100,9 +100,6 @@
             "config/routes/easy_admin.yaml"
         ]
     },
-    "egulias/email-validator": {
-        "version": "2.1.23"
-    },
     "eightpoints/guzzle-bundle": {
         "version": "7.0",
         "recipe": {
@@ -343,18 +340,6 @@
     },
     "symfony/intl": {
         "version": "v4.4.16"
-    },
-    "symfony/mailer": {
-        "version": "6.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "4.3",
-            "ref": "97a61eabb351d7f6cb7702039bcfe07fe9d7e03c"
-        },
-        "files": [
-            "config/packages/mailer.yaml"
-        ]
     },
     "symfony/maker-bundle": {
         "version": "1.0",
