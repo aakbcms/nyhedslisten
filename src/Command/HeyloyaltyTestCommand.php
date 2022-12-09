@@ -19,8 +19,8 @@ class HeyloyaltyTestCommand extends Command
 {
     protected static $defaultName = 'app:heyloyalty:test';
 
-    private $parameterBag;
-    private $hlService;
+    private ParameterBagInterface $parameterBag;
+    private HeyloyaltyService $hlService;
 
     /**
      * HeyloyaltyCommand constructor.
@@ -46,7 +46,9 @@ class HeyloyaltyTestCommand extends Command
     /**
      * {@inheritdoc}
      *
-     * Execute an data well search and output the result.
+     * Execute a data well search and output the result.
+     *
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

@@ -10,8 +10,8 @@ namespace App\Utils\GenericBookCover;
 
 class FontMetrics
 {
-    protected $baseFontFactor = 205;
-    protected $titleFontSize = 0;
+    protected int $baseFontFactor = 205;
+    protected int $titleFontSize = 0;
 
     /**
      * Get the max number of characters that can be fitted in the width
@@ -21,7 +21,7 @@ class FontMetrics
      *
      * @return int
      */
-    public function maxWidthFromFontSize($x)
+    public function maxWidthFromFontSize($x): int
     {
         if ($x < 22) {
             return 37;
@@ -95,7 +95,7 @@ class FontMetrics
      *
      * @return int
      */
-    public function maxFontSizeFromWidth($x)
+    public function maxFontSizeFromWidth($x): int
     {
         if ($x < 7) {
             return 95;
@@ -182,7 +182,7 @@ class FontMetrics
         return 20;
     }
 
-    protected function getLongest($tokens)
+    protected function getLongest($tokens): string
     {
         $longestToken = '';
         foreach ($tokens as $token) {
@@ -195,6 +195,10 @@ class FontMetrics
         return $longestToken;
     }
 
+    /**
+     * @throws \ImagickException
+     * @throws \ImagickDrawException
+     */
     protected function optimizeFontSize($str, $fontSize, $pageWidth)
     {
         $im = new \Imagick();
@@ -211,7 +215,11 @@ class FontMetrics
         return $fontSize;
     }
 
-    public function getFontDataForTitle($str, $pageWidth)
+    /**
+     * @throws \ImagickException
+     * @throws \ImagickDrawException
+     */
+    public function getFontDataForTitle($str, $pageWidth): array
     {
         $str = trim($str);
         $longestToken = $this->getLongest(explode(' ', $str));
@@ -232,7 +240,11 @@ class FontMetrics
         return [$fontSize, $str];
     }
 
-    public function getFontDataForSubtitle($str, $pageWidth)
+    /**
+     * @throws \ImagickException
+     * @throws \ImagickDrawException
+     */
+    public function getFontDataForSubtitle($str, $pageWidth): array
     {
         $str = trim($str);
         $longestToken = $this->getLongest(explode(' ', $str));
@@ -254,7 +266,7 @@ class FontMetrics
         return [$fontSize, $str];
     }
 
-    public function getFontDataForCreators($str)
+    public function getFontDataForCreators($str): array
     {
         $str = trim($str);
         $items = preg_split('/,\s*/', $str);

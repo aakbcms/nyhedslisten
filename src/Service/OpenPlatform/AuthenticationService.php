@@ -19,16 +19,16 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  */
 class AuthenticationService
 {
-    // Used to give the token some grace-period so it will not expire will
-    // being used. Currently the token is valid for 30 days. So we set the
-    // limit to be 1 day, so it will be refresh before it expires.
+    // Used to give the token some grace-period, so it will not expire will
+    // being used. Currently, the token is valid for 30 days. So we set the
+    // limit to be 1 day, so it will be refreshed before it expires.
     const TOKEN_EXPIRE_LIMIT = 86400;
 
-    private $params;
-    private $cache;
-    private $statsLogger;
-    private $accessToken = '';
-    private $client;
+    private ParameterBagInterface $params;
+    private AdapterInterface $cache;
+    private LoggerInterface $statsLogger;
+    private string $accessToken = '';
+    private ClientInterface $client;
 
     /**
      * Authentication constructor.
@@ -66,7 +66,7 @@ class AuthenticationService
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getAccessToken($refresh = false)
+    public function getAccessToken(bool $refresh = false): string
     {
         if (empty($this->accessToken)) {
             $this->accessToken = $this->authenticate($refresh);
@@ -88,7 +88,7 @@ class AuthenticationService
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    private function authenticate($refresh = false)
+    private function authenticate(bool $refresh = false): string
     {
         // Try getting item from cache.
         $item = $this->cache->getItem('openplatform.access_token');

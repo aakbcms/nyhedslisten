@@ -19,8 +19,8 @@ class OpenPlatformAuthCommand extends Command
 {
     protected static $defaultName = 'app:openplatform:auth';
 
-    private $authentication;
-    private $refresh = false;
+    private AuthenticationService $authentication;
+    private bool $refresh = false;
 
     /**
      * OpenPlatformAuthCommand constructor.

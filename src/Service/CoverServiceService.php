@@ -19,12 +19,11 @@ use GuzzleHttp\Client;
  */
 class CoverServiceService
 {
-    private $authenticationService;
-    private $urlHelper;
-    private $bindCoverServiceUrl;
-    private $bindCoverServiceDefaultUrl;
-    private $bindCoverServiceGenerateDomain;
-    private $bindProjectDir;
+    private AuthenticationService $authenticationService;
+    private string $bindCoverServiceUrl;
+    private string $bindCoverServiceDefaultUrl;
+    private string $bindCoverServiceGenerateDomain;
+    private string $bindProjectDir;
 
     /**
      * CoverServiceService constructor.
@@ -119,7 +118,7 @@ class CoverServiceService
      *   The material to generate cover for
      *
      * @return string
-     *   URL to the cover. Will fallback to default cover if generation fails.
+     *   URL to the cover. Will fall back to default cover if generation fails.
      */
     public function getGenericCoverUrl(Material $material): string
     {

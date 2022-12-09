@@ -13,11 +13,11 @@ use App\Exception\MaterialTypeException;
  */
 class Material
 {
-    private $title = 'Unknown';
-    private $creator = 'Unknown';
-    private $date = 'Unknown';
-    private $publisher = 'Unknown';
-    private $identifiers = [];
+    private string $title = 'Unknown';
+    private string $creator = 'Unknown';
+    private string $date = 'Unknown';
+    private string $publisher = 'Unknown';
+    private array $identifiers = [];
 
     /**
      * Get string representation.

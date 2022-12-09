@@ -13,27 +13,27 @@ class BookCover
     /**
      * @var bool  Whether the ImageMagick image must be re-generated
      */
-    protected $dirty = true;
+    protected bool $dirty = true;
 
     /**
      * @var \Imagick  The current ImageMagick image object
      */
-    protected $image;
+    protected \Imagick $image;
 
     /**
      * @var int  Canvas width in pixels
      */
-    protected $pageWidth;
+    protected int $pageWidth;
 
     /**
      * @var int  Canvas height in pixels
      */
-    protected $pageHeight;
+    protected int $pageHeight;
 
     /**
      * @var FontMetrics
      */
-    protected $fontMetrics;
+    protected FontMetrics $fontMetrics;
 
     /*
     |--------------------------------------------------------------------------
@@ -41,12 +41,12 @@ class BookCover
     |--------------------------------------------------------------------------
     */
 
-    protected $creators = '';
-    protected $title = '';
-    protected $subtitle = '';
-    protected $edition = '';
-    protected $publisher = '';
-    protected $datePublished = '';
+    protected string $creators = '';
+    protected string $title = '';
+    protected string $subtitle = '';
+    protected string $edition = '';
+    protected string $publisher = '';
+    protected string $datePublished = '';
 
     /*
     |--------------------------------------------------------------------------
@@ -57,27 +57,27 @@ class BookCover
     /**
      * @var \ImagickPixel  Background color
      */
-    protected $backgroundColor;
+    protected \ImagickPixel $backgroundColor;
 
     /**
      * @var \ImagickPixel  Text color
      */
-    protected $textColor;
+    protected \ImagickPixel $textColor;
 
     /**
      * @var string  Font name
      */
-    protected $primaryFont = 'AvantGarde-Book';  // 'AvantGarde-Book'
+    protected string $primaryFont = 'AvantGarde-Book';  // 'AvantGarde-Book'
 
     /**
      * @var string  Font name
      */
-    protected $secondaryFont = 'Helvetica-Oblique';
+    protected string $secondaryFont = 'Helvetica-Oblique';
 
     /**
      * @var string  Base cover filename
      */
-    protected $baseCover;
+    protected string $baseCover;
 
     public function __construct()
     {
@@ -100,7 +100,7 @@ class BookCover
         }
     }
 
-    public function setTextColor($color)
+    public function setTextColor($color): BookCover
     {
         if (is_object($color) && $color instanceof \ImagickPixel) {
             $this->textColor = $color;
@@ -112,7 +112,7 @@ class BookCover
         return $this;
     }
 
-    public function setBackgroundColor($color)
+    public function setBackgroundColor($color): BookCover
     {
         $this->backgroundColor = new \ImagickPixel($color);
         $this->dirty = true;
@@ -120,7 +120,7 @@ class BookCover
         return $this;
     }
 
-    public function randomizeBackgroundColor()
+    public function randomizeBackgroundColor(): BookCover
     {
         $colors[0] = '#c10001';
         $colors[1] = '#fc331c';
@@ -143,7 +143,7 @@ class BookCover
         return $this;
     }
 
-    public function setTitle($title)
+    public function setTitle($title): BookCover
     {
         $this->title = $title;
         $this->dirty = true;
@@ -151,7 +151,7 @@ class BookCover
         return $this;
     }
 
-    public function setSubtitle($subtitle)
+    public function setSubtitle($subtitle): BookCover
     {
         $this->subtitle = $subtitle;
         $this->dirty = true;
@@ -159,7 +159,7 @@ class BookCover
         return $this;
     }
 
-    public function setEdition($edition)
+    public function setEdition($edition): BookCover
     {
         $this->edition = $edition;
         $this->dirty = true;
@@ -167,7 +167,7 @@ class BookCover
         return $this;
     }
 
-    public function setCreators($creators)
+    public function setCreators($creators): BookCover
     {
         $this->creators = $creators;
         $this->dirty = true;
@@ -175,7 +175,7 @@ class BookCover
         return $this;
     }
 
-    public function setPublisher($publisher)
+    public function setPublisher($publisher): BookCover
     {
         $this->publisher = $publisher;
         $this->dirty = true;
@@ -183,7 +183,7 @@ class BookCover
         return $this;
     }
 
-    public function setDatePublished($datePublished)
+    public function setDatePublished($datePublished): BookCover
     {
         $this->datePublished = $datePublished;
         $this->dirty = true;
@@ -191,7 +191,10 @@ class BookCover
         return $this;
     }
 
-    public function getImage($maxWidth = 0)
+    /**
+     * @throws \ImagickException
+     */
+    public function getImage($maxWidth = 0): \Imagick
     {
         if ($this->dirty) {
             $this->make();
@@ -204,7 +207,10 @@ class BookCover
         return $image;
     }
 
-    public function getImageBlob($maxWidth = 0)
+    /**
+     * @throws \ImagickException
+     */
+    public function getImageBlob($maxWidth = 0): string
     {
         if ($this->dirty) {
             $this->make();
@@ -213,7 +219,10 @@ class BookCover
         return $this->getImage($maxWidth)->getImageBlob();
     }
 
-    public function save($filename, $maxWidth = 0)
+    /**
+     * @throws \ImagickException
+     */
+    public function save($filename, $maxWidth = 0): BookCover
     {
         $fp = fopen($filename, 'w');
         fwrite($fp, $this->getImageBlob($maxWidth));
@@ -222,7 +231,11 @@ class BookCover
         return $this;
     }
 
-    protected function getDraw($gravity = null)
+    /**
+     * @throws \ImagickException
+     * @throws \ImagickDrawException
+     */
+    protected function getDraw($gravity = null): \ImagickDraw
     {
         $draw = new \ImagickDraw();
         $draw->setFillColor($this->textColor);
@@ -255,6 +268,10 @@ class BookCover
         return $metrics['textHeight'] - $metrics['descender'];
     }
 
+    /**
+     * @throws \ImagickException
+     * @throws \ImagickDrawException
+     */
     protected function drawSubtitle($top, $left, $right)
     {
         $text = mb_strtoupper($this->subtitle);
@@ -273,6 +290,10 @@ class BookCover
         return $metrics['textHeight'] - $metrics['descender'];
     }
 
+    /**
+     * @throws \ImagickException
+     * @throws \ImagickDrawException
+     */
     protected function drawEdition($top, $right)
     {
         $text = mb_strtoupper($this->edition);
@@ -292,6 +313,10 @@ class BookCover
         return $metrics['textHeight'] - $metrics['descender'];
     }
 
+    /**
+     * @throws \ImagickException
+     * @throws \ImagickDrawException
+     */
     protected function drawCreators($top, $left)
     {
         $text = $this->creators;
@@ -312,6 +337,10 @@ class BookCover
         return $metrics['textHeight'] - $metrics['descender'];
     }
 
+    /**
+     * @throws \ImagickException
+     * @throws \ImagickDrawException
+     */
     protected function drawPublisherDate($right, $bottom)
     {
         $text = $this->publisher.', '.$this->datePublished;
@@ -331,6 +360,10 @@ class BookCover
         return $textheight;
     }
 
+    /**
+     * @throws \ImagickDrawException
+     * @throws \ImagickException
+     */
     protected function make()
     {
         $left = 30;

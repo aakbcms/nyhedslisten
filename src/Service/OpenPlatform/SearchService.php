@@ -23,12 +23,11 @@ class SearchService
 {
     private const SEARCH_LIMIT = 50;
 
-    private $authenticationService;
-    private $client;
+    private AuthenticationService $authenticationService;
+    private ClientInterface $client;
 
     private $searchFields;
     private $searchURL;
-
     private $profile;
 
     /**
@@ -108,8 +107,8 @@ class SearchService
     /**
      * Recursive search until no more results exists for the query.
      *
-     * This is needed as the open platform allows an max limit of 50 elements, so
-     * if more results exists this calls it self to get all results.
+     * This is needed as the open platform allows a max limit of 50 elements, so
+     * if more results exists this calls itself to get all results.
      *
      * @param string $query
      *   The cql-query to execute against OpenPlatform

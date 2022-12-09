@@ -14,11 +14,11 @@ use App\Utils\Types\IdentifierType;
  */
 class MaterialIdentifier
 {
-    private $type;
-    private $id;
+    private string $type;
+    private string $id;
 
     // The valid IS types in the data well.
-    private $types = [];
+    private array $types = [];
 
     /**
      * MaterialIdentifier constructor.

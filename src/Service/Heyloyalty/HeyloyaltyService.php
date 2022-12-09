@@ -5,8 +5,6 @@ namespace App\Service\Heyloyalty;
 use Phpclient\HLClient;
 use Phpclient\HLLists;
 use Phpclient\V2\HLLists as HLListsV2;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
@@ -14,21 +12,18 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
  */
 class HeyloyaltyService
 {
-    private $params;
-    private $cache;
-    private $statsLogger;
+    private ParameterBagInterface $params;
+    private ?HLClient $client;
 
-    private $client;
-
-    public function __construct(ParameterBagInterface $params, AdapterInterface $cache, LoggerInterface $statsLogger)
+    public function __construct(ParameterBagInterface $params)
     {
         $this->params = $params;
-        $this->cache = $cache;
-        $this->statsLogger = $statsLogger;
     }
 
     /**
      * Remove option from list field.
+     *
+     * @throws \Exception
      */
     public function removeOption()
     {
@@ -53,7 +48,7 @@ class HeyloyaltyService
         $field = $this->getListField($listId, $this->params->get('heyloyalty.field.id'));
         $id = array_search($oldOption, $list['fields'][$field['name']]['options']);
 
-        if ($id == !false) {
+        if ($id) {
             $list['fields'][$field['name']]['options'] = [
                 [
                     'id' => $id,
@@ -187,7 +182,7 @@ class HeyloyaltyService
      * @throws \Exception
      *   If error is return from Heyloyalty
      */
-    private function jsonDecode($string, $assoc = false)
+    private function jsonDecode($string, bool $assoc = false)
     {
         $json = json_decode($string, $assoc);
         if (array_key_exists('error', $json)) {
@@ -209,9 +204,9 @@ class HeyloyaltyService
     /**
      * Get client to communicate with Heyloyalty.
      *
-     * @return \Phpclient\HLClient|null
+     * @return HLClient|null
      */
-    private function getClient()
+    private function getClient(): ?HLClient
     {
         if (is_null($this->client)) {
             $this->client = new HLClient($this->params->get('heyloyalty.apikey'), $this->params->get('heyloyalty.secret'));

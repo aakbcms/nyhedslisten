@@ -21,9 +21,9 @@ class GetNewMaterialsCommand extends Command
 {
     protected static $defaultName = 'app:materials:get-new';
 
-    private $newMaterialService;
-    private $categoryRepository;
-    private $parameterBag;
+    private NewMaterialService $newMaterialService;
+    private CategoryRepository $categoryRepository;
+    private ParameterBagInterface $parameterBag;
 
     /**
      * OpenPlatformQueryCommand constructor.
@@ -57,7 +57,9 @@ class GetNewMaterialsCommand extends Command
     /**
      * {@inheritdoc}
      *
-     * Execute an data well search and output the result.
+     * Execute a data well search and output the result.
+     *
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

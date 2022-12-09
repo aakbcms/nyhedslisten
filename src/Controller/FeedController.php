@@ -8,9 +8,7 @@ namespace App\Controller;
 
 use App\Dto\HeyLoyaltyMaterial;
 use App\Entity\Category;
-use App\Entity\Material;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,7 +20,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FeedController extends AbstractController
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     /**
      * FeedController constructor.
@@ -48,10 +46,10 @@ class FeedController extends AbstractController
         // HeyLoyalty doesn't support sorting on multiple values like SQL does
         // ( E.g "ORDER BY author ASC, year DESC"). HeyLoyalty only allows sorting on one
         // key in the json feed. "sortkey" is used in the HeyLoyalty setup to force HeyLoyalty
-        // to maintain the order the materiels have in the feed.
-        // However HeyLoyalty does "text" sort, not "numeric" sort, so "15" comes after "149"
+        // to maintain the order the materials have in the feed.
+        // However, HeyLoyalty does "text" sort, not "numeric" sort, so "15" comes after "149"
         // in their sorting. To guard against this we start the sortKey counter at 1000000
-        // to avoid leading zeros and to avoid sortkeys of different str length.
+        // to avoid leading zeros and to avoid sort-keys of different str length.
         // (Depends on feed never having more than 999999 items)
         $sortKey = 100000;
         $data = [];

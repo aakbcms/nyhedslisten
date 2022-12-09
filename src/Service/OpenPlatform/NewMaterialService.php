@@ -42,9 +42,9 @@ class NewMaterialService
 
     private const DATAWELL_DATE_FORMAT = 'Y-m-d\T00:00:00\Z';
 
-    private $searchService;
-    private $materialPersistService;
-    private $entityManager;
+    private SearchService $searchService;
+    private MaterialPersistService $materialPersistService;
+    private EntityManagerInterface $entityManager;
 
     private $agencyId;
     private $excludedBranches;

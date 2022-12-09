@@ -20,8 +20,8 @@ class OpenPlatformSearchCommand extends Command
 {
     protected static $defaultName = 'app:openplatform:search';
 
-    private $searchService;
-    private $refresh = false;
+    private SearchService $searchService;
+    private bool $refresh = false;
 
     /**
      * OpenPlatformSearchCommand constructor.
@@ -51,7 +51,7 @@ class OpenPlatformSearchCommand extends Command
     /**
      * {@inheritdoc}
      *
-     * Execute an data well search and output the result.
+     * Execute a data well search and output the result.
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
