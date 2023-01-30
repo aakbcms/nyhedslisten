@@ -22,6 +22,7 @@
         "symfony/flex": "^2.0",
         "symfony/framework-bundle": "6.1.*",
         "symfony/property-access": "6.1.*",
+        "symfony/runtime": "6.1.*",
         "symfony/serializer": "6.1.*",
         "symfony/twig-bundle": "6.1.*",
         "symfony/yaml": "6.1.*"
@@ -41,7 +42,8 @@
         },
         "sort-packages": true,
         "allow-plugins": {
-            "symfony/flex": true
+            "symfony/flex": true,
+            "symfony/runtime": true
         }
     },
     "autoload": {
