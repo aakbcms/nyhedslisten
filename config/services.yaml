@@ -29,7 +29,6 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
         bind:
-            $httpClient: '@eight_points_guzzle.client.guzzle_client'
             $basePath: '%env(DDBCMS_BASE_URL)%'
             $bindCoverServiceUrl: '%env(COVER_SERVICE_URL)%'
             $bindCoverServiceDefaultUrl: '%env(COVER_SERVICE_DEFAULT_URL)%'
