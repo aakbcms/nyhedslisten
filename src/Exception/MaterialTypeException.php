@@ -34,7 +34,7 @@ class MaterialTypeException extends \Exception
      *
      * @return string
      */
-    public function getMaterialType()
+    public function getMaterialType(): string
     {
         return $this->materialType;
     }
