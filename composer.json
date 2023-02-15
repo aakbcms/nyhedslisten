@@ -28,6 +28,7 @@
         "symfony/yaml": "^6.2"
     },
     "require-dev": {
+        "ergebnis/composer-normalize": "^2.29",
         "escapestudios/symfony2-coding-standard": "^3.9",
         "friendsofphp/php-cs-fixer": "^3.9",
         "friendsoftwig/twigcs": "^6.0",
@@ -43,7 +44,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "symfony/flex": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "ergebnis/composer-normalize": true
         }
     },
     "autoload": {
