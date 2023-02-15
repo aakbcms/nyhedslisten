@@ -1,6 +1,8 @@
 {
+    "name": "aakbcms/nyhedslisten",
+    "description": "Nyhedslisten application",
+    "license": "AGPL-3.0-only",
     "type": "project",
-    "license": "proprietary",
     "require": {
         "php": "^8.1",
         "ext-ctype": "*",
@@ -37,16 +39,16 @@
         "symfony/stopwatch": "^6.2",
         "symfony/web-profiler-bundle": "^6.2"
     },
-    "config": {
-        "preferred-install": {
-            "*": "dist"
-        },
-        "sort-packages": true,
-        "allow-plugins": {
-            "symfony/flex": true,
-            "symfony/runtime": true,
-            "ergebnis/composer-normalize": true
-        }
+    "replace": {
+        "paragonie/random_compat": "2.*",
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php56": "*",
+        "symfony/polyfill-php70": "*",
+        "symfony/polyfill-php71": "*"
+    },
+    "conflict": {
+        "symfony/symfony": "*"
     },
     "autoload": {
         "psr-4": {
@@ -58,30 +60,42 @@
             "App\\Tests\\": "tests/"
         }
     },
-    "replace": {
-        "paragonie/random_compat": "2.*",
-        "symfony/polyfill-ctype": "*",
-        "symfony/polyfill-iconv": "*",
-        "symfony/polyfill-php71": "*",
-        "symfony/polyfill-php70": "*",
-        "symfony/polyfill-php56": "*"
+    "config": {
+        "allow-plugins": {
+            "symfony/flex": true,
+            "symfony/runtime": true,
+            "ergebnis/composer-normalize": true
+        },
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "docker": true,
+            "require": "^6.2"
+        }
     },
     "scripts": {
-        "cs": "vendor/bin/phpcs",
-        "cbf": "vendor/bin/phpcbf",
-        "cs-fixer": "vendor/bin/php-cs-fixer fix -v --diff --dry-run",
-        "cs-fixer-fix": "vendor/bin/php-cs-fixer fix -v --diff",
-        "md": "vendor/bin/phpmd ./src/ text phpmd.xml.dist --suffixes php",
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        },
         "post-install-cmd": [
             "@auto-scripts"
         ],
         "post-update-cmd": [
             "@auto-scripts"
         ],
+        "apply-coding-standards/php-cs-fixer": [
+            "php-cs-fixer --config=.php_cs.dist fix"
+        ],
+        "apply-coding-standards/phpcs": [
+            "phpcbf --standard=phpcs.xml.dist"
+        ],
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "cbf": "vendor/bin/phpcbf",
         "check-coding-standards/php-cs-fixer": [
             "php-cs-fixer --config=.php_cs.dist fix --dry-run"
         ],
@@ -91,30 +105,18 @@
         "check-coding-standards/twigcs": [
             "twigcs lint templates"
         ],
+        "coding-standards-apply": [
+            "@apply-coding-standards/php-cs-fixer",
+            "@apply-coding-standards/phpcs"
+        ],
         "coding-standards-check": [
             "@check-coding-standards/php-cs-fixer",
             "@check-coding-standards/phpcs",
             "@check-coding-standards/twigcs"
         ],
-        "apply-coding-standards/php-cs-fixer": [
-            "php-cs-fixer --config=.php_cs.dist fix"
-        ],
-        "apply-coding-standards/phpcs": [
-            "phpcbf --standard=phpcs.xml.dist"
-        ],
-        "coding-standards-apply": [
-            "@apply-coding-standards/php-cs-fixer",
-            "@apply-coding-standards/phpcs"
-        ]
-    },
-    "conflict": {
-        "symfony/symfony": "*"
-    },
-    "extra": {
-        "symfony": {
-            "allow-contrib": false,
-            "require": "^6.2",
-            "docker": true
-        }
+        "cs": "vendor/bin/phpcs",
+        "cs-fixer": "vendor/bin/php-cs-fixer fix -v --diff --dry-run",
+        "cs-fixer-fix": "vendor/bin/php-cs-fixer fix -v --diff",
+        "md": "vendor/bin/phpmd ./src/ text phpmd.xml.dist --suffixes php"
     }
 }
