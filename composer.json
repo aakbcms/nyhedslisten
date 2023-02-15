@@ -90,20 +90,20 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "coding-standards-apply": [
-            "@apply-coding-standards/php-cs-fixer"
+            "coding-standards-apply/php-cs-fixer"
         ],
         "coding-standards-apply/php-cs-fixer": [
-            "php-cs-fixer --config=.php_cs.dist fix"
+            "vendor/bin/php-cs-fixer fix"
         ],
         "coding-standards-check": [
             "@coding-standards-check/php-cs-fixer",
-            "@coding-standards-check//twigcs"
+            "@coding-standards-check/twigcs"
         ],
         "coding-standards-check/php-cs-fixer": [
-            "php-cs-fixer --config=.php_cs.dist fix --dry-run"
+            "vendor/bin/php-cs-fixer fix --dry-run"
         ],
         "coding-standards-check/twigcs": [
-            "twigcs lint templates"
+            "vendor/bin/twigcs templates"
         ]
     }
 }
