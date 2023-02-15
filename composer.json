@@ -85,38 +85,25 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "apply-coding-standards/php-cs-fixer": [
-            "php-cs-fixer --config=.php_cs.dist fix"
-        ],
-        "apply-coding-standards/phpcs": [
-            "phpcbf --standard=phpcs.xml.dist"
-        ],
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
-        "cbf": "vendor/bin/phpcbf",
-        "check-coding-standards/php-cs-fixer": [
-            "php-cs-fixer --config=.php_cs.dist fix --dry-run"
-        ],
-        "check-coding-standards/phpcs": [
-            "phpcs --standard=phpcs.xml.dist"
-        ],
-        "check-coding-standards/twigcs": [
-            "twigcs lint templates"
-        ],
         "coding-standards-apply": [
-            "@apply-coding-standards/php-cs-fixer",
-            "@apply-coding-standards/phpcs"
+            "@apply-coding-standards/php-cs-fixer"
+        ],
+        "coding-standards-apply/php-cs-fixer": [
+            "php-cs-fixer --config=.php_cs.dist fix"
         ],
         "coding-standards-check": [
-            "@check-coding-standards/php-cs-fixer",
-            "@check-coding-standards/phpcs",
-            "@check-coding-standards/twigcs"
+            "@coding-standards-check/php-cs-fixer",
+            "@coding-standards-check//twigcs"
         ],
-        "cs": "vendor/bin/phpcs",
-        "cs-fixer": "vendor/bin/php-cs-fixer fix -v --diff --dry-run",
-        "cs-fixer-fix": "vendor/bin/php-cs-fixer fix -v --diff",
-        "md": "vendor/bin/phpmd ./src/ text phpmd.xml.dist --suffixes php"
+        "coding-standards-check/php-cs-fixer": [
+            "php-cs-fixer --config=.php_cs.dist fix --dry-run"
+        ],
+        "coding-standards-check/twigcs": [
+            "twigcs lint templates"
+        ]
     }
 }
