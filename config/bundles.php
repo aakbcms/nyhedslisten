@@ -12,4 +12,8 @@ return [
     Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
     Rollerworks\Bundle\PasswordStrengthBundle\RollerworksPasswordStrengthBundle::class => ['all' => true],
     Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
+<<<<<<< HEAD
+=======
+    FOS\UserBundle\FOSUserBundle::class => ['all' => true],
+>>>>>>> a609d55 (AAKBET-853: Resolved merge conflicts)
 ];
