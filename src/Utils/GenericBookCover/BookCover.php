@@ -11,28 +11,25 @@ namespace App\Utils\GenericBookCover;
 class BookCover
 {
     /**
-     * @var bool  Whether the ImageMagick image must be re-generated
+     * @var bool Whether the ImageMagick image must be re-generated
      */
     protected bool $dirty = true;
 
     /**
-     * @var \Imagick  The current ImageMagick image object
+     * @var \Imagick The current ImageMagick image object
      */
     protected \Imagick $image;
 
     /**
-     * @var int  Canvas width in pixels
+     * @var int Canvas width in pixels
      */
     protected int $pageWidth;
 
     /**
-     * @var int  Canvas height in pixels
+     * @var int Canvas height in pixels
      */
     protected int $pageHeight;
 
-    /**
-     * @var FontMetrics
-     */
     protected FontMetrics $fontMetrics;
 
     /*
@@ -307,7 +304,7 @@ class BookCover
         $draw->setFontSize(16);
         $metrics = $this->image->queryFontMetrics($draw, $text);
         $textheight = $metrics['textHeight'] - $metrics['descender'];
-        //$image->annotateImage($draw, $right, $bottom, 0,$this->publisher.", ".$year." ".$color);
+        // $image->annotateImage($draw, $right, $bottom, 0,$this->publisher.", ".$year." ".$color);
         $this->image->annotateImage($draw, $right, $bottom, 0, $text);
 
         return $textheight;
@@ -327,7 +324,7 @@ class BookCover
 
         $this->image = new \Imagick();
         $this->image->newImage($width, $height, $this->backgroundColor);
-        $this->image->compositeImage($background, \imagick::COMPOSITE_OVER, 0, 0);
+        $this->image->compositeImage($background, \Imagick::COMPOSITE_OVER, 0, 0);
 
         $top += $this->drawTitle($top, $left, $right);
         $top += $this->drawSubtitle($top, $left, $right);

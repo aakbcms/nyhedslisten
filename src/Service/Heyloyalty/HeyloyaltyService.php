@@ -5,8 +5,6 @@ namespace App\Service\Heyloyalty;
 use Phpclient\HLClient;
 use Phpclient\HLLists;
 use Phpclient\V2\HLLists as HLListsV2;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
@@ -32,9 +30,9 @@ class HeyloyaltyService
      * Update option/value to the list.
      *
      * @param string $oldOption
-     *   Option to update
+     *                          Option to update
      * @param string $newOption
-     *   New option
+     *                          New option
      *
      * @throws \Exception
      */
@@ -46,7 +44,7 @@ class HeyloyaltyService
         $field = $this->getListField($listId, $this->params->get('heyloyalty.field.id'));
         $id = array_search($oldOption, $list['fields'][$field['name']]['options']);
 
-        if ($id !== false) {
+        if (false !== $id) {
             $list['fields'][$field['name']]['options'] = [
                 [
                     'id' => $id,
@@ -72,7 +70,7 @@ class HeyloyaltyService
      * Add option/value to the list.
      *
      * @param string $option
-     *   Option to add
+     *                       Option to add
      *
      * @throws \Exception
      */
@@ -103,7 +101,7 @@ class HeyloyaltyService
      * Updated list.
      *
      * @param int $listId
-     *   List ID
+     *                    List ID
      * @param $params
      *  Stuff to patch
      *
@@ -123,9 +121,9 @@ class HeyloyaltyService
      * Get list field.
      *
      * @param int $listId
-     *   List ID
+     *                     List ID
      * @param int $fieldId
-     *   Field ID
+     *                     Field ID
      *
      * @return mixed|null
      *
@@ -134,7 +132,7 @@ class HeyloyaltyService
     private function getListField(int $listId, int $fieldId)
     {
         $list = $this->getList($listId);
-        $field = array_filter($list['fields'], fn($val, $id) => $val['id'] == $fieldId, ARRAY_FILTER_USE_BOTH);
+        $field = array_filter($list['fields'], fn ($val, $id) => $val['id'] == $fieldId, ARRAY_FILTER_USE_BOTH);
 
         return is_array($field) ? reset($field) : null;
     }
@@ -146,10 +144,10 @@ class HeyloyaltyService
      *   ID of the list to get
      *
      * @return mixed|null
-     *   The list object
+     *                    The list object
      *
      * @throws \Exception
-     *   If error is return from Heyloyalty
+     *                    If error is return from Heyloyalty
      */
     private function getList(int $listId)
     {
@@ -169,14 +167,14 @@ class HeyloyaltyService
      * @param $string
      *   JSON encoded string
      * @param bool $assoc
-     *   IF TRUE, returned objects will be converted into associative arrays.
-     *   Default FALSE.
+     *                    IF TRUE, returned objects will be converted into associative arrays.
+     *                    Default FALSE.
      *
      * @return mixed
-     *   Decoded result
+     *               Decoded result
      *
      * @throws \Exception
-     *   If error is return from Heyloyalty
+     *                    If error is return from Heyloyalty
      */
     private function jsonDecode($string, $assoc = false)
     {

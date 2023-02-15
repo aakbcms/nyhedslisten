@@ -21,8 +21,6 @@ class Material implements \Stringable
 
     /**
      * Get string representation.
-     *
-     * @return string
      */
     public function __toString(): string
     {
@@ -144,25 +142,25 @@ class Material implements \Stringable
      * Get material identifier base on type.
      *
      * @param string $type
-     *   The type of id (ISBN, ISSN, ISMN, ISRC, PID)
+     *                     The type of id (ISBN, ISSN, ISMN, ISRC, PID)
      *
      * @return MaterialIdentifier[]
      */
     public function getIdentifierByType(string $type): array
     {
-        return array_filter($this->identifiers, static fn(MaterialIdentifier $identifier) => $identifier->getType() === $type);
+        return array_filter($this->identifiers, static fn (MaterialIdentifier $identifier) => $identifier->getType() === $type);
     }
 
     /**
      * Check if identifier exists for this material.
      *
      * @param string $type
-     *   The type of id (ISBN, ISSN, ISMN, ISRC, PID)
+     *                           The type of id (ISBN, ISSN, ISMN, ISRC, PID)
      * @param string $identifier
-     *   The identifier to check for
+     *                           The identifier to check for
      *
      * @return bool
-     *   TRUE if it exists else FALSE
+     *              TRUE if it exists else FALSE
      */
     public function hasIdentifier(string $type, string $identifier): bool
     {
@@ -194,9 +192,9 @@ class Material implements \Stringable
      * Add single identifier.
      *
      * @param string $type
-     *   The identifier type (ISBN, ISSN, ISMN, ISRC, PID)
+     *                     The identifier type (ISBN, ISSN, ISMN, ISRC, PID)
      * @param string $id
-     *  The identifier
+     *                     The identifier
      *
      * @return $this
      *
@@ -216,7 +214,7 @@ class Material implements \Stringable
      * Check if this was a zero-hit-object.
      *
      * @return bool
-     *  TRUE if no identifiers was found else FALSE
+     *              TRUE if no identifiers was found else FALSE
      */
     public function isEmpty(): bool
     {

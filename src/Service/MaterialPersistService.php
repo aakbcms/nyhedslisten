@@ -10,7 +10,6 @@ namespace App\Service;
 use App\Entity\Category;
 use App\Entity\Material;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -27,10 +26,6 @@ class MaterialPersistService
 
     /**
      * MaterialPersistService constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param DdbUriService $ddbUriService
-     * @param CoverServiceService $coverServiceService
      */
     public function __construct(private readonly EntityManagerInterface $entityManager, private readonly DdbUriService $ddbUriService, private readonly CoverServiceService $coverServiceService)
     {
@@ -40,21 +35,21 @@ class MaterialPersistService
     /**
      * Save result set either updating existing Material or persisting new Materials.
      *
-     * @param array $results
-     *   Array of Materials to save
+     * @param array    $results
+     *                           Array of Materials to save
      * @param Category $category
-     *   The Search that generated the result set
+     *                           The Search that generated the result set
      *
      * @throws GuzzleException
      * @throws InvalidArgumentException
-     * @throws Exception
+     * @throws \Exception
      */
     public function saveResults(array $results, Category $category): void
     {
         $existingMaterials = $this->getExistingMaterials($results);
 
         // Try to get covers for the materials.
-        $pids = array_map(fn($item) => $item['pid'][0], $results);
+        $pids = array_map(fn ($item) => $item['pid'][0], $results);
         $covers = $this->coverServiceService->getCovers($pids);
 
         foreach ($results as $result) {
@@ -82,14 +77,14 @@ class MaterialPersistService
      * Search for the Materials in $results that already exist in the database.
      *
      * @param array $results
-     *   The Materials to check for existing Materials for
+     *                       The Materials to check for existing Materials for
      *
      * @return Material[]
-     *   Array of material entities
+     *                    Array of material entities
      */
     private function getExistingMaterials(array $results): array
     {
-        $pidArray = array_map(static fn($result) => reset($result['pid']), $results);
+        $pidArray = array_map(static fn ($result) => reset($result['pid']), $results);
 
         return $this->entityManager->getRepository(Material::class)->findByPidList($pidArray);
     }
@@ -98,11 +93,11 @@ class MaterialPersistService
      * Parse the search result from the data well.
      *
      * @param Material $material
-     *   The material to parse the results to
-     * @param array $result
-     *   The results from the data well
+     *                           The material to parse the results to
+     * @param array    $result
+     *                           The results from the data well
      *
-     * @throws Exception
+     * @throws \Exception
      */
     private function parseResultItem(Material $material, array $result): void
     {
@@ -128,11 +123,11 @@ class MaterialPersistService
      * Set value for field.
      *
      * @param Material $material
-     *   The material to set value on
-     * @param string $key
-     *   The field to set on the Material
-     * @param array $items
-     *   Array of open platform 'items' to set as value
+     *                           The material to set value on
+     * @param string   $key
+     *                           The field to set on the Material
+     * @param array    $items
+     *                           Array of open platform 'items' to set as value
      */
     private function setValue(Material $material, string $key, array $items): void
     {

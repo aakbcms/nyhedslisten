@@ -17,8 +17,6 @@ class SearchRunRepository extends ServiceEntityRepository
 {
     /**
      * SearchRunRepository constructor.
-     *
-     * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {

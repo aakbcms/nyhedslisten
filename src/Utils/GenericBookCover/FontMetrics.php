@@ -16,10 +16,6 @@ class FontMetrics
     /**
      * Get the max number of characters that can be fitted in the width
      * for a given font size before wrapping is needed.
-     *
-     * @param $x
-     *
-     * @return int
      */
     public function maxWidthFromFontSize($x): int
     {
@@ -90,10 +86,6 @@ class FontMetrics
     /**
      * Get the maximum font size that can be used if a given number of characters
      * need to be fitted in the width.
-     *
-     * @param $x
-     *
-     * @return int
      */
     public function maxFontSizeFromWidth($x): int
     {

@@ -23,9 +23,9 @@ class MaterialIdentifier
      * MaterialIdentifier constructor.
      *
      * @param string $type
-     *   The material type
+     *                     The material type
      * @param string $id
-     *   The identifier for this material
+     *                     The identifier for this material
      *
      * @throws MaterialTypeException
      * @throws \ReflectionException

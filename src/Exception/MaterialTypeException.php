@@ -6,8 +6,6 @@
 
 namespace App\Exception;
 
-use Throwable;
-
 /**
  * Class MaterialTypeException.
  */
@@ -16,7 +14,7 @@ class MaterialTypeException extends \Exception
     /**
      * MaterialTypeException constructor.
      */
-    public function __construct(string $message = '', int $code = 0, Throwable $previous = null, private $materialType = 'Unknown')
+    public function __construct(string $message = '', int $code = 0, \Throwable $previous = null, private $materialType = 'Unknown')
     {
         parent::__construct($message, $code, $previous);
     }
@@ -31,8 +29,6 @@ class MaterialTypeException extends \Exception
 
     /**
      * Get the type of material.
-     *
-     * @return string
      */
     public function getMaterialType(): string
     {

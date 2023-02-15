@@ -7,7 +7,6 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
-use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -119,8 +118,6 @@ class Category implements \Stringable
 
     /**
      * Add search run.
-     *
-     *
      */
     public function addSearchRun(SearchRun $searchRun): self
     {
@@ -134,8 +131,6 @@ class Category implements \Stringable
 
     /**
      * Remove search run.
-     *
-     *
      */
     public function removeSearchRun(SearchRun $searchRun): self
     {
@@ -153,7 +148,7 @@ class Category implements \Stringable
     /**
      * Get the datetime of the latest search run.
      */
-    public function getLastSearchRunAt(): ?DateTimeInterface
+    public function getLastSearchRunAt(): ?\DateTimeInterface
     {
         $searchRun = $this->searchRuns->first();
 

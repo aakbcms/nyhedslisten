@@ -9,10 +9,6 @@ class HeyLoyaltyMaterial
 {
     /**
      * HeyLoyaltyMaterial constructor.
-     *
-     * @param int $sortKey
-     * @param Category $category
-     * @param Material $material
      */
     public function __construct(private readonly int $sortKey, private readonly Category $category, private readonly Material $material)
     {

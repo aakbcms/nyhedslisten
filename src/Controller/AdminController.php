@@ -10,7 +10,6 @@ use App\Entity\Category;
 use App\Entity\User;
 use App\Service\Heyloyalty\HeyloyaltyService;
 use App\Service\OpenPlatform\NewMaterialService;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\EasyAdminController;
 use FOS\UserBundle\Model\UserInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 use GuzzleHttp\Exception\GuzzleException;
@@ -29,11 +28,11 @@ class AdminController
      * AdminController constructor.
      *
      * @param UserManagerInterface $userManager
-     *   The FOS user manager
-     * @param NewMaterialService $newMaterialService
-     *   The service to query for new materials
-     * @param heyloyaltyService $heyloyaltyService
-     *   Integration with HL
+     *                                                 The FOS user manager
+     * @param NewMaterialService   $newMaterialService
+     *                                                 The service to query for new materials
+     * @param heyloyaltyService    $heyloyaltyService
+     *                                                 Integration with HL
      */
     public function __construct(private NewMaterialService $newMaterialService, private HeyloyaltyService $heyloyaltyService)
     {
@@ -43,15 +42,15 @@ class AdminController
      * Custom batch action to update materials for Searches.
      *
      * @param array $ids
-     *   The ids of the entities selected in the UI
+     *                   The ids of the entities selected in the UI
      *
      * @throws GuzzleException
-     *   If the Search query is malformed or the Open Search calls fails
+     *                                  If the Search query is malformed or the Open Search calls fails
      * @throws InvalidArgumentException
      */
     public function queryBatchAction(array $ids): void
     {
-        $ids = array_map(static fn($id) => (int) $id, $ids);
+        $ids = array_map(static fn ($id) => (int) $id, $ids);
         $searches = $this->em->getRepository(Category::class)->findBy(['id' => $ids]);
 
         // @TODO Move time interval to config
@@ -75,9 +74,8 @@ class AdminController
     /**
      * Custom action to test CQL Query.
      *
-     *
      * @throws GuzzleException
-     *   If the Search query is malformed or the Open Search calls fails
+     *                                  If the Search query is malformed or the Open Search calls fails
      * @throws InvalidArgumentException
      */
     public function queryAction(): Response
@@ -119,8 +117,6 @@ class AdminController
      * Create new User entity.
      *
      * EasyAdmin custom action to integrate FOSUserBundle and EasyAdminBundle
-     *
-     * @return UserInterface
      */
     public function createNewUserEntity(): UserInterface
     {
@@ -131,8 +127,6 @@ class AdminController
      * Persist User entity.
      *
      * EasyAdmin custom action to integrate FOSUserBundle and EasyAdminBundle
-     *
-     * @param User $user
      */
     public function persistUserEntity(User $user): void
     {
@@ -143,24 +137,16 @@ class AdminController
      * Update User entity.
      *
      * EasyAdmin custom action to integrate FOSUserBundle and EasyAdminBundle
-     *
-     * @param User $user
      */
     public function updateUserEntity(User $user): void
     {
         $this->userManager->updateUser($user, false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function removeEntity($entity)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function updateCategoryEntity($entity)
     {
         $uof = $this->em->getUnitOfWork();
@@ -175,9 +161,6 @@ class AdminController
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function persistCategoryEntity($entity)
     {
         $this->heyloyaltyService->addOption($entity->getName());

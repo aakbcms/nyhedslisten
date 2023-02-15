@@ -24,12 +24,12 @@ class GetNewMaterialsCommand extends Command
     /**
      * OpenPlatformQueryCommand constructor.
      *
-     * @param NewMaterialService $newMaterialService
-     *   Service to query for new materials
-     * @param CategoryRepository $categoryRepository
-     *   Search entity repository
+     * @param NewMaterialService    $newMaterialService
+     *                                                  Service to query for new materials
+     * @param CategoryRepository    $categoryRepository
+     *                                                  Search entity repository
      * @param ParameterBagInterface $parameterBag
-     *   Application configuration
+     *                                                  Application configuration
      */
     public function __construct(private readonly NewMaterialService $newMaterialService, private readonly CategoryRepository $categoryRepository, private readonly ParameterBagInterface $parameterBag)
     {

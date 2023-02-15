@@ -7,7 +7,6 @@
 namespace App\Entity;
 
 use App\Repository\SearchRunRepository;
-use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SearchRunRepository::class)]
@@ -32,9 +31,8 @@ class SearchRun
         #[ORM\JoinColumn(nullable: false)]
         private readonly Category $category,
         #[ORM\Column(type: 'datetime')]
-        private readonly DateTimeImmutable $runAt
-    )
-    {
+        private readonly \DateTimeImmutable $runAt
+    ) {
     }
 
     public function getId(): ?int

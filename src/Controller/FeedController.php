@@ -22,8 +22,6 @@ class FeedController extends AbstractController
 {
     /**
      * FeedController constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(private readonly EntityManagerInterface $entityManager)
     {
@@ -33,7 +31,7 @@ class FeedController extends AbstractController
      * HeyLoyalty feed: Get materials from last 7 days ordered by category, search, creator.
      */
     #[Route(path: '/feed/heyloyalty', name: 'feed_heyloyalty', methods: ['GET', 'HEAD'])]
-    public function heyLoyalty() : JsonResponse
+    public function heyLoyalty(): JsonResponse
     {
         $date = new \DateTimeImmutable('7 days ago');
         $categories = $this->entityManager->getRepository(Category::class)->findByMaterialDate($date);
@@ -54,6 +52,7 @@ class FeedController extends AbstractController
                 ++$sortKey;
             }
         }
+
         return $this->json($data, 200, []);
     }
 }

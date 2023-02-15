@@ -31,13 +31,13 @@ class AuthenticationService
      * Authentication constructor.
      *
      * @param parameterBagInterface $params
-     *   Used to get parameters form the environment
-     * @param adapterInterface $cache
-     *   Cache to store access token
-     * @param loggerInterface $statsLogger
-     *   Logger object to send stats to ES
-     * @param ClientInterface $guzzleClient
-     *  Guzzle Client
+     *                                            Used to get parameters form the environment
+     * @param adapterInterface      $cache
+     *                                            Cache to store access token
+     * @param loggerInterface       $statsLogger
+     *                                            Logger object to send stats to ES
+     * @param ClientInterface       $guzzleClient
+     *                                            Guzzle Client
      */
     public function __construct(private readonly ParameterBagInterface $params, private readonly CacheInterface $cache, private readonly LoggerInterface $statsLogger, private readonly ClientInterface $guzzleClient)
     {
@@ -50,10 +50,10 @@ class AuthenticationService
      * be executed.
      *
      * @param bool $refresh
-     *   If TRUE refresh token. Default: FALSE.
+     *                      If TRUE refresh token. Default: FALSE.
      *
      * @return string
-     *   The access token
+     *                The access token
      *
      * @throws PlatformAuthException
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -72,10 +72,10 @@ class AuthenticationService
      * Authenticate against open platform.
      *
      * @param bool $refresh
-     *   If TRUE refresh token. Default: FALSE.
+     *                      If TRUE refresh token. Default: FALSE.
      *
      * @return string
-     *   The token if successful else the empty string,
+     *                The token if successful else the empty string,
      *
      * @throws PlatformAuthException
      * @throws \GuzzleHttp\Exception\GuzzleException

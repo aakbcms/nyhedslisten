@@ -19,7 +19,7 @@ class DdbUriService
      * DdbUriService constructor.
      *
      * @param string $basePath
-     *   DDB CMS base URL from configuration
+     *                         DDB CMS base URL from configuration
      */
     public function __construct(private readonly string $basePath)
     {
@@ -29,10 +29,10 @@ class DdbUriService
      * Get generated URL for a given PID.
      *
      * @param string $pid
-     *   Data well post id
+     *                    Data well post id
      *
      * @return string
-     *   The generated URL
+     *                The generated URL
      */
     public function getUri(string $pid): string
     {

@@ -32,11 +32,11 @@ class SearchService
      * SearchService constructor.
      *
      * @param parameterBagInterface $params
-     *   Access to environment variables
+     *                                                     Access to environment variables
      * @param authenticationService $authenticationService
-     *   The Open Platform authentication service
-     * @param ClientInterface $guzzleClient
-     *   Guzzle Client
+     *                                                     The Open Platform authentication service
+     * @param ClientInterface       $guzzleClient
+     *                                                     Guzzle Client
      */
     public function __construct(ParameterBagInterface $params, private readonly AuthenticationService $authenticationService, private readonly ClientInterface $guzzleClient)
     {
@@ -50,10 +50,10 @@ class SearchService
      * Query the data well through the open platform.
      *
      * @param string $query
-     *   The CQL query to perform
+     *                      The CQL query to perform
      *
      * @return array
-     *   The results returned
+     *               The results returned
      *
      * @throws GuzzleException
      * @throws InvalidArgumentException
@@ -66,8 +66,6 @@ class SearchService
 
     /**
      * Search by identifier of type.
-     *
-     *
      *
      * @throws GuzzleException
      * @throws InvalidArgumentException
@@ -92,14 +90,14 @@ class SearchService
      * if more results exists this calls it self to get all results.
      *
      * @param string $query
-     *   The cql-query to execute against OpenPlatform
-     * @param int $offset
-     *   The offset to start getting results
-     * @param array $results
-     *   The current results array
+     *                        The cql-query to execute against OpenPlatform
+     * @param int    $offset
+     *                        The offset to start getting results
+     * @param array  $results
+     *                        The current results array
      *
      * @return array
-     *   The results currently found. If recursion is completed all the results
+     *               The results currently found. If recursion is completed all the results
      *
      * @throws GuzzleException
      * @throws PlatformAuthException
