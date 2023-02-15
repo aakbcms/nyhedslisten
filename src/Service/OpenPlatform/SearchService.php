@@ -75,23 +75,12 @@ class SearchService
      */
     public function searchByIdentifier(string $identifier, string $type): array
     {
-        switch ($type) {
-            case IdentifierType::PID:
-                // If this is a search after a pid simply search for it and not in the search index.
-                $query = 'rec.id='.$identifier;
-                break;
-
-            case IdentifierType::ISBN:
-                $query = 'term.isbn='.$identifier;
-                break;
-
-            case IdentifierType::FAUST:
-                $query = 'dkcclterm.is='.$identifier;
-                break;
-
-            default:
-                throw new \InvalidArgumentException('Unknown identifier type: '.$type);
-        }
+        $query = match ($type) {
+            IdentifierType::PID => 'rec.id='.$identifier,
+            IdentifierType::ISBN => 'term.isbn='.$identifier,
+            IdentifierType::FAUST => 'dkcclterm.is='.$identifier,
+            default => throw new \InvalidArgumentException('Unknown identifier type: '.$type),
+        };
 
         return $this->query($query);
     }

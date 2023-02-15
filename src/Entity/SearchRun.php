@@ -6,47 +6,33 @@
 
 namespace App\Entity;
 
+use App\Repository\SearchRunRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\SearchRunRepository")
- */
+#[ORM\Entity(repositoryClass: SearchRunRepository::class)]
 class SearchRun
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isSuccess;
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $isSuccess = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $errorMessage;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $errorMessage = null;
 
     /**
      * SearchRun constructor.
-     *
-     * @param Category $category
-     * @param DateTimeImmutable $runAt
      */
     public function __construct(
-        /**
-         * @ORM\ManyToOne(targetEntity="Category", inversedBy="searchRuns")
-         * @ORM\JoinColumn(nullable=false)
-         */
-        private Category $category,
-        /**
-         * @ORM\Column(type="datetime")
-         */
-        private DateTimeImmutable $runAt
+        #[ORM\ManyToOne(targetEntity: 'Category', inversedBy: 'searchRuns')]
+        #[ORM\JoinColumn(nullable: false)]
+        private readonly Category $category,
+        #[ORM\Column(type: 'datetime')]
+        private readonly DateTimeImmutable $runAt
     )
     {
     }

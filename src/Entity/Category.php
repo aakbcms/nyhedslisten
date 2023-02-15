@@ -6,6 +6,7 @@
 
 namespace App\Entity;
 
+use App\Repository\CategoryRepository;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,42 +14,30 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
- */
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $cqlSearch;
+    #[ORM\Column(type: 'text')]
+    private ?string $cqlSearch = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Material", mappedBy="categories", fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"creatorFiltered" = "ASC"})
-     */
-    private $materials;
+    #[ORM\ManyToMany(targetEntity: Material::class, mappedBy: 'categories', fetch: 'EXTRA_LAZY')]
+    #[ORM\OrderBy(['creatorFiltered' => 'ASC'])]
+    private ArrayCollection|array $materials;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SearchRun", mappedBy="category", orphanRemoval=true, fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"id" = "DESC"})
-     */
-    private $searchRuns;
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: SearchRun::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OrderBy(['id' => 'DESC'])]
+    private ArrayCollection|array $searchRuns;
 
     public function __construct()
     {
