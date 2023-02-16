@@ -35,10 +35,10 @@ class CategoryRepository extends ServiceEntityRepository
      * Find all Categories, join Materials where date is newer than given date.
      *
      * @param \DateTimeImmutable $since
-     *                                  The date materials should have been added after
+     *   The date materials should have been added after
      *
      * @return mixed
-     *               Array of Categories
+     *   Array of Categories
      */
     public function findByMaterialDate(\DateTimeImmutable $since)
     {

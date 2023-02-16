@@ -10,9 +10,11 @@ class HeyLoyaltyMaterial
     /**
      * HeyLoyaltyMaterial constructor.
      */
-    public function __construct(private readonly int $sortKey, private readonly Category $category, private readonly Material $material)
-    {
-    }
+    public function __construct(
+        private readonly int $sortKey,
+        private readonly Category $category,
+        private readonly Material $material
+    ) {}
 
     public function getSortKey(): int
     {

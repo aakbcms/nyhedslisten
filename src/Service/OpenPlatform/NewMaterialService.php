@@ -47,8 +47,12 @@ class NewMaterialService
     /**
      * NewMaterialService constructor.
      */
-    public function __construct(private readonly SearchService $searchService, private readonly MaterialPersistService $materialPersistService, private readonly EntityManagerInterface $entityManager, ParameterBagInterface $params)
-    {
+    public function __construct(
+        private readonly SearchService $searchService,
+        private readonly MaterialPersistService $materialPersistService,
+        private readonly EntityManagerInterface $entityManager,
+        ParameterBagInterface $params
+    ) {
         $this->agencyId = $params->get('datawell.vendor.agency');
         $this->excludedBranches = explode(',', $params->get('datawell.vendor.excluded.branches'));
         $this->excludedCirculationRules = explode(',', $params->get('datawell.vendor.excluded.circulationRules'));
@@ -57,13 +61,13 @@ class NewMaterialService
     /**
      * Update materials received since date.
      *
-     * @param Category           $category
-     *                                     The Category to check for new materials to
+     * @param Category $category
+     *   The Category to check for new materials to
      * @param \DateTimeImmutable $since
-     *                                     The date since when materials should be received
+     *   The date since when materials should be received
      *
      * @return array
-     *               Array of new Materials
+     *   Array of new Materials
      *
      * @throws GuzzleException
      * @throws InvalidArgumentException
@@ -91,13 +95,13 @@ class NewMaterialService
     /**
      * Get new materials received since date.
      *
-     * @param Category           $category
-     *                                     The Category to check for new materials to
+     * @param Category $category
+     *   The Category to check for new materials to
      * @param \DateTimeImmutable $since
-     *                                     The date since when materials should be received
+     *   The date since when materials should be received
      *
      * @return array
-     *               Array of new Materials
+     *   Array of new Materials
      *
      * @throws GuzzleException
      * @throws InvalidArgumentException'
@@ -114,7 +118,7 @@ class NewMaterialService
      * Get the complete CQL query thar will be preformed against Open Search for the given Category and Date.
      *
      * @return string
-     *                CQL query string
+     *   CQL query string
      */
     public function getCompleteCqlQuery(Category $category, \DateTimeImmutable $since): string
     {
@@ -131,13 +135,13 @@ class NewMaterialService
      *
      * Note: This includes materials where there is already an exiting copy in the collection
      *
-     * @param Category           $category
-     *                                     The Category to check for new materials to
+     * @param Category $category
+     *   The Category to check for new materials to
      * @param \DateTimeImmutable $since
-     *                                     The date since when materials should be received
+     *   The date since when materials should be received
      *
      * @return array
-     *               Array of Materials
+     *   Array of Materials
      *
      * @throws PlatformAuthException
      * @throws GuzzleException
@@ -153,13 +157,13 @@ class NewMaterialService
     /**
      * Exclude materials with exiting copies from the result set.
      *
-     * @param array              $list
-     *                                   Array of Materials to exclude from
+     * @param array $list
+     *   Array of Materials to exclude from
      * @param \DateTimeImmutable $before
-     *                                   The date before which materials should be excluded
+     *   The date before which materials should be excluded
      *
      * @return array
-     *               Array of Materials
+     *   Array of Materials
      *
      * @throws PlatformAuthException
      * @throws GuzzleException
@@ -193,12 +197,12 @@ class NewMaterialService
      * Find all items in '$total' not present in '$exclude' compared by 'pid'.
      *
      * @param array $total
-     *                       The array of items to exclude from
+     *   The array of items to exclude from
      * @param array $exclude
-     *                       The array of items to exclude
+     *   The array of items to exclude
      *
      * @return array
-     *               An array with unique items
+     *   An array with unique items
      */
     private function getResultDiffByPid(array $total, array $exclude): array
     {
@@ -226,10 +230,10 @@ class NewMaterialService
      * Build CQL string of PID's from result set.
      *
      * @param array $results
-     *                       Array of elements to get PID's from
+     *   Array of elements to get PID's from
      *
      * @return string
-     *                String of all PID's concatenated with commas
+     *   String of all PID's concatenated with commas
      */
     private function buildPidIncludeString(array $results): string
     {
@@ -242,10 +246,10 @@ class NewMaterialService
      * Build the 'exclude' part for a CQL query string.
      *
      * @param array $excluded
-     *                        Array of strings to build exclude from
+     *   Array of strings to build exclude from
      *
      * @return string
-     *                String of all elements with "not" prepended
+     *   String of all elements with "not" prepended
      */
     private function buildExcludeSearchString(array $excluded): string
     {

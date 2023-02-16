@@ -23,15 +23,17 @@ class MaterialIdentifier
      * MaterialIdentifier constructor.
      *
      * @param string $type
-     *                     The material type
+     *   The material type
      * @param string $id
-     *                     The identifier for this material
+     *   The identifier for this material
      *
      * @throws MaterialTypeException
      * @throws \ReflectionException
      */
-    public function __construct(string $type, private readonly string $id)
-    {
+    public function __construct(
+        string $type,
+        private readonly string $id
+    ) {
         // Build types array.
         $obj = new \ReflectionClass(IdentifierType::class);
         $this->types = array_values($obj->getConstants());

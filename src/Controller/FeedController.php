@@ -23,23 +23,23 @@ class FeedController extends AbstractController
     /**
      * FeedController constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $entityManager)
-    {
-    }
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager
+    ) {}
 
     /**
-     * HeyLoyalty feed: Get materials from last 7 days ordered by category, search, creator.
+     * Heyloyalty feed: Get materials from last 7 days ordered by category, search, creator.
      */
     #[Route(path: '/feed/heyloyalty', name: 'feed_heyloyalty', methods: ['GET', 'HEAD'])]
     public function heyLoyalty(): JsonResponse
     {
         $date = new \DateTimeImmutable('7 days ago');
         $categories = $this->entityManager->getRepository(Category::class)->findByMaterialDate($date);
-        // HeyLoyalty doesn't support sorting on multiple values like SQL does
-        // ( E.g "ORDER BY author ASC, year DESC"). HeyLoyalty only allows sorting on one
-        // key in the json feed. "sortkey" is used in the HeyLoyalty setup to force HeyLoyalty
+        // Heyloyalty doesn't support sorting on multiple values like SQL does
+        // ( E.g "ORDER BY author ASC, year DESC"). Heyloyalty only allows sorting on one
+        // key in the json feed. "sortkey" is used in the Heyloyalty setup to force Heyloyalty
         // to maintain the order the materiels have in the feed.
-        // However, HeyLoyalty does "text" sort, not "numeric" sort, so "15" comes after "149"
+        // However, Heyloyalty does "text" sort, not "numeric" sort, so "15" comes after "149"
         // in their sorting. To guard against this we start the sortKey counter at 1000000
         // to avoid leading zeros and to avoid sort-keys of different str length.
         // (Depends on feed never having more than 999999 items)

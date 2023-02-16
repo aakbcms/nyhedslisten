@@ -10,9 +10,10 @@ namespace App\Service\OpenPlatform;
 use App\Exception\PlatformAuthException;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 
@@ -31,33 +32,36 @@ class AuthenticationService
      * Authentication constructor.
      *
      * @param parameterBagInterface $params
-     *                                            Used to get parameters form the environment
-     * @param adapterInterface      $cache
-     *                                            Cache to store access token
-     * @param loggerInterface       $statsLogger
-     *                                            Logger object to send stats to ES
-     * @param ClientInterface       $guzzleClient
-     *                                            Guzzle Client
+     *   Used to get parameters form the environment
+     * @param CacheInterface $cache
+     *   Cache to store access token
+     * @param loggerInterface $statsLogger
+     *   Logger object to send stats to ES
+     * @param ClientInterface $guzzleClient
+     *   Guzzle Client
      */
-    public function __construct(private readonly ParameterBagInterface $params, private readonly CacheInterface $cache, private readonly LoggerInterface $statsLogger, private readonly ClientInterface $guzzleClient)
-    {
-    }
+    public function __construct(
+        private readonly ParameterBagInterface $params,
+        private readonly CacheInterface $cache,
+        private readonly LoggerInterface $statsLogger,
+        private readonly ClientInterface $guzzleClient
+    ) {}
 
     /**
      * Get access token.
      *
-     * If not in local cache an request to the open platform for a new token will
+     * If not in local cache a request to the open platform for a new token will
      * be executed.
      *
      * @param bool $refresh
-     *                      If TRUE refresh token. Default: FALSE.
+     *   If TRUE refresh token. Default: FALSE.
      *
      * @return string
-     *                The access token
+     *   The access token
      *
      * @throws PlatformAuthException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
      */
     public function getAccessToken($refresh = false)
     {
@@ -72,14 +76,15 @@ class AuthenticationService
      * Authenticate against open platform.
      *
      * @param bool $refresh
-     *                      If TRUE refresh token. Default: FALSE.
+     *   If TRUE refresh token. Default: FALSE.
      *
      * @return string
-     *                The token if successful else the empty string,
+     *   The token if successful else the empty string,
      *
      * @throws PlatformAuthException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
+     * @throws \JsonException
      */
     private function authenticate($refresh = false)
     {

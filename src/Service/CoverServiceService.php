@@ -8,11 +8,14 @@
 namespace App\Service;
 
 use App\Entity\Material;
+use App\Exception\PlatformAuthException;
 use App\Service\OpenPlatform\AuthenticationService;
 use App\Utils\GenericBookCover\BookCover;
 use CoverService\Api\CoverApi;
 use CoverService\Configuration;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Cache\InvalidArgumentException;
 
 /**
  * Class CoverServiceService.
@@ -22,21 +25,25 @@ class CoverServiceService
     /**
      * CoverServiceService constructor.
      */
-    public function __construct(private readonly AuthenticationService $authenticationService, private readonly string $bindCoverServiceUrl, private readonly string $bindCoverServiceDefaultUrl, private readonly string $bindCoverServiceGenerateDomain, private readonly string $bindProjectDir)
-    {
-    }
+    public function __construct(
+        private readonly AuthenticationService $authenticationService,
+        private readonly string $bindCoverServiceUrl,
+        private readonly string $bindCoverServiceDefaultUrl,
+        private readonly string $bindCoverServiceGenerateDomain,
+        private readonly string $bindProjectDir
+    ) {}
 
     /**
      * Get covers for the identifiers given.
      *
      * @param array $identifiers
-     *                           Material identifiers (PIDs)
+     *   Material identifiers (PIDs)
      *
      * @return array
-     *               URLs for covers for the ones found (indexed by pid)
+     *   URLs for covers for the ones found (indexed by pid)
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
      */
     public function getCovers(array $identifiers): array
     {
@@ -86,7 +93,7 @@ class CoverServiceService
      * Default cover image url.
      *
      * @return string
-     *                The URL to the default cover
+     *   The URL to the default cover
      */
     public function getDefaultCoverUrl(): string
     {
@@ -97,10 +104,10 @@ class CoverServiceService
      * Generate generic cover for the material.
      *
      * @param material $material
-     *                           The material to generate cover for
+     *   The material to generate cover for
      *
      * @return string
-     *                URL to the cover. Will fallback to default cover if generation fails.
+     *   URL to the cover. Will fallback to default cover if generation fails.
      */
     public function getGenericCoverUrl(Material $material): string
     {
@@ -128,11 +135,11 @@ class CoverServiceService
      * Get configuration for the CoverService client.
      *
      * @return Configuration
-     *                       The configuration,
+     *   The configuration,
      *
-     * @throws \App\Exception\PlatformAuthException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws PlatformAuthException
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
      */
     private function getConfig(): Configuration
     {

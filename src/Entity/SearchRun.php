@@ -32,8 +32,7 @@ class SearchRun
         private readonly Category $category,
         #[ORM\Column(type: 'datetime')]
         private readonly \DateTimeImmutable $runAt
-    ) {
-    }
+    ) {}
 
     public function getId(): ?int
     {

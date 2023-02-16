@@ -14,9 +14,9 @@ class HeyloyaltyService
 {
     private HLClient $client;
 
-    public function __construct(private readonly ParameterBagInterface $params)
-    {
-    }
+    public function __construct(
+        private readonly ParameterBagInterface $params
+    ) {}
 
     /**
      * Remove option from list field.
@@ -30,13 +30,13 @@ class HeyloyaltyService
      * Update option/value to the list.
      *
      * @param string $oldOption
-     *                          Option to update
+     *   Option to update
      * @param string $newOption
-     *                          New option
+     *   New option
      *
      * @throws \Exception
      */
-    public function updateOption(string $oldOption, string $newOption)
+    public function updateOption(string $oldOption, string $newOption): void
     {
         $listId = $this->params->get('heyloyalty.list.id');
         $list = $this->getList($listId);
@@ -70,11 +70,11 @@ class HeyloyaltyService
      * Add option/value to the list.
      *
      * @param string $option
-     *                       Option to add
+     *   Option to add
      *
      * @throws \Exception
      */
-    public function addOption(string $option)
+    public function addOption(string $option): void
     {
         $listId = $this->params->get('heyloyalty.list.id');
         $list = $this->getList($listId);
@@ -101,13 +101,13 @@ class HeyloyaltyService
      * Updated list.
      *
      * @param int $listId
-     *                    List ID
+     *   List ID
      * @param $params
-     *  Stuff to patch
+     *   Stuff to patch
      *
      * @throws \Exception
      */
-    private function updateListField(int $listId, $params)
+    private function updateListField(int $listId, $params): void
     {
         $client = $this->getClient();
         $listsService = new HLListsV2($client);
@@ -121,9 +121,9 @@ class HeyloyaltyService
      * Get list field.
      *
      * @param int $listId
-     *                     List ID
+     *   List ID
      * @param int $fieldId
-     *                     Field ID
+     *   Field ID
      *
      * @return mixed|null
      *
@@ -144,12 +144,12 @@ class HeyloyaltyService
      *   ID of the list to get
      *
      * @return mixed|null
-     *                    The list object
+     *   The list object
      *
      * @throws \Exception
-     *                    If error is return from Heyloyalty
+     *   If error is return from Heyloyalty
      */
-    private function getList(int $listId)
+    private function getList(int $listId): mixed
     {
         $client = $this->getClient();
         $listsService = new HLLists($client);
@@ -167,16 +167,16 @@ class HeyloyaltyService
      * @param $string
      *   JSON encoded string
      * @param bool $assoc
-     *                    IF TRUE, returned objects will be converted into associative arrays.
-     *                    Default FALSE.
+     *   IF TRUE, returned objects will be converted into associative arrays.
+     *   Default FALSE.
      *
      * @return mixed
-     *               Decoded result
+     *   Decoded result
      *
      * @throws \Exception
-     *                    If error is return from Heyloyalty
+     *   If error is return from Heyloyalty
      */
-    private function jsonDecode($string, $assoc = false)
+    private function jsonDecode($string, bool $assoc = false): mixed
     {
         $json = json_decode((string) $string, $assoc, 512, JSON_THROW_ON_ERROR);
         if (array_key_exists('error', $json)) {
@@ -198,9 +198,9 @@ class HeyloyaltyService
     /**
      * Get client to communicate with Heyloyalty.
      *
-     * @return \Phpclient\HLClient
+     * @return HLClient
      */
-    private function getClient()
+    private function getClient(): HLClient
     {
         if (!isset($this->client)) {
             $this->client = new HLClient($this->params->get('heyloyalty.apikey'), $this->params->get('heyloyalty.secret'));

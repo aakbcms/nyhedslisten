@@ -26,8 +26,9 @@ class OpenPlatformAuthCommand extends Command
      * @param authenticationService $authentication
      *                                              Open Platform authentication service
      */
-    public function __construct(private readonly AuthenticationService $authentication)
-    {
+    public function __construct(
+        private readonly AuthenticationService $authentication
+    ) {
         parent::__construct();
     }
 

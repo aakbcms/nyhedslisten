@@ -18,9 +18,9 @@ class ArrayMerge
      * Merge from one array into another by reference.
      *
      * @param array $mergeTo
-     *                         The array to merge to
+     *   The array to merge to
      * @param array $mergeFrom
-     *                         The array to merge from
+     *   The array to merge from
      */
     public static function mergeArraysByReference(array &$mergeTo, array &$mergeFrom): void
     {

@@ -28,10 +28,10 @@ class MaterialRepository extends ServiceEntityRepository
      * Find materials from list of match PIDs.
      *
      * @param array $pidList
-     *                       The array of PID's to search for
+     *   The array of PID's to search for
      *
      * @return mixed
-     *               Array of materials indexed by match PID
+     *   Array of materials indexed by match PID
      *
      * @throws QueryException
      */
@@ -49,7 +49,7 @@ class MaterialRepository extends ServiceEntityRepository
      * Find materials received since a given date.
      *
      * @return mixed
-     *               Array of materials
+     *   Array of materials
      */
     public function findLatest(\DateTimeInterface $since): array
     {
@@ -65,7 +65,7 @@ class MaterialRepository extends ServiceEntityRepository
      * Find materials received since a given date and belonging to a specific search.
      *
      * @return mixed
-     *               Array of materials
+     *   Array of materials
      */
     public function findLatestBySearch(\DateTimeInterface $since, int $searchId): array
     {

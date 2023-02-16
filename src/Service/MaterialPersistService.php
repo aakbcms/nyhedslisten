@@ -27,18 +27,21 @@ class MaterialPersistService
     /**
      * MaterialPersistService constructor.
      */
-    public function __construct(private readonly EntityManagerInterface $entityManager, private readonly DdbUriService $ddbUriService, private readonly CoverServiceService $coverServiceService)
-    {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly DdbUriService $ddbUriService,
+        private readonly CoverServiceService $coverServiceService
+    ) {
         $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
     /**
      * Save result set either updating existing Material or persisting new Materials.
      *
-     * @param array    $results
-     *                           Array of Materials to save
+     * @param array $results
+     *   Array of Materials to save
      * @param Category $category
-     *                           The Search that generated the result set
+     *   The Search that generated the result set
      *
      * @throws GuzzleException
      * @throws InvalidArgumentException
@@ -77,10 +80,10 @@ class MaterialPersistService
      * Search for the Materials in $results that already exist in the database.
      *
      * @param array $results
-     *                       The Materials to check for existing Materials for
+     *   The Materials to check for existing Materials for
      *
      * @return Material[]
-     *                    Array of material entities
+     *   Array of material entities
      */
     private function getExistingMaterials(array $results): array
     {
@@ -93,9 +96,9 @@ class MaterialPersistService
      * Parse the search result from the data well.
      *
      * @param Material $material
-     *                           The material to parse the results to
-     * @param array    $result
-     *                           The results from the data well
+     *   The material to parse the results to
+     * @param array $result
+     *   The results from the data well
      *
      * @throws \Exception
      */
@@ -123,11 +126,11 @@ class MaterialPersistService
      * Set value for field.
      *
      * @param Material $material
-     *                           The material to set value on
-     * @param string   $key
-     *                           The field to set on the Material
-     * @param array    $items
-     *                           Array of open platform 'items' to set as value
+     *   The material to set value on
+     * @param string $key
+     *   The field to set on the Material
+     * @param array $items
+     *   Array of open platform 'items' to set as value
      */
     private function setValue(Material $material, string $key, array $items): void
     {

@@ -27,8 +27,9 @@ class OpenPlatformSearchCommand extends Command
      * @param searchService $searchService
      *                                     The open platform search service
      */
-    public function __construct(private readonly SearchService $searchService)
-    {
+    public function __construct(
+        private readonly SearchService $searchService
+    ) {
         parent::__construct();
     }
 

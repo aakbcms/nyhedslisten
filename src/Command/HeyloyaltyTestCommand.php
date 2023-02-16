@@ -22,8 +22,10 @@ class HeyloyaltyTestCommand extends Command
     /**
      * HeyloyaltyCommand constructor.
      */
-    public function __construct(private readonly ParameterBagInterface $parameterBag, private readonly HeyloyaltyService $hlService)
-    {
+    public function __construct(
+        private readonly ParameterBagInterface $parameterBag,
+        private readonly HeyloyaltyService $hlService
+    ) {
         parent::__construct();
     }
 

@@ -7,11 +7,8 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use App\Entity\User;
 use App\Service\Heyloyalty\HeyloyaltyService;
 use App\Service\OpenPlatform\NewMaterialService;
-use FOS\UserBundle\Model\UserInterface;
-use FOS\UserBundle\Model\UserManagerInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,25 +24,24 @@ class AdminController
     /**
      * AdminController constructor.
      *
-     * @param UserManagerInterface $userManager
-     *                                                 The FOS user manager
-     * @param NewMaterialService   $newMaterialService
-     *                                                 The service to query for new materials
-     * @param heyloyaltyService    $heyloyaltyService
-     *                                                 Integration with HL
+     * @param NewMaterialService $newMaterialService
+     *   The service to query for new materials
+     * @param heyloyaltyService $heyloyaltyService
+     *   Integration with HL
      */
-    public function __construct(private NewMaterialService $newMaterialService, private HeyloyaltyService $heyloyaltyService)
-    {
-    }
+    public function __construct(
+        private readonly NewMaterialService $newMaterialService,
+        private readonly HeyloyaltyService $heyloyaltyService
+    ) {}
 
     /**
      * Custom batch action to update materials for Searches.
      *
      * @param array $ids
-     *                   The ids of the entities selected in the UI
+     *   The ids of the entities selected in the UI
      *
      * @throws GuzzleException
-     *                                  If the Search query is malformed or the Open Search calls fails
+     *   If the Search query is malformed or the Open Search calls fails
      * @throws InvalidArgumentException
      */
     public function queryBatchAction(array $ids): void
@@ -75,7 +71,7 @@ class AdminController
      * Custom action to test CQL Query.
      *
      * @throws GuzzleException
-     *                                  If the Search query is malformed or the Open Search calls fails
+     *    If the Search query is malformed or the Open Search calls fails
      * @throws InvalidArgumentException
      */
     public function queryAction(): Response
@@ -111,40 +107,6 @@ class AdminController
         ];
 
         return $this->render('actions/showQueryResult.html.twig', $templateData);
-    }
-
-    /**
-     * Create new User entity.
-     *
-     * EasyAdmin custom action to integrate FOSUserBundle and EasyAdminBundle
-     */
-    public function createNewUserEntity(): UserInterface
-    {
-        return $this->userManager->createUser();
-    }
-
-    /**
-     * Persist User entity.
-     *
-     * EasyAdmin custom action to integrate FOSUserBundle and EasyAdminBundle
-     */
-    public function persistUserEntity(User $user): void
-    {
-        $this->userManager->updateUser($user, false);
-    }
-
-    /**
-     * Update User entity.
-     *
-     * EasyAdmin custom action to integrate FOSUserBundle and EasyAdminBundle
-     */
-    public function updateUserEntity(User $user): void
-    {
-        $this->userManager->updateUser($user, false);
-    }
-
-    protected function removeEntity($entity)
-    {
     }
 
     protected function updateCategoryEntity($entity)
