@@ -30,6 +30,7 @@
         "symfony/yaml": "^6.2"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
         "ergebnis/composer-normalize": "^2.29",
         "escapestudios/symfony2-coding-standard": "^3.9",
         "friendsofphp/php-cs-fixer": "^3.9",
