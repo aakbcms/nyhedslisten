@@ -7,6 +7,7 @@
 namespace App\Command\OpenPlatform;
 
 use App\Service\OpenPlatform\SearchService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,16 +17,17 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Class OpenPlatformSearchCommand.
  */
+#[AsCommand('app:openplatform:search', 'Use environment configuration to test search')]
 class OpenPlatformSearchCommand extends Command
 {
-    protected static $defaultName = 'app:openplatform:search';
+    protected static $defaultDescription = 'Use environment configuration to test search';
     private bool $refresh = false;
 
     /**
      * OpenPlatformSearchCommand constructor.
      *
      * @param searchService $searchService
-     *                                     The open platform search service
+     *   The open platform search service
      */
     public function __construct(
         private readonly SearchService $searchService
@@ -38,8 +40,7 @@ class OpenPlatformSearchCommand extends Command
      */
     protected function configure()
     {
-        $this->setDescription('Use environment configuration to test search')
-            ->setHelp('Try search request against the open platform')
+        $this->setHelp('Try search request against the open platform')
             ->addArgument('is', InputArgument::REQUIRED, 'The material id (isbn, faust, pid)')
             ->addArgument('type', InputArgument::REQUIRED, 'Identifier type e.g. ISBN.')
             ->addArgument('refresh', InputArgument::OPTIONAL, 'Refresh the access token');

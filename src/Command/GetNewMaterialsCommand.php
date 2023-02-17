@@ -8,6 +8,7 @@ namespace App\Command;
 
 use App\Repository\CategoryRepository;
 use App\Service\OpenPlatform\NewMaterialService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,19 +18,20 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 /**
  * Class GetNewMaterialsCommand.
  */
+#[AsCommand('app:materials:get-new', 'Get all new materials received in configured timespan')]
 class GetNewMaterialsCommand extends Command
 {
-    protected static $defaultName = 'app:materials:get-new';
+    protected static $defaultDescription = 'Get all new materials received in configured timespan';
 
     /**
      * OpenPlatformQueryCommand constructor.
      *
-     * @param NewMaterialService    $newMaterialService
-     *                                                  Service to query for new materials
-     * @param CategoryRepository    $categoryRepository
-     *                                                  Search entity repository
+     * @param NewMaterialService $newMaterialService
+     *   Service to query for new materials
+     * @param CategoryRepository $categoryRepository
+     *   Search entity repository
      * @param ParameterBagInterface $parameterBag
-     *                                                  Application configuration
+     *   Application configuration
      */
     public function __construct(
         private readonly NewMaterialService $newMaterialService,
@@ -44,8 +46,7 @@ class GetNewMaterialsCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setDescription('Get all new materials received in configured timespan')
-            ->setHelp('Searches through OpenSearch to get all materials received within the time interval configured for the application')
+        $this->setHelp('Searches through OpenSearch to get all materials received within the time interval configured for the application')
             ->addArgument('id', InputArgument::OPTIONAL, 'The ID of the CQL search to run');
     }
 

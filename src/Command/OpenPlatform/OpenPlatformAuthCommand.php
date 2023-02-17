@@ -7,6 +7,7 @@
 namespace App\Command\OpenPlatform;
 
 use App\Service\OpenPlatform\AuthenticationService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,16 +16,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Class OpenPlatformAuthCommand.
  */
+#[ AsCommand('app:openplatform:auth', 'Use environment configuration to test authentication')]
 class OpenPlatformAuthCommand extends Command
 {
-    protected static $defaultName = 'app:openplatform:auth';
+    protected static $defaultDescription = 'Use environment configuration to test authentication';
     private bool $refresh = false;
 
     /**
      * OpenPlatformAuthCommand constructor.
      *
      * @param authenticationService $authentication
-     *                                              Open Platform authentication service
+     *   Open Platform authentication service
      */
     public function __construct(
         private readonly AuthenticationService $authentication
@@ -37,8 +39,7 @@ class OpenPlatformAuthCommand extends Command
      */
     protected function configure()
     {
-        $this->setDescription('Use environment configuration to test authentication')
-            ->setHelp('Gets oAuth2 access token to the Open Platform')
+        $this->setHelp('Gets oAuth2 access token to the Open Platform')
             ->addArgument('refresh', InputArgument::OPTIONAL, 'Refresh the access token');
     }
 

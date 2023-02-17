@@ -7,6 +7,7 @@
 namespace App\Command;
 
 use App\Service\Heyloyalty\HeyloyaltyService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,10 +16,9 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 /**
  * Class HeyloyaltyCommand.
  */
+#[AsCommand('app:heyloyalty:test')]
 class HeyloyaltyTestCommand extends Command
 {
-    protected static $defaultName = 'app:heyloyalty:test';
-
     /**
      * HeyloyaltyCommand constructor.
      */
