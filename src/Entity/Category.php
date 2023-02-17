@@ -22,7 +22,7 @@ class Category implements \Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private $id;
+    private ?int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
@@ -32,11 +32,11 @@ class Category implements \Stringable
 
     #[ORM\ManyToMany(targetEntity: Material::class, mappedBy: 'categories', fetch: 'EXTRA_LAZY')]
     #[ORM\OrderBy(['creatorFiltered' => 'ASC'])]
-    private ArrayCollection|array $materials;
+    private Collection $materials;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: SearchRun::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\OrderBy(['id' => 'DESC'])]
-    private ArrayCollection|array $searchRuns;
+    private Collection $searchRuns;
 
     public function __construct()
     {
@@ -148,9 +148,10 @@ class Category implements \Stringable
     /**
      * Get the datetime of the latest search run.
      */
-    public function getLastSearchRunAt(): ?\DateTimeInterface
+    public function getLastSearchRunAt(): ?\DateTimeImmutable
     {
-        $searchRun = $this->searchRuns->first();
+        /** @var SearchRun|false $searchRun */
+        $searchRun = $this->searchRuns->last();
 
         return $searchRun ? $searchRun->getRunAt() : null;
     }
@@ -160,7 +161,8 @@ class Category implements \Stringable
      */
     public function getLastSearchRunSuccess(): ?bool
     {
-        $searchRun = $this->searchRuns->first();
+        /** @var SearchRun|false $searchRun */
+        $searchRun = $this->searchRuns->last();
 
         return $searchRun ? $searchRun->getIsSuccess() : null;
     }

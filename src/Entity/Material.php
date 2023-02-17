@@ -29,7 +29,7 @@ class Material implements \Stringable
     private ?string $titleFull = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $creatorFiltered;
+    private ?string $creatorFiltered = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $creator = null;
@@ -68,7 +68,7 @@ class Material implements \Stringable
     private ?\DateTimeInterface $date = null;
 
     #[ORM\ManyToMany(targetEntity: 'Category', inversedBy: 'materials')]
-    private ArrayCollection|array $categories;
+    private Collection $categories;
 
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $uri = null;
@@ -111,7 +111,7 @@ class Material implements \Stringable
         return $this->titleFull;
     }
 
-    public function setTitleFull(string $titleFull): self
+    public function setTitleFull(?string $titleFull): self
     {
         $this->titleFull = $titleFull;
 
@@ -128,7 +128,7 @@ class Material implements \Stringable
         return $this->creator;
     }
 
-    public function setCreator(string $creator): self
+    public function setCreator(?string $creator): self
     {
         $this->creator = $creator;
 
@@ -176,7 +176,7 @@ class Material implements \Stringable
         return $this->publisher;
     }
 
-    public function setPublisher(string $publisher): self
+    public function setPublisher(?string $publisher): self
     {
         $this->publisher = $publisher;
 
@@ -214,7 +214,7 @@ class Material implements \Stringable
         return $this->uri;
     }
 
-    public function setUri(string $uri): self
+    public function setUri(?string $uri): self
     {
         $this->uri = $uri;
 
@@ -226,7 +226,7 @@ class Material implements \Stringable
         return $this->coverUrl;
     }
 
-    public function setCoverUrl(string $coverUrl): self
+    public function setCoverUrl(?string $coverUrl): self
     {
         $this->coverUrl = $coverUrl;
 

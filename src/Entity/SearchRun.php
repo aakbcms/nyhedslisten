@@ -30,7 +30,7 @@ class SearchRun
         #[ORM\ManyToOne(targetEntity: 'Category', inversedBy: 'searchRuns')]
         #[ORM\JoinColumn(nullable: false)]
         private readonly Category $category,
-        #[ORM\Column(type: 'datetime')]
+        #[ORM\Column(type: 'datetime_immutable')]
         private readonly \DateTimeImmutable $runAt
     ) {}
 
@@ -39,7 +39,7 @@ class SearchRun
         return $this->id;
     }
 
-    public function getRunAt(): ?\DateTimeInterface
+    public function getRunAt(): ?\DateTimeImmutable
     {
         return $this->runAt;
     }
