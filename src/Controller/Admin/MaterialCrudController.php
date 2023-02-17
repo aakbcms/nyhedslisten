@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Material;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -30,38 +31,33 @@ class MaterialCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            ->disable('new', 'edit', 'delete');
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->remove(Crud::PAGE_INDEX, Action::NEW)
+            ->remove(Crud::PAGE_INDEX, Action::EDIT)
+            ->remove(Crud::PAGE_INDEX, Action::DELETE)
+            ->remove(Crud::PAGE_DETAIL, Action::EDIT)
+            ->remove(Crud::PAGE_DETAIL, Action::DELETE);
     }
 
     public function configureFields(string $pageName): iterable
     {
-        $titleFull = TextField::new('titleFull');
-        $creatorFiltered = TextField::new('creatorFiltered');
-        $creator = TextField::new('creator');
-        $creatorAut = TextField::new('creatorAut', 'CreatorAut');
-        $creatorCre = TextField::new('creatorCre', 'CreatorCre');
-        $contributor = TextField::new('contributor');
-        $contributorAct = TextField::new('contributorAct', 'ContributorAct');
-        $contributorAut = TextField::new('contributorAut', 'ContributorAut');
-        $contributorCtb = TextField::new('contributorCtb', 'ContributorCtb');
-        $contributorDkfig = TextField::new('contributorDkfig', 'ContributorDkfig');
-        $abstract = TextareaField::new('abstract');
-        $pid = TextField::new('pid');
-        $publisher = TextField::new('publisher');
-        $date = DateField::new('date');
-        $uri = TextField::new('uri');
-        $coverUrl = ImageField::new('coverUrl');
-        $type = TextField::new('type');
-        $categories = AssociationField::new('categories');
-
-        if (Crud::PAGE_INDEX === $pageName) {
-            return [$titleFull, $creatorFiltered, $pid, $type, $date, $categories];
-        } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$titleFull, $creatorFiltered, $creator, $creatorAut, $creatorCre, $contributor, $contributorAct, $contributorAut, $contributorCtb, $contributorDkfig, $abstract, $type, $publisher, $pid, $date, $coverUrl, $categories];
-        } elseif (Crud::PAGE_NEW === $pageName) {
-            return [$titleFull, $creatorFiltered, $creator, $creatorAut, $creatorCre, $contributor, $contributorAct, $contributorAut, $contributorCtb, $contributorDkfig, $abstract, $pid, $publisher, $date, $uri, $coverUrl, $type, $categories];
-        } elseif (Crud::PAGE_EDIT === $pageName) {
-            return [$titleFull, $creatorFiltered, $creator, $creatorAut, $creatorCre, $contributor, $contributorAct, $contributorAut, $contributorCtb, $contributorDkfig, $abstract, $pid, $publisher, $date, $uri, $coverUrl, $type, $categories];
-        }
+        yield TextField::new('titleFull');
+        yield TextField::new('creatorFiltered');
+        yield TextField::new('creator')->hideOnIndex();
+        yield TextField::new('creatorAut', 'CreatorAut')->hideOnIndex();
+        yield TextField::new('creatorCre', 'CreatorCre')->hideOnIndex();
+        yield TextField::new('contributor')->hideOnIndex();
+        yield TextField::new('contributorAct', 'ContributorAct')->hideOnIndex();
+        yield TextField::new('contributorAut', 'ContributorAut')->hideOnIndex();
+        yield TextField::new('contributorCtb', 'ContributorCtb')->hideOnIndex();
+        yield TextField::new('contributorDkfig', 'ContributorDkfig')->hideOnIndex();
+        yield TextareaField::new('abstract')->hideOnIndex();
+        yield TextField::new('pid');
+        yield TextField::new('publisher')->hideOnIndex();
+        yield DateField::new('date');
+        yield TextField::new('uri')->hideOnIndex();
+        yield ImageField::new('coverUrl')->hideOnIndex();
+        yield TextField::new('type');
+        yield AssociationField::new('categories');
     }
 }
