@@ -208,12 +208,6 @@
     "ralouphie/getallheaders": {
         "version": "3.0.3"
     },
-    "rollerworks/password-strength-bundle": {
-        "version": "v2.2.0"
-    },
-    "rollerworks/password-strength-validator": {
-        "version": "v1.3.0"
-    },
     "sabre/event": {
         "version": "5.1.2"
     },
