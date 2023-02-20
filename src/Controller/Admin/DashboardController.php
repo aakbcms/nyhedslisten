@@ -4,13 +4,12 @@ namespace App\Controller\Admin;
 
 use App\Entity\Category;
 use App\Entity\Material;
-use App\Entity\User;
+use App\Entity\SearchRun;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,8 +17,7 @@ class DashboardController extends AbstractDashboardController
 {
     public function __construct(
         private readonly AdminUrlGenerator $adminUrlGenerator
-    ) {
-    }
+    ) {}
 
     #[Route('/', name: 'admin')]
     public function index(): Response
@@ -48,7 +46,9 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToCrud('Category', 'fas fa-search', Category::class);
-        yield MenuItem::linkToCrud('Material', 'fas fa-book', Material::class);
+        yield MenuItem::linkToCrud('Category', 'fa fa-search', Category::class);
+        yield MenuItem::linkToCrud('Material', 'fa fa-book', Material::class);
+        yield MenuItem::section('');
+        yield MenuItem::linkToCrud('Search Runs', 'fa fa-gear', SearchRun::class);
     }
 }

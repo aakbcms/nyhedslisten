@@ -10,7 +10,7 @@ use App\Repository\SearchRunRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SearchRunRepository::class)]
-class SearchRun
+class SearchRun implements \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -33,6 +33,15 @@ class SearchRun
         #[ORM\Column(type: 'datetime_immutable')]
         private readonly \DateTimeImmutable $runAt
     ) {}
+
+    public function __toString(): string
+    {
+        $result = $this->isSuccess ? 'OK' : 'ERROR';
+        $date = $this->getRunAt()->format(DATE_ATOM);
+        $message = $this->isSuccess ? '' : ' | '.$this->getErrorMessage();
+
+        return $result.' | '.$date.$message;
+    }
 
     public function getId(): ?int
     {

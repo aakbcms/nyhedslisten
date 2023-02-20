@@ -35,7 +35,7 @@ class Category implements \Stringable
     private Collection $materials;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: SearchRun::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
-    #[ORM\OrderBy(['id' => 'DESC'])]
+    #[ORM\OrderBy(['id' => 'ASC'])]
     private Collection $searchRuns;
 
     public function __construct()

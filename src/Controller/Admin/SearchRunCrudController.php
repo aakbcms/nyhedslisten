@@ -6,6 +6,7 @@ use App\Entity\SearchRun;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
@@ -22,6 +23,8 @@ class SearchRunCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
+            ->setDefaultSort(['runAt' => 'DESC'])
+            ->showEntityActionsInlined()
             ->setEntityLabelInSingular('SearchRun')
             ->setEntityLabelInPlural('SearchRun')
             ->setSearchFields(['id', 'errorMessage']);
@@ -40,19 +43,19 @@ class SearchRunCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $runAt = DateTimeField::new('runAt');
-        $isSuccess = BooleanField::new('isSuccess');
-        $errorMessage = TextareaField::new('errorMessage');
-        $category = AssociationField::new('category');
+        yield DateTimeField::new('runAt');
+        yield BooleanField::new('isSuccess')->renderAsSwitch(false);
+        yield TextareaField::new('errorMessage');
+        yield AssociationField::new('category');
+    }
 
-        if (Crud::PAGE_INDEX === $pageName) {
-            return [$runAt, $isSuccess, $errorMessage];
-        } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$runAt, $isSuccess, $errorMessage];
-        } elseif (Crud::PAGE_NEW === $pageName) {
-            return [$runAt, $isSuccess, $errorMessage, $category];
-        } elseif (Crud::PAGE_EDIT === $pageName) {
-            return [$runAt, $isSuccess, $errorMessage, $category];
-        }
+    public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+            ->add('runAt')
+            ->add('isSuccess')
+            ->add('errorMessage')
+            ->add('category')
+        ;
     }
 }
