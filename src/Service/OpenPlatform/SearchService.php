@@ -62,9 +62,9 @@ class SearchService
      * @throws InvalidArgumentException
      * @throws PlatformAuthException
      */
-    public function query(string $query): array
+    public function query(string $query, $limit = null): array
     {
-        return $this->recursiveQuery($query);
+        return $this->recursiveQuery($query, $limit);
     }
 
     /**
@@ -94,6 +94,8 @@ class SearchService
      *
      * @param string $query
      *   The cql-query to execute against OpenPlatform
+     * @param ?int $limit
+     *   Limit the number of results to get
      * @param int $offset
      *   The offset to start getting results
      * @param array $results
@@ -106,8 +108,10 @@ class SearchService
      * @throws PlatformAuthException
      * @throws InvalidArgumentException
      */
-    private function recursiveQuery(string $query, int $offset = 0, array &$results = []): array
+    private function recursiveQuery(string $query, ?int $limit = null, int $offset = 0, array &$results = []): array
     {
+        $searchLimit = $limit > $offset + self::SEARCH_LIMIT ? self::SEARCH_LIMIT : $limit;
+
         $token = $this->authenticationService->getAccessToken();
         $response = $this->guzzleClient->request('POST', $this->searchURL, [
             RequestOptions::JSON => [
@@ -117,7 +121,7 @@ class SearchService
                 'timings' => false,
                 'q' => $query,
                 'offset' => $offset,
-                'limit' => $this::SEARCH_LIMIT,
+                'limit' => $searchLimit,
                 'profile' => $this->profile,
             ],
         ]);
@@ -130,8 +134,10 @@ class SearchService
         }
 
         // If there are more results get the next chunk.
-        if (isset($json['hitCount']) && $json['hitCount'] > $offset) {
-            $this->recursiveQuery($query, $offset + self::SEARCH_LIMIT, $results);
+        if (null === $limit || \count($results) < $limit) {
+            if (isset($json['hitCount']) && $json['hitCount'] > $offset) {
+                $this->recursiveQuery($query, $limit, $offset + self::SEARCH_LIMIT, $results);
+            }
         }
 
         return $results;

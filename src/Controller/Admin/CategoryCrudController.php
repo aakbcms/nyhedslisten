@@ -68,7 +68,7 @@ class CategoryCrudController extends AbstractCrudController
             ->formatValue(function ($value, $entity) {
                 $value ?? '';
                 try {
-                    $v = $this->searchService->query($value);
+                    $v = $this->searchService->query($value, 30);
                 } catch (\Exception $exception) {
                     $v = $exception;
                 }
