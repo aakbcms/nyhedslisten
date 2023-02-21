@@ -1,0 +1,10 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% if field.formattedValue is null %}
+    <span class="badge badge-secondary">{{ 'label.null'|trans(domain = 'EasyAdminBundle') }}</span>
+{% elseif field.formattedValue.code is defined %}
+    <code class="text-danger">{{ field.formattedValue.message }}</code>
+{% else %}
+    <code class="text-dark">{{ field.formattedValue }}</code>
+{% endif %}

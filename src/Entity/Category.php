@@ -35,7 +35,7 @@ class Category implements \Stringable
     private Collection $materials;
 
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: SearchRun::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
-    #[ORM\OrderBy(['id' => 'ASC'])]
+    #[ORM\OrderBy(['runAt' => 'DESC'])]
     private Collection $searchRuns;
 
     public function __construct()
@@ -151,7 +151,7 @@ class Category implements \Stringable
     public function getLastSearchRunAt(): ?\DateTimeImmutable
     {
         /** @var SearchRun|false $searchRun */
-        $searchRun = $this->searchRuns->last();
+        $searchRun = $this->searchRuns->first();
 
         return $searchRun ? $searchRun->getRunAt() : null;
     }
@@ -162,7 +162,7 @@ class Category implements \Stringable
     public function getLastSearchRunSuccess(): ?bool
     {
         /** @var SearchRun|false $searchRun */
-        $searchRun = $this->searchRuns->last();
+        $searchRun = $this->searchRuns->first();
 
         return $searchRun ? $searchRun->getIsSuccess() : null;
     }
