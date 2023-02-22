@@ -38,8 +38,6 @@ class HeyloyaltyTestCommand extends Command
 
     /**
      * {@inheritdoc}
-     *
-     * Execute an data well search and output the result.
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

@@ -20,7 +20,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand('app:openplatform:search', 'Use environment configuration to test search')]
 class OpenPlatformSearchCommand extends Command
 {
-    protected static $defaultDescription = 'Use environment configuration to test search';
     private bool $refresh = false;
 
     /**
@@ -62,5 +61,7 @@ class OpenPlatformSearchCommand extends Command
 
         $io = new SymfonyStyle($input, $output);
         $io->text(json_encode($material, JSON_PRETTY_PRINT));
+
+        return Command::SUCCESS;
     }
 }
