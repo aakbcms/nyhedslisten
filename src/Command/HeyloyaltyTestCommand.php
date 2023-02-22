@@ -16,7 +16,10 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 /**
  * Class HeyloyaltyCommand.
  */
-#[AsCommand('app:heyloyalty:test')]
+#[AsCommand(
+    name: 'app:heyloyalty:test',
+    description: 'Test Heyloyalty setup',
+)]
 class HeyloyaltyTestCommand extends Command
 {
     /**

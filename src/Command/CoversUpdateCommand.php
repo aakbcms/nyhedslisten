@@ -12,11 +12,10 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
     name: 'app:covers:update',
-    description: 'Add a short description for your command',
+    description: 'Update covers for all materials',
 )]
 class CoversUpdateCommand extends Command
 {
@@ -39,8 +38,6 @@ class CoversUpdateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-
         $id = $input->getOption('id');
         $offset = $input->getOption('offset');
         $limit = $input->getOption('limit');

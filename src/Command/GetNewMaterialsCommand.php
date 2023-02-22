@@ -15,7 +15,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-#[AsCommand('app:materials:get-new', 'Get all new materials received in configured timespan')]
+#[AsCommand(
+    name: 'app:materials:get-new',
+    description: 'Get all new materials received in configured timespan',
+)]
 class GetNewMaterialsCommand extends Command
 {
     /**
