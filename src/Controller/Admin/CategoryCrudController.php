@@ -59,11 +59,13 @@ class CategoryCrudController extends AbstractCrudController
     {
         yield FormField::addTab('Category');
         yield TextField::new('name');
+        yield DateTimeField::new('lastSearchRunAt', 'Last run')->hideOnForm();
         yield CodeEditorField::new('cqlSearch', 'CQL search')
             ->hideOnIndex()
             ->hideLineNumbers()
             ->setHelp('Do not include "holdingsitem.accessionDate" ("bad") or "facet.acSource" parameters in the CQL statement. These will be added automatically.');
         yield CqlResultField::new('cqlSearch', 'CQL result')
+            ->setHelp('Result from running the search (Limit 30)')
             ->onlyOnDetail()
             ->formatValue(function ($value, $entity) {
                 $value ?? '';
@@ -75,7 +77,6 @@ class CategoryCrudController extends AbstractCrudController
 
                 return $v;
             });
-        yield DateTimeField::new('lastSearchRunAt', 'Last run')->hideOnForm();
 
         yield FormField::addTab('Search runs')->hideOnForm();
         yield SuccesField::new('lastSearchRunSuccess', 'Succes')->hideOnForm();
