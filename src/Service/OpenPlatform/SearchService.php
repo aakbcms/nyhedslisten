@@ -110,7 +110,7 @@ class SearchService
      */
     private function recursiveQuery(string $query, ?int $limit = null, int $offset = 0, array &$results = []): array
     {
-        $searchLimit = $limit > $offset + self::SEARCH_LIMIT ? self::SEARCH_LIMIT : $limit;
+        $searchLimit = $limit < ($offset + self::SEARCH_LIMIT) ? self::SEARCH_LIMIT : $limit;
 
         $token = $this->authenticationService->getAccessToken();
         $response = $this->guzzleClient->request('POST', $this->searchURL, [

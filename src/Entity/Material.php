@@ -332,7 +332,7 @@ class Material implements \Stringable
     /**
      * Update the "filtered" creator to ensure a value is given.
      *
-     * Return the first non null value from "creator", "creatorAut", "creatorCre",
+     * Return the first non-null value from "creator", "creatorAut", "creatorCre",
      * "contributor", "contributorAct", "contributorAut", "contributorCtb",
      * "contributorDkfig" and "publisher" in that order
      */

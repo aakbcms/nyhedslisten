@@ -15,14 +15,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-/**
- * Class GetNewMaterialsCommand.
- */
 #[AsCommand('app:materials:get-new', 'Get all new materials received in configured timespan')]
 class GetNewMaterialsCommand extends Command
 {
-    protected static $defaultDescription = 'Get all new materials received in configured timespan';
-
     /**
      * OpenPlatformQueryCommand constructor.
      *
@@ -47,7 +42,7 @@ class GetNewMaterialsCommand extends Command
     protected function configure(): void
     {
         $this->setHelp('Searches through OpenSearch to get all materials received within the time interval configured for the application')
-            ->addArgument('id', InputArgument::OPTIONAL, 'The ID of the CQL search to run');
+            ->addOption('id', null, InputArgument::OPTIONAL, 'The ID of the CQL search to run');
     }
 
     /**
@@ -57,7 +52,7 @@ class GetNewMaterialsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $id = $input->getArgument('id');
+        $id = $input->getOption('id');
 
         if ($id) {
             $categories = $this->categoryRepository->findById($id);
@@ -80,5 +75,7 @@ class GetNewMaterialsCommand extends Command
             }
             ++$count;
         }
+
+        return Command::SUCCESS;
     }
 }

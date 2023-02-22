@@ -20,20 +20,12 @@ parameters:
     heyloyalty.secret: '%env(HEYLOYALTY_SECRET)%'
     heyloyalty.list.id: '%env(int:HEYLOYALTY_LIST_ID)%'
     heyloyalty.field.id: '%env(int:HEYLOYALTY_FIELD_ID)%'
-    ddbcms.base.url: '%env(DDBCMS_BASE_URL)%'
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
-        bind:
-            $basePath: '%env(DDBCMS_BASE_URL)%'
-            $bindCoverServiceUrl: '%env(COVER_SERVICE_URL)%'
-            $bindCoverServiceDefaultUrl: '%env(COVER_SERVICE_DEFAULT_URL)%'
-            $bindCoverServiceGenerateDomain: '%env(COVER_SERVICE_GENERATE_DOMAIN)%'
-            $bindProjectDir: '%kernel.project_dir%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -46,3 +38,14 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\CoverServiceService:
+        arguments:
+            $coverServiceUrl: '%env(COVER_SERVICE_URL)%'
+            $coverServiceDefaultUrl: '%env(COVER_SERVICE_URL)%'
+            $coverServiceGenerateDomain: '%env(COVER_SERVICE_GENERATE_DOMAIN)%'
+            $projectDir: '%kernel.project_dir%'
+
+    App\Service\DdbUriService:
+        arguments:
+            $basePath: '%env(DDBCMS_BASE_URL)%'

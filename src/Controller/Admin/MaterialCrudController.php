@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -47,6 +48,7 @@ class MaterialCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        yield IdField::new('id')->hideOnForm();
         yield TextField::new('titleFull');
         yield TextField::new('creatorFiltered')
             ->setHelp('The first non null value from "Creator", "CreatorAut", "CreatorCre", "Contributor", "ContributorAct", "ContributorAut", "ContributorCtb", "ContributorDkfig" and "Publisher" in that order');
@@ -79,6 +81,7 @@ class MaterialCrudController extends AbstractCrudController
             ->add('date')
             ->add('type')
             ->add('categories')
+            ->add('coverUrl')
         ;
     }
 }

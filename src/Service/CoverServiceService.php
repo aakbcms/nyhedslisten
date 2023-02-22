@@ -27,10 +27,10 @@ class CoverServiceService
      */
     public function __construct(
         private readonly AuthenticationService $authenticationService,
-        private readonly string $bindCoverServiceUrl,
-        private readonly string $bindCoverServiceDefaultUrl,
-        private readonly string $bindCoverServiceGenerateDomain,
-        private readonly string $bindProjectDir
+        private readonly string $coverServiceUrl,
+        private readonly string $coverServiceDefaultUrl,
+        private readonly string $coverServiceGenerateDomain,
+        private readonly string $projectDir
     ) {}
 
     /**
@@ -56,7 +56,7 @@ class CoverServiceService
                 $config
             );
             $retrieved = $apiInstance->getCoverCollection('pid', $identifiers, ['original', 'small']);
-        } catch (\Exception) {
+        } catch (\Exception $exception) {
             return $covers;
         }
 
@@ -97,7 +97,7 @@ class CoverServiceService
      */
     public function getDefaultCoverUrl(): string
     {
-        return $this->bindCoverServiceDefaultUrl;
+        return $this->coverServiceDefaultUrl;
     }
 
     /**
@@ -116,14 +116,14 @@ class CoverServiceService
         $file = '/public/covers/'.$filename;
         try {
             $cover = new BookCover();
-            $cover->setTitle($material->getTitleFull())
-                ->setCreators($material->getCreator())
-                ->setPublisher($material->getPublisher())
+            $cover->setTitle($material->getTitleFull() ?? '')
+                ->setCreators($material->getCreatorFiltered() ?? '')
+                ->setPublisher($material->getPublisher() ?? '')
                 ->setDatePublished($material->getDate()->format('Y'))
                 ->randomizeBackgroundColor()
-                ->save($this->bindProjectDir.$file, 350);
+                ->save($this->projectDir.$file, 350);
 
-            $url = $this->bindCoverServiceGenerateDomain.'/covers/'.$filename;
+            $url = $this->coverServiceGenerateDomain.'/covers/'.$filename;
         } catch (\Exception) {
             // Don't do anything. Will fall back to default cover missing image.
         }
@@ -149,7 +149,7 @@ class CoverServiceService
         $token = $this->authenticationService->getAccessToken();
         $config->setAccessToken($token);
 
-        $config->setHost($this->bindCoverServiceUrl);
+        $config->setHost($this->coverServiceUrl);
 
         return $config;
     }
