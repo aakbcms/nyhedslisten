@@ -5,9 +5,13 @@ namespace App\Controller\Admin;
 use App\Admin\Field\CqlResultField;
 use App\Admin\Field\SuccesField;
 use App\Entity\Category;
+use App\Exception\HeyloyaltyException;
+use App\Exception\HeyloyaltyOptionNotFoundException;
 use App\Repository\CategoryRepository;
+use App\Service\Heyloyalty\HeyloyaltyService;
 use App\Service\OpenPlatform\NewMaterialService;
 use App\Service\OpenPlatform\SearchService;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -24,12 +28,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 
 class CategoryCrudController extends AbstractCrudController
 {
-    private SearchService $searchService;
-
-    public function __construct(SearchService $searchService)
-    {
-        $this->searchService = $searchService;
-    }
+    public function __construct(
+        private readonly SearchService $searchService,
+        private readonly HeyloyaltyService $heyloyaltyService,
+    ) {}
 
     public static function getEntityFqcn(): string
     {
@@ -122,5 +124,79 @@ class CategoryCrudController extends AbstractCrudController
             ->generateUrl();
 
         return $this->redirect($d);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $uof = $entityManager->getUnitOfWork();
+        $originalEntity = $uof->getOriginalEntityData($entityInstance);
+
+        // We only need to update if the name has changed. The CQL search is not used
+        // by Heyloyalty
+        if ($originalEntity['name'] !== $entityInstance->getName()) {
+            try {
+                $this->heyloyaltyService->updateOption($originalEntity['name'], $entityInstance->getName());
+
+                $this->flashSuccess('Update', $entityInstance->getName());
+
+                parent::updateEntity($entityManager, $entityInstance);
+            } catch (HeyloyaltyOptionNotFoundException $e) {
+                try {
+                    $this->heyloyaltyService->addOption($entityInstance->getName());
+
+                    $this->flashSuccess('Update', $entityInstance->getName());
+
+                    parent::updateEntity($entityManager, $entityInstance);
+                } catch (HeyloyaltyException $e) {
+                    $this->flashError('Update', $entityInstance->getName(), $e);
+                }
+            } catch (HeyloyaltyException $e) {
+                $this->flashError('Update', $entityInstance->getName(), $e);
+            }
+        } else {
+            parent::updateEntity($entityManager, $entityInstance);
+        }
+    }
+
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        try {
+            $this->heyloyaltyService->addOption($entityInstance->getName());
+
+            $this->flashSuccess('Persist', $entityInstance->getName());
+
+            parent::persistEntity($entityManager, $entityInstance);
+        } catch (\Exception $e) {
+            $this->flashError('Persist', $entityInstance->getName(), $e);
+        }
+    }
+
+    public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        try {
+            $this->heyloyaltyService->removeOption();
+
+            $this->flashSuccess('Delete', $entityInstance->getName());
+
+            parent::deleteEntity($entityManager, $entityInstance);
+        } catch (\Exception $e) {
+            $this->flashError('Delete', $entityInstance->getName(), $e);
+        }
+    }
+
+    private function flashSuccess(string $action, string $name): void
+    {
+        $this->addFlash(
+            'success',
+            sprintf('%s "%s" successfull in Heyloyalty.', $action, $name)
+        );
+    }
+
+    private function flashError(string $action, string $name, \Exception $e): void
+    {
+        $this->addFlash(
+            'danger',
+            sprintf('%s "%s" failed in Heyloyalty. [%d: %s]', $action, $name, $e->getCode(), $e->getMessage())
+        );
     }
 }
