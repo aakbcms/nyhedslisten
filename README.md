@@ -1,5 +1,5 @@
 # Nyhedslisten
-Generate list of new materails for the library used to generate news mails.
+Generate list of new materials for the library used to generate news mails.
 
 ## Installation
 The repository comes with a complete docker compose setup to run the project.
@@ -13,18 +13,13 @@ docker-compose exec phpfpm composer install
 
 ```bash
 cp .env .env.local
+
+# Run database migrations
 docker-compose exec phpfpm bin/console doctrine:migrations:migrate
+
+# Load fixtures (optional)
+docker-compose exec phpfpm bin/console doctrine:fixtures:load
 ```
 
 You should change the settings in the local env file to ensure that you get
 connected to the services requires by the projekt.
-
-### Add super user
-```bash
-docker-compose exec phpfpm bin/console fos:user:create admin --super-admin
-```
-
-### Access the project
-```bash
-echo "http://0.0.0.0:$(docker-compose port reverse-proxy 80 | cut -d: -f2)"
-```

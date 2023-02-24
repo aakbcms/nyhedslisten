@@ -15,18 +15,15 @@ class DdbUriService
     // Example url https://www.aakb.dk/ting/object/870970-basis:47791596
     private const URL_PATTERN = '%s/ting/object/%s';
 
-    private string $basePath;
-
     /**
      * DdbUriService constructor.
      *
-     * @param string $bindDdbcmsBaseUrl
+     * @param string $basePath
      *   DDB CMS base URL from configuration
      */
-    public function __construct(string $bindDdbcmsBaseUrl)
-    {
-        $this->basePath = $bindDdbcmsBaseUrl;
-    }
+    public function __construct(
+        private readonly string $basePath
+    ) {}
 
     /**
      * Get generated URL for a given PID.

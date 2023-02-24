@@ -6,145 +6,96 @@
 
 namespace App\Entity;
 
+use App\Repository\MaterialRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="material",
- *    uniqueConstraints={
- *        @ORM\UniqueConstraint(name="pid_unique",
- *            columns={"pid"})
- *    },
- *    indexes={
- *        @ORM\Index(name="pid_material_idx", columns={"pid"}),
- *        @ORM\Index(name="title_idx", columns={"title_full"}),
- *        @ORM\Index(name="creator_idx", columns={"creator"}),
- *    }
- * )
- * @ORM\Entity(repositoryClass="App\Repository\MaterialRepository")
- * @ORM\HasLifecycleCallbacks()
- */
-class Material
+#[ORM\Entity(repositoryClass: MaterialRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: 'material')]
+#[ORM\Index(columns: ['pid'], name: 'pid_material_idx')]
+#[ORM\Index(columns: ['title_full'], name: 'title_idx')]
+#[ORM\Index(columns: ['creator'], name: 'creator_idx')]
+#[ORM\UniqueConstraint(name: 'pid_unique', columns: ['pid'])]
+class Material implements \Stringable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $titleFull;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $titleFull = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $creatorFiltered;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $creatorFiltered = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $creator;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $creator = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $creatorAut;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $creatorAut = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $creatorCre;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $creatorCre = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $contributor;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $contributor = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $contributorAct;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $contributorAct = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $contributorAut;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $contributorAut = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $contributorCtb;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $contributorCtb = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $contributorDkfig;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $contributorDkfig = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $abstract;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $abstract = null;
 
-    /**
-     * @ORM\Column(type="string", length=25)
-     */
-    private $pid;
+    #[ORM\Column(type: 'string', length: 25)]
+    private ?string $pid = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $publisher;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $publisher = null;
 
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $date;
+    #[ORM\Column(type: 'date')]
+    private ?\DateTimeInterface $date = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Category", inversedBy="materials")
-     */
-    private $categories;
+    #[ORM\ManyToMany(targetEntity: 'Category', inversedBy: 'materials')]
+    private Collection $categories;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $uri;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $uri = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $coverUrl;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $coverUrl = null;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $type;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $type = null;
 
     public function __construct()
     {
         $this->categories = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->titleFull ?? '';
+        return (string) ($this->titleFull ?? '');
     }
 
-    /**
-     * @ORM\PrePersist
-     */
+    #[ORM\PrePersist]
     public function prePersistCallback(): void
     {
         $this->updateCreatorFiltered();
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function preUpdateCallback(): void
     {
         $this->updateCreatorFiltered();
@@ -160,7 +111,7 @@ class Material
         return $this->titleFull;
     }
 
-    public function setTitleFull(string $titleFull): self
+    public function setTitleFull(?string $titleFull): self
     {
         $this->titleFull = $titleFull;
 
@@ -177,7 +128,7 @@ class Material
         return $this->creator;
     }
 
-    public function setCreator(string $creator): self
+    public function setCreator(?string $creator): self
     {
         $this->creator = $creator;
 
@@ -225,7 +176,7 @@ class Material
         return $this->publisher;
     }
 
-    public function setPublisher(string $publisher): self
+    public function setPublisher(?string $publisher): self
     {
         $this->publisher = $publisher;
 
@@ -263,7 +214,7 @@ class Material
         return $this->uri;
     }
 
-    public function setUri(string $uri): self
+    public function setUri(?string $uri): self
     {
         $this->uri = $uri;
 
@@ -275,7 +226,7 @@ class Material
         return $this->coverUrl;
     }
 
-    public function setCoverUrl(string $coverUrl): self
+    public function setCoverUrl(?string $coverUrl): self
     {
         $this->coverUrl = $coverUrl;
 
@@ -381,7 +332,7 @@ class Material
     /**
      * Update the "filtered" creator to ensure a value is given.
      *
-     * Return the first non null value from "creator", "creatorAut", "creatorCre",
+     * Return the first non-null value from "creator", "creatorAut", "creatorCre",
      * "contributor", "contributorAct", "contributorAut", "contributorCtb",
      * "contributorDkfig" and "publisher" in that order
      */

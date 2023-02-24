@@ -1,0 +1,33 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{# @var field \EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto #}
+{# @var entity \EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto #}
+{% if field.formattedValue is null %}
+    <span class="badge badge-secondary">{{ 'label.null'|trans(domain = 'EasyAdminBundle') }}</span>
+{% elseif field.formattedValue.code is defined %}
+    <code class="text-danger">{{ field.formattedValue.message }}</code>
+{% else %}
+    {% for result in field.formattedValue %}
+        <dl class="row">
+            {% for key, field in result %}
+                {% if key is same as('titleFull') %}
+                    <dt class="col-sm-2">Title</dt>
+                    <dd class="col-sm-10">{{ field|first }}</dd>
+                {% elseif key is same as('creatorAut') %}
+                    {# igonore #}
+                {% elseif key is same as('pid') %}
+                    <dt class="col-sm-2">{{ key|upper }}</dt>
+                    <dd class="col-sm-10"><code class="text-dark">{{ field|first }}</code></dd>
+                {% elseif key[0:10] is same as('identifier') %}
+                    <dt class="col-sm-2">{{ key[10:]|upper }}</dt>
+                    <dd class="col-sm-10"><code class="text-dark">{{ field|first }}</code></dd>
+                {% elseif key is same as('type') %}
+                    <dt class="col-sm-2">{{ key|title }}</dt>
+                    <dd class="col-sm-10"><span class="badge badge-secondary">{{ field|first }}</span></dd>
+                {% else %}
+                    <dt class="col-sm-2">{{ key|title }}</dt>
+                    <dd class="col-sm-10">{{ field|first }}</dd>
+                {% endif %}
+            {% endfor %}
+        </dl>
+    {% endfor %}
+{% endif %}

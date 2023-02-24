@@ -12,9 +12,7 @@ use App\Entity\SearchRun;
 use App\Exception\PlatformAuthException;
 use App\Service\MaterialPersistService;
 use App\Utils\ArrayMerge;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -42,28 +40,19 @@ class NewMaterialService
 
     private const DATAWELL_DATE_FORMAT = 'Y-m-d\T00:00:00\Z';
 
-    private SearchService $searchService;
-    private MaterialPersistService $materialPersistService;
-    private EntityManagerInterface $entityManager;
-
-    private $agencyId;
-    private $excludedBranches;
-    private $excludedCirculationRules;
+    private readonly string $agencyId;
+    private readonly array $excludedBranches;
+    private readonly array $excludedCirculationRules;
 
     /**
      * NewMaterialService constructor.
-     *
-     * @param SearchService $searchService
-     * @param MaterialPersistService $materialPersistService
-     * @param EntityManagerInterface $entityManager
-     * @param ParameterBagInterface  $params
      */
-    public function __construct(SearchService $searchService, MaterialPersistService $materialPersistService, EntityManagerInterface $entityManager, ParameterBagInterface $params)
-    {
-        $this->searchService = $searchService;
-        $this->materialPersistService = $materialPersistService;
-        $this->entityManager = $entityManager;
-
+    public function __construct(
+        private readonly SearchService $searchService,
+        private readonly MaterialPersistService $materialPersistService,
+        private readonly EntityManagerInterface $entityManager,
+        ParameterBagInterface $params
+    ) {
         $this->agencyId = $params->get('datawell.vendor.agency');
         $this->excludedBranches = explode(',', $params->get('datawell.vendor.excluded.branches'));
         $this->excludedCirculationRules = explode(',', $params->get('datawell.vendor.excluded.circulationRules'));
@@ -74,7 +63,7 @@ class NewMaterialService
      *
      * @param Category $category
      *   The Category to check for new materials to
-     * @param DateTimeImmutable $since
+     * @param \DateTimeImmutable $since
      *   The date since when materials should be received
      *
      * @return array
@@ -83,16 +72,16 @@ class NewMaterialService
      * @throws GuzzleException
      * @throws InvalidArgumentException
      */
-    public function updateNewMaterialsSinceDate(Category $category, DateTimeImmutable $since): array
+    public function updateNewMaterialsSinceDate(Category $category, \DateTimeImmutable $since): array
     {
-        $searchRun = new SearchRun($category, new DateTimeImmutable());
+        $searchRun = new SearchRun($category, new \DateTimeImmutable());
 
         try {
             $newMaterials = $this->getNewMaterialsSinceDate($category, $since);
             $this->materialPersistService->saveResults($newMaterials, $category);
 
             $searchRun->setIsSuccess(true);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             $searchRun->setIsSuccess(false);
             $searchRun->setErrorMessage($exception->getMessage());
         }
@@ -108,7 +97,7 @@ class NewMaterialService
      *
      * @param Category $category
      *   The Category to check for new materials to
-     * @param DateTimeImmutable $since
+     * @param \DateTimeImmutable $since
      *   The date since when materials should be received
      *
      * @return array
@@ -118,7 +107,7 @@ class NewMaterialService
      * @throws InvalidArgumentException'
      * @throws PlatformAuthException
      */
-    public function getNewMaterialsSinceDate(Category $category, DateTimeImmutable $since): array
+    public function getNewMaterialsSinceDate(Category $category, \DateTimeImmutable $since): array
     {
         $allMaterials = $this->getAllMaterialsSinceDate($category, $since);
 
@@ -128,13 +117,10 @@ class NewMaterialService
     /**
      * Get the complete CQL query thar will be preformed against Open Search for the given Category and Date.
      *
-     * @param Category $category
-     * @param DateTimeImmutable $since
-     *
      * @return string
      *   CQL query string
      */
-    public function getCompleteCqlQuery(Category $category, DateTimeImmutable $since): string
+    public function getCompleteCqlQuery(Category $category, \DateTimeImmutable $since): string
     {
         $query = $category->getCqlSearch();
 
@@ -151,7 +137,7 @@ class NewMaterialService
      *
      * @param Category $category
      *   The Category to check for new materials to
-     * @param DateTimeImmutable $since
+     * @param \DateTimeImmutable $since
      *   The date since when materials should be received
      *
      * @return array
@@ -161,7 +147,7 @@ class NewMaterialService
      * @throws GuzzleException
      * @throws InvalidArgumentException
      */
-    private function getAllMaterialsSinceDate(Category $category, DateTimeImmutable $since): array
+    private function getAllMaterialsSinceDate(Category $category, \DateTimeImmutable $since): array
     {
         $query = $this->getCompleteCqlQuery($category, $since);
 
@@ -173,7 +159,7 @@ class NewMaterialService
      *
      * @param array $list
      *   Array of Materials to exclude from
-     * @param DateTimeImmutable $before
+     * @param \DateTimeImmutable $before
      *   The date before which materials should be excluded
      *
      * @return array
@@ -183,7 +169,7 @@ class NewMaterialService
      * @throws GuzzleException
      * @throws InvalidArgumentException
      */
-    private function excludeMaterialsWithExistingCopy(array $list, DateTimeImmutable $before): array
+    private function excludeMaterialsWithExistingCopy(array $list, \DateTimeImmutable $before): array
     {
         $count = \count($list);
         $offset = 0;
@@ -251,9 +237,7 @@ class NewMaterialService
      */
     private function buildPidIncludeString(array $results): string
     {
-        $pidArray = array_map(static function ($element) {
-            return implode(' ', $element['pid']);
-        }, $results);
+        $pidArray = array_map(static fn ($element) => implode(' ', $element['pid']), $results);
 
         return implode(' ', $pidArray);
     }
@@ -269,9 +253,7 @@ class NewMaterialService
      */
     private function buildExcludeSearchString(array $excluded): string
     {
-        $excluded = array_map(static function ($element) {
-            return sprintf('"%s"', $element);
-        }, $excluded);
+        $excluded = array_map(static fn ($element) => sprintf('"%s"', $element), $excluded);
 
         return 'not '.implode(' not ', $excluded);
     }

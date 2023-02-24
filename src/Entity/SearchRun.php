@@ -6,52 +6,41 @@
 
 namespace App\Entity;
 
-use DateTimeImmutable;
+use App\Repository\SearchRunRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\SearchRunRepository")
- */
-class SearchRun
+#[ORM\Entity(repositoryClass: SearchRunRepository::class)]
+class SearchRun implements \Stringable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private int $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $runAt;
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $isSuccess = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="searchRuns")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $category;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isSuccess;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $errorMessage;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $errorMessage = null;
 
     /**
      * SearchRun constructor.
-     *
-     * @param Category            $search
-     * @param DateTimeImmutable $runAt
      */
-    public function __construct(Category $search, DateTimeImmutable $runAt)
+    public function __construct(
+        #[ORM\ManyToOne(targetEntity: 'Category', inversedBy: 'searchRuns')]
+        #[ORM\JoinColumn(nullable: false)]
+        private readonly Category $category,
+        #[ORM\Column(type: 'datetime_immutable')]
+        private readonly \DateTimeImmutable $runAt
+    ) {}
+
+    public function __toString(): string
     {
-        $this->category = $search;
-        $this->runAt = $runAt;
+        $result = $this->isSuccess ? 'OK' : 'ERROR';
+        $date = $this->getRunAt()->format(DATE_ATOM);
+        $message = $this->isSuccess ? '' : ' | '.$this->getErrorMessage();
+
+        return $result.' | '.$date.$message;
     }
 
     public function getId(): ?int
@@ -59,7 +48,7 @@ class SearchRun
         return $this->id;
     }
 
-    public function getRunAt(): ?\DateTimeInterface
+    public function getRunAt(): ?\DateTimeImmutable
     {
         return $this->runAt;
     }

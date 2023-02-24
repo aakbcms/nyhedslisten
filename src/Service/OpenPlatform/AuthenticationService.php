@@ -8,52 +8,49 @@
 namespace App\Service\OpenPlatform;
 
 use App\Exception\PlatformAuthException;
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
+use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * Class AuthenticationService.
  */
 class AuthenticationService
 {
-    // Used to give the token some grace-period, so it will not expire will
-    // being used. Currently, the token is valid for 30 days. So we set the
-    // limit to be 1 day, so it will be refreshed before it expires.
-    const TOKEN_EXPIRE_LIMIT = 86400;
-
-    private ParameterBagInterface $params;
-    private AdapterInterface $cache;
-    private LoggerInterface $statsLogger;
+    // Used to give the token some grace-period so it will not expire will
+    // being used. Currently the token is valid for 30 days. So we set the
+    // limit to be 1 day, so it will be refresh before it expires.
+    final public const TOKEN_EXPIRE_LIMIT = 86400;
     private string $accessToken = '';
-    private ClientInterface $client;
 
     /**
      * Authentication constructor.
      *
      * @param parameterBagInterface $params
      *   Used to get parameters form the environment
-     * @param adapterInterface $cache
+     * @param CacheInterface $cache
      *   Cache to store access token
      * @param loggerInterface $statsLogger
      *   Logger object to send stats to ES
-     * @param ClientInterface $httpClient
-     *  Guzzle Client
+     * @param ClientInterface $guzzleClient
+     *   Guzzle Client
      */
-    public function __construct(ParameterBagInterface $params, AdapterInterface $cache, LoggerInterface $statsLogger, ClientInterface $httpClient)
-    {
-        $this->params = $params;
-        $this->cache = $cache;
-        $this->statsLogger = $statsLogger;
-        $this->client = $httpClient;
-    }
+    public function __construct(
+        private readonly ParameterBagInterface $params,
+        private readonly CacheInterface $cache,
+        private readonly LoggerInterface $statsLogger,
+        private readonly ClientInterface $guzzleClient
+    ) {}
 
     /**
      * Get access token.
      *
-     * If not in local cache an request to the open platform for a new token will
+     * If not in local cache a request to the open platform for a new token will
      * be executed.
      *
      * @param bool $refresh
@@ -63,10 +60,10 @@ class AuthenticationService
      *   The access token
      *
      * @throws PlatformAuthException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
      */
-    public function getAccessToken(bool $refresh = false): string
+    public function getAccessToken($refresh = false)
     {
         if (empty($this->accessToken)) {
             $this->accessToken = $this->authenticate($refresh);
@@ -85,10 +82,11 @@ class AuthenticationService
      *   The token if successful else the empty string,
      *
      * @throws PlatformAuthException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
+     * @throws \JsonException
      */
-    private function authenticate(bool $refresh = false): string
+    private function authenticate($refresh = false)
     {
         // Try getting item from cache.
         $item = $this->cache->getItem('openplatform.access_token');
@@ -104,7 +102,7 @@ class AuthenticationService
             return $item->get();
         } else {
             try {
-                $response = $this->client->request('POST', $this->params->get('openPlatform.auth.url'), [
+                $response = $this->guzzleClient->request('POST', $this->params->get('openPlatform.auth.url'), [
                     'form_params' => [
                         'grant_type' => 'password',
                         'username' => '@'.$this->params->get('datawell.vendor.agency'),
@@ -134,7 +132,7 @@ class AuthenticationService
 
             // Get the content and parse json object as an array.
             $content = $response->getBody()->getContents();
-            $json = json_decode($content, true);
+            $json = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
 
             $this->statsLogger->info('Access token acquired', [
                 'service' => 'AuthenticationService',

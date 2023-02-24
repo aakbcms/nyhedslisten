@@ -2,7 +2,7 @@
 # Files in the packages/ subdirectory configure your dependencies.
 
 # Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     locale: 'en'
     openPlatform.auth.id: '%env(OPENPLATFORM_AUTH_ID)%'
@@ -16,25 +16,12 @@ parameters:
     datawell.vendor.excluded.branches: '%env(DATAWELL_VENDOR_EXCLUDED_BRANCHES)%'
     datawell.vendor.excluded.circulationRules: '%env(DATAWELL_VENDOR_EXCLUDED_CIRCULATION_RULES)%'
     datawell.default.accessiondate.criteria: '%env(DATAWELL_DEFAULT_ACCESSIONDATE_CRITERIA)%'
-    heyloyalty.apikey: '%env(HEYLOYALTY_APIKEY)%'
-    heyloyalty.secret: '%env(HEYLOYALTY_SECRET)%'
-    heyloyalty.list.id: '%env(int:HEYLOYALTY_LIST_ID)%'
-    heyloyalty.field.id: '%env(int:HEYLOYALTY_FIELD_ID)%'
-    ddbcms.base.url: '%env(DDBCMS_BASE_URL)%'
 
 services:
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
-        bind:
-            $httpClient: '@eight_points_guzzle.client.guzzle_client'
-            $bindDdbcmsBaseUrl: '%env(DDBCMS_BASE_URL)%'
-            $bindCoverServiceUrl: '%env(COVER_SERVICE_URL)%'
-            $bindCoverServiceDefaultUrl: '%env(COVER_SERVICE_DEFAULT_URL)%'
-            $bindCoverServiceGenerateDomain: '%env(COVER_SERVICE_GENERATE_DOMAIN)%'
-            $bindProjectDir: '%kernel.project_dir%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -44,13 +31,29 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-            - '../src/Tests/'
-
-    # controllers are imported separately to make sure services can be injected
-    # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '../src/Controller/'
-        tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\CoverServiceService:
+        arguments:
+            $coverServiceUrl: '%env(COVER_SERVICE_URL)%'
+            $coverServiceDefaultUrl: '%env(COVER_SERVICE_URL)%'
+            $coverServiceGenerateDomain: '%env(COVER_SERVICE_GENERATE_DOMAIN)%'
+            $projectDir: '%kernel.project_dir%'
+
+    App\Service\DdbUriService:
+        arguments:
+            $basePath: '%env(DDBCMS_BASE_URL)%'
+
+    App\Service\Heyloyalty\HeyloyaltyService:
+        arguments:
+            $listId: '%env(int:HEYLOYALTY_LIST_ID)%'
+            $fieldId: '%env(int:HEYLOYALTY_FIELD_ID)%'
+
+    # Heyloyalty API Client
+    Phpclient\HLClient:
+        autowire: false
+        arguments:
+            $apiKey: '%env(HEYLOYALTY_APIKEY)%'
+            $apiSecret: '%env(HEYLOYALTY_SECRET)%'

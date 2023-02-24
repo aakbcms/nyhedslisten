@@ -16,10 +16,6 @@ class FontMetrics
     /**
      * Get the max number of characters that can be fitted in the width
      * for a given font size before wrapping is needed.
-     *
-     * @param $x
-     *
-     * @return int
      */
     public function maxWidthFromFontSize($x): int
     {
@@ -90,10 +86,6 @@ class FontMetrics
     /**
      * Get the maximum font size that can be used if a given number of characters
      * need to be fitted in the width.
-     *
-     * @param $x
-     *
-     * @return int
      */
     public function maxFontSizeFromWidth($x): int
     {
@@ -186,7 +178,7 @@ class FontMetrics
     {
         $longestToken = '';
         foreach ($tokens as $token) {
-            $token = trim($token);
+            $token = trim((string) $token);
             if (strlen($token) > strlen($longestToken)) {
                 $longestToken = $token;
             }
@@ -221,14 +213,14 @@ class FontMetrics
      */
     public function getFontDataForTitle($str, $pageWidth): array
     {
-        $str = trim($str);
+        $str = trim((string) $str);
         $longestToken = $this->getLongest(explode(' ', $str));
 
-        $fontSize = round($this->baseFontFactor / pow(strlen($str), 0.465), 0);
+        $fontSize = round($this->baseFontFactor / strlen($str) ** 0.465, 0);
         $width = $this->maxWidthFromFontSize($fontSize);
 
-        if (strlen($longestToken) > $width) {
-            $width = strlen($longestToken);
+        if (strlen((string) $longestToken) > $width) {
+            $width = strlen((string) $longestToken);
             $fontSize = min($fontSize, $this->maxFontSizeFromWidth($width));
         }
 
@@ -246,17 +238,17 @@ class FontMetrics
      */
     public function getFontDataForSubtitle($str, $pageWidth): array
     {
-        $str = trim($str);
+        $str = trim((string) $str);
         $longestToken = $this->getLongest(explode(' ', $str));
 
-        $fontSize = round(0.68 * $this->baseFontFactor / pow(strlen($str), 0.465), 0);
+        $fontSize = round(0.68 * $this->baseFontFactor / strlen($str) ** 0.465, 0);
 
         // Size of subtitle should never be more than 0.9 times the title size
         $fontSize = min($fontSize, $this->titleFontSize * 0.9);
 
         $width = $this->maxWidthFromFontSize($fontSize);
-        if (strlen($longestToken) > $width) {
-            $width = strlen($longestToken);
+        if (strlen((string) $longestToken) > $width) {
+            $width = strlen((string) $longestToken);
             $fontSize = min($fontSize, $this->maxFontSizeFromWidth($width));
         }
 
@@ -268,12 +260,12 @@ class FontMetrics
 
     public function getFontDataForCreators($str): array
     {
-        $str = trim($str);
+        $str = trim((string) $str);
         $items = preg_split('/,\s*/', $str);
         $longestToken = $this->getLongest($items);
 
-        $fontSize = round(0.45 * $this->baseFontFactor / pow(strlen($str), 0.33), 0);
-        $fontSize = min($fontSize, $this->maxFontSizeFromWidth(strlen($longestToken)));
+        $fontSize = round(0.45 * $this->baseFontFactor / strlen($str) ** 0.33, 0);
+        $fontSize = min($fontSize, $this->maxFontSizeFromWidth(strlen((string) $longestToken)));
 
         $str = trim(implode("\n", $items));
 

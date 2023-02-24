@@ -6,49 +6,37 @@
 
 namespace App\Entity;
 
-use DateTimeInterface;
+use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Blameable\Traits\BlameableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
- */
-class Category
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+class Category implements \Stringable
 {
     use BlameableEntity;
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $name = null;
 
-    /**
-     * @ORM\Column(type="text")
-     */
-    private $cqlSearch;
+    #[ORM\Column(type: 'text')]
+    private ?string $cqlSearch = null;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Material", mappedBy="categories", fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"creatorFiltered" = "ASC"})
-     */
-    private $materials;
+    #[ORM\ManyToMany(targetEntity: Material::class, mappedBy: 'categories', fetch: 'EXTRA_LAZY')]
+    #[ORM\OrderBy(['creatorFiltered' => 'ASC'])]
+    private Collection $materials;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SearchRun", mappedBy="category", orphanRemoval=true, fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"id" = "DESC"})
-     */
-    private $searchRuns;
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: SearchRun::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\OrderBy(['runAt' => 'DESC'])]
+    private Collection $searchRuns;
 
     public function __construct()
     {
@@ -56,9 +44,9 @@ class Category
         $this->searchRuns = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->name;
+        return (string) $this->name;
     }
 
     public function getId(): ?int
@@ -130,10 +118,6 @@ class Category
 
     /**
      * Add search run.
-     *
-     * @param SearchRun $searchRun
-     *
-     * @return Category
      */
     public function addSearchRun(SearchRun $searchRun): self
     {
@@ -147,10 +131,6 @@ class Category
 
     /**
      * Remove search run.
-     *
-     * @param SearchRun $searchRun
-     *
-     * @return Category
      */
     public function removeSearchRun(SearchRun $searchRun): self
     {
@@ -167,11 +147,10 @@ class Category
 
     /**
      * Get the datetime of the latest search run.
-     *
-     * @return DateTimeInterface|null
      */
-    public function getLastSearchRunAt(): ?DateTimeInterface
+    public function getLastSearchRunAt(): ?\DateTimeImmutable
     {
+        /** @var SearchRun|false $searchRun */
         $searchRun = $this->searchRuns->first();
 
         return $searchRun ? $searchRun->getRunAt() : null;
@@ -179,11 +158,10 @@ class Category
 
     /**
      * Get if the last search run was a success.
-     *
-     * @return bool|null
      */
     public function getLastSearchRunSuccess(): ?bool
     {
+        /** @var SearchRun|false $searchRun */
         $searchRun = $this->searchRuns->first();
 
         return $searchRun ? $searchRun->getIsSuccess() : null;

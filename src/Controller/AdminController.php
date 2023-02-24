@@ -6,13 +6,9 @@
 
 namespace App\Controller;
 
-use AlterPHP\EasyAdminExtensionBundle\Controller\EasyAdminController;
 use App\Entity\Category;
-use App\Entity\User;
 use App\Service\Heyloyalty\HeyloyaltyService;
 use App\Service\OpenPlatform\NewMaterialService;
-use FOS\UserBundle\Model\UserInterface;
-use FOS\UserBundle\Model\UserManagerInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,28 +19,20 @@ use Symfony\Component\HttpFoundation\Response;
  * Used to integrate FOSUserBundle and EasyAdminBundle
  * https://symfony.com/doc/master/bundles/EasyAdminBundle/integration/fosuserbundle.html
  */
-class AdminController extends EasyAdminController
+class AdminController
 {
-    private UserManagerInterface $userManager;
-    private NewMaterialService $newMaterialService;
-    private HeyloyaltyService $heyloyaltyService;
-
     /**
      * AdminController constructor.
      *
-     * @param UserManagerInterface $userManager
-     *   The FOS user manager
      * @param NewMaterialService $newMaterialService
      *   The service to query for new materials
      * @param heyloyaltyService $heyloyaltyService
      *   Integration with HL
      */
-    public function __construct(UserManagerInterface $userManager, NewMaterialService $newMaterialService, HeyloyaltyService $heyloyaltyService)
-    {
-        $this->userManager = $userManager;
-        $this->newMaterialService = $newMaterialService;
-        $this->heyloyaltyService = $heyloyaltyService;
-    }
+    public function __construct(
+        private readonly NewMaterialService $newMaterialService,
+        private readonly HeyloyaltyService $heyloyaltyService
+    ) {}
 
     /**
      * Custom batch action to update materials for Searches.
@@ -58,9 +46,7 @@ class AdminController extends EasyAdminController
      */
     public function queryBatchAction(array $ids): void
     {
-        $ids = array_map(static function ($id) {
-            return (int) $id;
-        }, $ids);
+        $ids = array_map(static fn ($id) => (int) $id, $ids);
         $searches = $this->em->getRepository(Category::class)->findBy(['id' => $ids]);
 
         // @TODO Move time interval to config
@@ -76,7 +62,7 @@ class AdminController extends EasyAdminController
         if (!empty($searches)) {
             $this->addFlash(
                 'info',
-                \count($searches).' CQL queries performed, '.$materialCount.' materials fetched'
+                (is_countable($searches) ? \count($searches) : 0).' CQL queries performed, '.$materialCount.' materials fetched'
             );
         }
     }
@@ -84,10 +70,8 @@ class AdminController extends EasyAdminController
     /**
      * Custom action to test CQL Query.
      *
-     * @return Response
-     *
      * @throws GuzzleException
-     *   If the Search query is malformed or the Open Search calls fails
+     *    If the Search query is malformed or the Open Search calls fails
      * @throws InvalidArgumentException
      */
     public function queryAction(): Response
@@ -125,61 +109,10 @@ class AdminController extends EasyAdminController
         return $this->render('actions/showQueryResult.html.twig', $templateData);
     }
 
-    /**
-     * Create new User entity.
-     *
-     * EasyAdmin custom action to integrate FOSUserBundle and EasyAdminBundle
-     *
-     * @return UserInterface
-     */
-    public function createNewUserEntity(): UserInterface
-    {
-        return $this->userManager->createUser();
-    }
-
-    /**
-     * Persist User entity.
-     *
-     * EasyAdmin custom action to integrate FOSUserBundle and EasyAdminBundle
-     *
-     * @param User $user
-     */
-    public function persistUserEntity(User $user): void
-    {
-        $this->userManager->updateUser($user, false);
-        parent::persistEntity($user);
-    }
-
-    /**
-     * Update User entity.
-     *
-     * EasyAdmin custom action to integrate FOSUserBundle and EasyAdminBundle
-     *
-     * @param User $user
-     */
-    public function updateUserEntity(User $user): void
-    {
-        $this->userManager->updateUser($user, false);
-        parent::updateEntity($user);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function removeEntity($entity)
-    {
-        parent::removeEntity($entity);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function updateCategoryEntity($entity)
     {
         $uof = $this->em->getUnitOfWork();
         $originalEntity = $uof->getOriginalEntityData($entity);
-
-        parent::updateEntity($entity);
 
         try {
             $this->heyloyaltyService->updateOption($originalEntity['name'], $entity->getName());
@@ -190,13 +123,8 @@ class AdminController extends EasyAdminController
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function persistCategoryEntity($entity)
     {
-        parent::persistEntity($entity);
-
         $this->heyloyaltyService->addOption($entity->getName());
     }
 }

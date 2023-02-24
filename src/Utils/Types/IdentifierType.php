@@ -12,24 +12,22 @@ namespace App\Utils\Types;
 
 class IdentifierType
 {
-    public const PID = 'pid';
-    public const ISBN = 'isbn';
-    public const ISSN = 'issn';
-    public const ISMN = 'ismn';
-    public const ISRC = 'isrc';
-    public const FAUST = 'faust';
+    final public const PID = 'pid';
+    final public const ISBN = 'isbn';
+    final public const ISSN = 'issn';
+    final public const ISMN = 'ismn';
+    final public const ISRC = 'isrc';
+    final public const FAUST = 'faust';
 
     /**
      * Get array of all defined identifier types.
      *
      * @return array
      *   An array of known identifiers. Uppercase identifier name in key, lower case identifier in value.
-     *
-     * @throws \ReflectionException
      */
     public static function getTypeList(): array
     {
-        $oClass = new \ReflectionClass(__CLASS__);
+        $oClass = new \ReflectionClass(self::class);
 
         return $oClass->getConstants();
     }

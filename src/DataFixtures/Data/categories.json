@@ -1,0 +1,623 @@
+[
+  {
+    "id": 1,
+    "name": "Voksne - Digte",
+    "cql_search": "ok=sk and ma=di and facet.category=voksenmaterialer and hm=xx",
+    "created_by": "admin",
+    "updated_by": "andno",
+    "created_at": "2019-09-11 14:37:03",
+    "updated_at": "2020-11-05 13:33:37"
+  },
+  {
+    "id": 2,
+    "name": "Voksne - Familie- og slægtsromaner",
+    "cql_search": "ma=ro and sp=dan and facet.category=voksenmaterialer and hm=xx and lem=(familie* or slægt*)",
+    "created_by": "admin",
+    "updated_by": "andno",
+    "created_at": "2019-09-11 14:37:39",
+    "updated_at": "2020-09-15 10:52:22"
+  },
+  {
+    "id": 3,
+    "name": "Voksne - Tegneserier",
+    "cql_search": "bs=te and facet.category=voksenmaterialer",
+    "created_by": "admin",
+    "updated_by": "andno",
+    "created_at": "2019-09-11 14:38:07",
+    "updated_at": "2020-09-15 10:23:08"
+  },
+  {
+    "id": 4,
+    "name": "Musik - Filmmusik",
+    "cql_search": "mo=fil",
+    "created_by": "admin",
+    "updated_by": "andno",
+    "created_at": "2019-09-11 14:38:39",
+    "updated_at": "2020-09-15 10:44:22"
+  },
+  {
+    "id": 5,
+    "name": "Musik - Rock",
+    "cql_search": "mo=bef or mo=bea",
+    "created_by": "admin",
+    "updated_by": "andno",
+    "created_at": "2019-09-11 14:39:12",
+    "updated_at": "2020-09-15 10:23:45"
+  },
+  {
+    "id": 6,
+    "name": "Voksne - Biografier og slægtshistorie",
+    "cql_search": "(ok=99*) and facet.category=voksenmaterialer not facet.category=\"lydbog(cd-mp3)\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-25 14:19:30",
+    "updated_at": "2020-11-05 13:33:30"
+  },
+  {
+    "id": 7,
+    "name": "Voksne - Naturvidenskab",
+    "cql_search": "((ok=5* not ok=59*) or (ok=64.4* or ok=63.6* or ok=63.8*)) and facet.category=voksenmaterialer and facet.type=bog",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-25 14:29:04",
+    "updated_at": "2020-11-05 13:33:22"
+  },
+  {
+    "id": 9,
+    "name": "Børn - Skønlitteratur på Engelsk/Amerikansk",
+    "cql_search": "ok=83* and facet.category=børnematerialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:23:13",
+    "updated_at": "2020-09-15 10:09:46"
+  },
+  {
+    "id": 10,
+    "name": "Voksne - Skønlitteratur på engelsk/amerikansk",
+    "cql_search": "ok=83* and facet.category=voksenmaterialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:23:32",
+    "updated_at": "2020-09-15 10:12:08"
+  },
+  {
+    "id": 11,
+    "name": "Voksne - Skønlitteratur på fransk",
+    "cql_search": "ok=82 or ok=82.5",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:23:52",
+    "updated_at": "2020-09-15 10:15:12"
+  },
+  {
+    "id": 12,
+    "name": "Voksne - Skønlitteratur på norsk",
+    "cql_search": "(ok=85 or ok=85.1) and facet.category=voksenmaterialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:24:19",
+    "updated_at": "2020-09-15 11:00:24"
+  },
+  {
+    "id": 13,
+    "name": "Voksne - Skønlitteratur på spansk",
+    "cql_search": "ok=82.7 and facet.category=voksenmaterialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:24:37",
+    "updated_at": "2020-09-15 10:25:33"
+  },
+  {
+    "id": 14,
+    "name": "Voksne - Skønlitteratur på svensk",
+    "cql_search": "ok=87 and facet.category=voksenmaterialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:24:54",
+    "updated_at": "2020-09-15 10:23:01"
+  },
+  {
+    "id": 15,
+    "name": "Voksne - Skønlitteratur på tysk",
+    "cql_search": "ok=84 and facet.category=voksenmaterialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:25:11",
+    "updated_at": "2020-09-15 11:00:44"
+  },
+  {
+    "id": 16,
+    "name": "Børn - Film",
+    "cql_search": "ma=th and sp=dan and facet.category=børnematerialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:25:35",
+    "updated_at": "2020-09-15 10:12:54"
+  },
+  {
+    "id": 17,
+    "name": "Børn - Playstation",
+    "cql_search": "ts=playstation and facet.category=børnematerialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:26:03",
+    "updated_at": "2020-09-15 10:40:24"
+  },
+  {
+    "id": 18,
+    "name": "Børn - Wii",
+    "cql_search": "ts=wii and facet.category=børnematerialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:26:16",
+    "updated_at": "2020-09-15 10:25:51"
+  },
+  {
+    "id": 19,
+    "name": "Børn - Xbox",
+    "cql_search": "ts=xbox and facet.category=børnematerialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:26:29",
+    "updated_at": "2020-09-15 10:41:04"
+  },
+  {
+    "id": 20,
+    "name": "Børn - Nintendo switch",
+    "cql_search": "ts=\"nintendo switch\" and facet.category=børnematerialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:26:49",
+    "updated_at": "2020-09-15 10:40:09"
+  },
+  {
+    "id": 21,
+    "name": "Voksne - Film",
+    "cql_search": "ma=th and sp=dan and facet.category=voksenmaterialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:27:07",
+    "updated_at": "2020-09-15 10:53:51"
+  },
+  {
+    "id": 22,
+    "name": "Voksne - Playstation",
+    "cql_search": "ts=playstation and facet.category=voksenmaterialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:27:25",
+    "updated_at": "2020-09-15 10:21:51"
+  },
+  {
+    "id": 23,
+    "name": "Voksne - Wii",
+    "cql_search": "ts=wii and facet.category=voksenmaterialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:27:40",
+    "updated_at": "2020-09-15 11:02:00"
+  },
+  {
+    "id": 24,
+    "name": "Voksne - Xbox",
+    "cql_search": "ts=xbox and facet.category=voksenmaterialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:27:56",
+    "updated_at": "2020-09-15 11:02:11"
+  },
+  {
+    "id": 25,
+    "name": "Voksne - Nintendo switch",
+    "cql_search": "ts=\"nintendo switch\" and facet.category=voksenmaterialer",
+    "created_by": "sgl",
+    "updated_by": "andno",
+    "created_at": "2019-09-26 14:28:21",
+    "updated_at": "2020-09-15 10:20:34"
+  },
+  {
+    "id": 26,
+    "name": "Voksne - Historiske romaner",
+    "cql_search": "ma=ro and sp=dan and facet.category=voksenmaterialer and hm=xx and lem=historie",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:39:23",
+    "updated_at": "2020-09-15 10:54:31"
+  },
+  {
+    "id": 27,
+    "name": "Voksne - Humor",
+    "cql_search": "ma=ro and sp=dan and facet.category=voksenmaterialer and hm=xx and lem=humor",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:40:02",
+    "updated_at": "2020-09-15 10:54:46"
+  },
+  {
+    "id": 28,
+    "name": "Voksne - Krimi og spænding",
+    "cql_search": "ma=ro and sp=dan and facet.category=voksenmaterialer and hm=xx and lem=(krimi or spænd*)",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:40:33",
+    "updated_at": "2020-09-15 10:55:33"
+  },
+  {
+    "id": 29,
+    "name": "Voksne - Science fiction",
+    "cql_search": "ma=ro and sp=dan and facet.category=voksenmaterialer and hm=xx and lem=\"science fiction\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:41:03",
+    "updated_at": "2020-09-15 10:59:50"
+  },
+  {
+    "id": 30,
+    "name": "Voksne - Kærlighed",
+    "cql_search": "ma=ro and sp=dan and facet.category=voksenmaterialer and hm=xx and lem=kærlighed",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:41:27",
+    "updated_at": "2020-09-15 10:55:16"
+  },
+  {
+    "id": 31,
+    "name": "Voksne - Letlæsning",
+    "cql_search": "lem=\"let at læse\" and sp=dan and hm=xx and facet.category=voksenmaterialer",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:41:47",
+    "updated_at": "2020-09-15 10:17:25"
+  },
+  {
+    "id": 32,
+    "name": "Voksne - Lydbøger, faglitteratur",
+    "cql_search": "facet.type=\"lydbog (cd-mp3)\" not ok=sk and facet.category=voksenmaterialer",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:42:48",
+    "updated_at": "2020-11-05 13:32:57"
+  },
+  {
+    "id": 33,
+    "name": "Voksne - Lydbøger, skønlitteratur",
+    "cql_search": "facet.type=\"lydbog (cd-mp3)\" and ok=sk and facet.category=voksenmaterialer",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:43:11",
+    "updated_at": "2020-11-05 13:32:51"
+  },
+  {
+    "id": 34,
+    "name": "Voksne - Læsetasker",
+    "cql_search": "ok=sk and ma=ro and læsetaske and hm=xx and facet.category=voksenmaterialer",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:43:37",
+    "updated_at": "2020-11-05 13:32:42"
+  },
+  {
+    "id": 35,
+    "name": "Voksne - Noveller",
+    "cql_search": "ok=sk and ma=no and hm=xx and facet.category=voksenmaterialer",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:44:04",
+    "updated_at": "2020-11-05 13:32:37"
+  },
+  {
+    "id": 36,
+    "name": "Voksne - Romaner",
+    "cql_search": "ok=sk and ma=ro and hm=xx and facet.category=voksenmaterialer",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:44:55",
+    "updated_at": "2020-11-05 13:32:31"
+  },
+  {
+    "id": 37,
+    "name": "Børn - Billedbøger",
+    "cql_search": "bs=bi and sp=dan",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:46:13",
+    "updated_at": "2020-09-15 10:11:09"
+  },
+  {
+    "id": 38,
+    "name": "Børn - Faglitteratur",
+    "cql_search": "facet.type=bog and facet.category=børnematerialer and sp=dan not ok=sk",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:46:39",
+    "updated_at": "2020-11-05 13:32:01"
+  },
+  {
+    "id": 39,
+    "name": "Børn - Højtlæsning",
+    "cql_search": "lem=\"for højtlæsning\" and sp=dan",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:47:11",
+    "updated_at": "2020-09-15 10:33:47"
+  },
+  {
+    "id": 40,
+    "name": "Børn - Letlæsning",
+    "cql_search": "lem=\"let at læse\" and facet.category=børnematerialer",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:48:04",
+    "updated_at": "2020-09-15 10:37:34"
+  },
+  {
+    "id": 41,
+    "name": "Børn - Lydbøger",
+    "cql_search": "facet.type=\"lydbog (cd-mp3)\" and facet.category=børnematerialer",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:48:34",
+    "updated_at": "2020-09-15 10:37:54"
+  },
+  {
+    "id": 42,
+    "name": "Børn - Romaner for de 10-13 årige",
+    "cql_search": "ma=ro and sp=dan and lem=(\"for 10 år\" or \"for 11 år\" or \"for 12 år\" or \"for 13 år\")",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:49:13",
+    "updated_at": "2020-09-15 10:24:04"
+  },
+  {
+    "id": 43,
+    "name": "Børn - Romaner for de 7-9 årige",
+    "cql_search": "ma=ro and sp=dan and lem=(\"for 7 år\" or \"for 8 år\" or \"for 9 år\")",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:49:37",
+    "updated_at": "2020-09-15 10:24:13"
+  },
+  {
+    "id": 44,
+    "name": "Børn - Tegneserier",
+    "cql_search": "bs=te and facet.category=børnematerialer",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:50:12",
+    "updated_at": "2020-09-15 10:23:55"
+  },
+  {
+    "id": 45,
+    "name": "Børn - Ungdomsbøger",
+    "cql_search": "ma=ro and sp=dan and lem=(\"for 14 år\" or \"for 15 år\" or \"for 16 år\")",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-09-30 14:50:37",
+    "updated_at": "2020-09-15 10:40:49"
+  },
+  {
+    "id": 46,
+    "name": "Musik - Folkemusik",
+    "cql_search": "mo=fol",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 18:58:50",
+    "updated_at": "2020-09-15 10:14:53"
+  },
+  {
+    "id": 47,
+    "name": "Musik - Jazz og blues",
+    "cql_search": "mo=jaz or mo=jaa or mo=blu or mo=bla",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 18:59:50",
+    "updated_at": "2020-09-15 10:19:02"
+  },
+  {
+    "id": 48,
+    "name": "Musik - Kammermusik",
+    "cql_search": "mo=kam or mo=kaa",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:00:25",
+    "updated_at": "2020-09-15 10:44:40"
+  },
+  {
+    "id": 49,
+    "name": "Musik - Middelalder/renæssance",
+    "cql_search": "mo=mir or mo=mia",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:00:52",
+    "updated_at": "2020-09-15 10:44:57"
+  },
+  {
+    "id": 50,
+    "name": "Musik - Operaer",
+    "cql_search": "mo=opr or mo=opa",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:01:21",
+    "updated_at": "2020-09-15 10:21:04"
+  },
+  {
+    "id": 51,
+    "name": "Musik - Operetter/musicals",
+    "cql_search": "mo=otm or mo=ota",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:02:15",
+    "updated_at": "2020-09-15 10:21:14"
+  },
+  {
+    "id": 52,
+    "name": "Musik - Orkestermusik",
+    "cql_search": "mo=ork or mo=ora",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:02:37",
+    "updated_at": "2020-09-15 10:21:30"
+  },
+  {
+    "id": 53,
+    "name": "Musik - Underholdning",
+    "cql_search": "mo=und",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:03:02",
+    "updated_at": "2020-09-15 10:49:59"
+  },
+  {
+    "id": 54,
+    "name": "Musik - Vokalmusik",
+    "cql_search": "mo=vok or mo=voa",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:03:29",
+    "updated_at": "2020-09-15 10:50:52"
+  },
+  {
+    "id": 55,
+    "name": "Voksne - Erhvervsliv",
+    "cql_search": "(ok=60.1* or ok=65.1 or ok=65.2* or ok=65.3* or ok=65.4* or ok=65.5* or ok=65.6*) and facet.category=voksenmaterialer not facet.type=\"lydbog(cd-mp3)\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:06:15",
+    "updated_at": "2020-11-05 13:31:47"
+  },
+  {
+    "id": 56,
+    "name": "Voksne - Filosofi, psykologi og religion",
+    "cql_search": "(ok=10* or ok=11* or ok=12* or ok=13* or ok=14* or ok=15* or ok=16 or ok=20*) and facet.category=voksenmaterialer not facet.type=\"lydbog(cd-mp3)\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:06:58",
+    "updated_at": "2020-11-05 13:31:32"
+  },
+  {
+    "id": 57,
+    "name": "Voksne - Geografi og rejser",
+    "cql_search": "ok=4* and facet.category=voksenmaterialer not facet.type=\"lydbog(cd-mp3)\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:07:31",
+    "updated_at": "2020-11-05 13:31:14"
+  },
+  {
+    "id": 58,
+    "name": "Voksne - Historie",
+    "cql_search": "(ok=9* not ok=99*) and facet.category=voksenmaterialer not facet.type=\"lydbog(cd-mp3)\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:08:01",
+    "updated_at": "2020-11-05 13:31:07"
+  },
+  {
+    "id": 59,
+    "name": "Voksne - Hus og have",
+    "cql_search": "(ok=64.1* or ok=64.2* or ok=64.5* or ok=64.7* or ok=64.8* or ok=64.9*) and facet.category=voksenmaterialer not facet.type=\"lydbog(cd-mp3)\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:08:29",
+    "updated_at": "2020-11-05 13:30:55"
+  },
+  {
+    "id": 60,
+    "name": "Voksne - IT",
+    "cql_search": "(ok=19.6* or ok=51.8* ) and facet.category=voksenmaterialer not facet.type=\"lydbog(cd-mp3)\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:08:53",
+    "updated_at": "2020-11-05 13:30:37"
+  },
+  {
+    "id": 61,
+    "name": "Voksne - Kunst, arkitektur og håndarbejde",
+    "cql_search": "(ok=70* or ok=71* or ok=72* or ok=73* or ok=74* or ok=75* or ok=64.6* or ok=76* or ok=68* not ok=68.8*) and facet.category=voksenmaterialer not facet.type=\"lydbog(cd-mp3)\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:09:22",
+    "updated_at": "2020-11-05 13:30:28"
+  },
+  {
+    "id": 62,
+    "name": "Voksne - Litteraturhistorie og sprog",
+    "cql_search": "(ok=80* or ok=81* or ok=89*) and facet.category=voksenmaterialer not facet.type=\"lydbog(cd-mp3)\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:09:54",
+    "updated_at": "2020-11-05 13:29:55"
+  },
+  {
+    "id": 63,
+    "name": "Voksne - Mad",
+    "cql_search": "(ok=64.1* or ok=64.2* or ok=64.9*) and facet.category=voksenmaterialer not facet.type=\"lydbog(cd-mp3)\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:10:16",
+    "updated_at": "2020-11-05 13:29:43"
+  },
+  {
+    "id": 64,
+    "name": "Voksne - Praktiske fag",
+    "cql_search": "((ok=60.9* or ok=62.1* or ok=62.2* or ok=62.3* or ok=62.4* or ok=62.5* or ok=62.6* or ok=62.7* or ok=62.8* or ok=62.9* or ok=65.8* or ok=65.9* or ok=66* or ok=67* or ok=68.8* or ok=69*) or (ok=63* not (ok=63.5* or ok=63.6*))) and facet.category=voksenmaterialer not facet.type=\"lydbog(cd-mp3)\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:10:36",
+    "updated_at": "2020-11-05 13:29:16"
+  },
+  {
+    "id": 65,
+    "name": "Voksne - Samfund, jura og pædagogik",
+    "cql_search": "(ok=3* or ok=59*) and facet.category=voksenmaterialer not facet.type=\"lydbog(cd-mp3)\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:11:01",
+    "updated_at": "2020-11-05 13:28:49"
+  },
+  {
+    "id": 66,
+    "name": "Voksne - Sport og spil",
+    "cql_search": "ok=79* and facet.category=voksenmaterialer not facet.type=\"lydbog(cd-mp3)\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:11:24",
+    "updated_at": "2020-11-05 13:28:37"
+  },
+  {
+    "id": 67,
+    "name": "Voksne - Sundhed og sygdom",
+    "cql_search": "ok=61* and facet.category=voksenmaterialer not facet.type=\"lydbog(cd-mp3)\"",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2019-10-08 19:12:01",
+    "updated_at": "2020-11-05 13:27:30"
+  },
+  {
+    "id": 68,
+    "name": "Voksne - Teater, film og musik",
+    "cql_search": "(ok=77 or ok=77.0* or ok=77.1* or ok=77.2* or ok=77.3* or ok=77.4* or ok=77.5* or ok=77.6* or ok=78*) and facet.category=\"voksenmaterialer\" and (facet.type=bog or facet.type=node)",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2020-07-10 10:12:02",
+    "updated_at": "2020-11-05 13:28:26"
+  },
+  {
+    "id": 69,
+    "name": "Nul hits i søgning",
+    "cql_search": "ti=aoiy5v894ytmsat4rtsev",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2020-09-15 11:21:08",
+    "updated_at": "2020-09-15 11:21:08"
+  },
+  {
+    "id": 70,
+    "name": "Voksne - Romaner (dobbeltgænger)",
+    "cql_search": "ok=sk and ma=ro and hm=xx and facet.category=voksenmaterialer",
+    "created_by": "andno",
+    "updated_by": "andno",
+    "created_at": "2020-09-15 11:42:48",
+    "updated_at": "2020-11-05 13:27:14"
+  }
+]

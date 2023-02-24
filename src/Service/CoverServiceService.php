@@ -8,41 +8,30 @@
 namespace App\Service;
 
 use App\Entity\Material;
+use App\Exception\PlatformAuthException;
 use App\Service\OpenPlatform\AuthenticationService;
 use App\Utils\GenericBookCover\BookCover;
 use CoverService\Api\CoverApi;
 use CoverService\Configuration;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Cache\InvalidArgumentException;
 
 /**
  * Class CoverServiceService.
  */
 class CoverServiceService
 {
-    private AuthenticationService $authenticationService;
-    private string $bindCoverServiceUrl;
-    private string $bindCoverServiceDefaultUrl;
-    private string $bindCoverServiceGenerateDomain;
-    private string $bindProjectDir;
-
     /**
      * CoverServiceService constructor.
-     *
-     * @param AuthenticationService $authenticationService
-     * @param string $bindCoverServiceUrl
-     * @param string $bindCoverServiceDefaultUrl
-     * @param string $bindCoverServiceGenerateDomain
-     * @param string $bindProjectDir
      */
-    public function __construct(AuthenticationService $authenticationService, string $bindCoverServiceUrl, string $bindCoverServiceDefaultUrl, string $bindCoverServiceGenerateDomain, string $bindProjectDir)
-    {
-        // This reuse of the authentication service assumes that the token is an agency token (auth with an agency).
-        $this->authenticationService = $authenticationService;
-        $this->bindCoverServiceUrl = $bindCoverServiceUrl;
-        $this->bindCoverServiceDefaultUrl = $bindCoverServiceDefaultUrl;
-        $this->bindCoverServiceGenerateDomain = $bindCoverServiceGenerateDomain;
-        $this->bindProjectDir = $bindProjectDir;
-    }
+    public function __construct(
+        private readonly AuthenticationService $authenticationService,
+        private readonly string $coverServiceUrl,
+        private readonly string $coverServiceDefaultUrl,
+        private readonly string $coverServiceGenerateDomain,
+        private readonly string $projectDir
+    ) {}
 
     /**
      * Get covers for the identifiers given.
@@ -53,10 +42,10 @@ class CoverServiceService
      * @return array
      *   URLs for covers for the ones found (indexed by pid)
      *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
      */
-    public function getCovers(array $identifiers)
+    public function getCovers(array $identifiers): array
     {
         $covers = [];
 
@@ -67,7 +56,7 @@ class CoverServiceService
                 $config
             );
             $retrieved = $apiInstance->getCoverCollection('pid', $identifiers, ['original', 'small']);
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             return $covers;
         }
 
@@ -108,7 +97,7 @@ class CoverServiceService
      */
     public function getDefaultCoverUrl(): string
     {
-        return $this->bindCoverServiceDefaultUrl;
+        return $this->coverServiceDefaultUrl;
     }
 
     /**
@@ -118,7 +107,7 @@ class CoverServiceService
      *   The material to generate cover for
      *
      * @return string
-     *   URL to the cover. Will fall back to default cover if generation fails.
+     *   URL to the cover. Will fallback to default cover if generation fails.
      */
     public function getGenericCoverUrl(Material $material): string
     {
@@ -127,16 +116,16 @@ class CoverServiceService
         $file = '/public/covers/'.$filename;
         try {
             $cover = new BookCover();
-            $cover->setTitle($material->getTitleFull())
-                ->setCreators($material->getCreator())
-                ->setPublisher($material->getPublisher())
+            $cover->setTitle($material->getTitleFull() ?? '')
+                ->setCreators($material->getCreatorFiltered() ?? '')
+                ->setPublisher($material->getPublisher() ?? '')
                 ->setDatePublished($material->getDate()->format('Y'))
                 ->randomizeBackgroundColor()
-                ->save($this->bindProjectDir.$file, 350);
+                ->save($this->projectDir.$file, 350);
 
-            $url = $this->bindCoverServiceGenerateDomain.'/covers/'.$filename;
-        } catch (\Exception $e) {
-            // Don't do anything. Will fallback to default cover missing image.
+            $url = $this->coverServiceGenerateDomain.'/covers/'.$filename;
+        } catch (\Exception) {
+            // Don't do anything. Will fall back to default cover missing image.
         }
 
         return $url;
@@ -145,14 +134,14 @@ class CoverServiceService
     /**
      * Get configuration for the CoverService client.
      *
-     * @return configuration
+     * @return Configuration
      *   The configuration,
      *
-     * @throws \App\Exception\PlatformAuthException
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     * @throws \Psr\Cache\InvalidArgumentException
+     * @throws PlatformAuthException
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
      */
-    private function getConfig()
+    private function getConfig(): Configuration
     {
         $config = Configuration::getDefaultConfiguration();
 
@@ -160,7 +149,7 @@ class CoverServiceService
         $token = $this->authenticationService->getAccessToken();
         $config->setAccessToken($token);
 
-        $config->setHost($this->bindCoverServiceUrl);
+        $config->setHost($this->coverServiceUrl);
 
         return $config;
     }

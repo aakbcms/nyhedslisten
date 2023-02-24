@@ -7,9 +7,8 @@
 namespace App\Repository;
 
 use App\Entity\Category;
-use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Repository for Search Entity.
@@ -18,8 +17,6 @@ class CategoryRepository extends ServiceEntityRepository
 {
     /**
      * SearchRepository constructor.
-     *
-     * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -37,13 +34,13 @@ class CategoryRepository extends ServiceEntityRepository
     /**
      * Find all Categories, join Materials where date is newer than given date.
      *
-     * @param DateTimeImmutable $since
+     * @param \DateTimeImmutable $since
      *   The date materials should have been added after
      *
      * @return mixed
      *   Array of Categories
      */
-    public function findByMaterialDate(DateTimeImmutable $since)
+    public function findByMaterialDate(\DateTimeImmutable $since)
     {
         return $this->createQueryBuilder('c')
             ->select('c', 'm')

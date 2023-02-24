@@ -7,10 +7,9 @@
 namespace App\Repository;
 
 use App\Entity\Material;
-use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\QueryException;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Repository for Material Entity.
@@ -19,8 +18,6 @@ class MaterialRepository extends ServiceEntityRepository
 {
     /**
      * MaterialRepository constructor.
-     *
-     * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -51,12 +48,10 @@ class MaterialRepository extends ServiceEntityRepository
     /**
      * Find materials received since a given date.
      *
-     * @param DateTimeInterface $since
-     *
      * @return mixed
      *   Array of materials
      */
-    public function findLatest(DateTimeInterface $since): array
+    public function findLatest(\DateTimeInterface $since): array
     {
         return $this->createQueryBuilder('m')
             ->andWhere('m.date >= :date')
@@ -69,13 +64,10 @@ class MaterialRepository extends ServiceEntityRepository
     /**
      * Find materials received since a given date and belonging to a specific search.
      *
-     * @param DateTimeInterface $since
-     * @param int               $searchId
-     *
      * @return mixed
      *   Array of materials
      */
-    public function findLatestBySearch(DateTimeInterface $since, int $searchId): array
+    public function findLatestBySearch(\DateTimeInterface $since, int $searchId): array
     {
         return $this->createQueryBuilder('m')
             ->andWhere(':searchId MEMBER OF m.searches')

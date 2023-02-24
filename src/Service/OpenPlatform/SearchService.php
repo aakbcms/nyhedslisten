@@ -23,12 +23,10 @@ class SearchService
 {
     private const SEARCH_LIMIT = 50;
 
-    private AuthenticationService $authenticationService;
-    private ClientInterface $client;
+    private readonly array $searchFields;
+    private readonly string $searchURL;
 
-    private $searchFields;
-    private $searchURL;
-    private $profile;
+    private readonly string $profile;
 
     /**
      * SearchService constructor.
@@ -37,14 +35,14 @@ class SearchService
      *   Access to environment variables
      * @param authenticationService $authenticationService
      *   The Open Platform authentication service
-     * @param ClientInterface $httpClient
+     * @param ClientInterface $guzzleClient
      *   Guzzle Client
      */
-    public function __construct(ParameterBagInterface $params, AuthenticationService $authenticationService, ClientInterface $httpClient)
-    {
-        $this->authenticationService = $authenticationService;
-        $this->client = $httpClient;
-
+    public function __construct(
+        ParameterBagInterface $params,
+        private readonly AuthenticationService $authenticationService,
+        private readonly ClientInterface $guzzleClient
+    ) {
         $this->searchURL = $params->get('openPlatform.search.url');
         $this->searchFields = explode(',', $params->get('openPlatform.search.fields'));
 
@@ -64,18 +62,13 @@ class SearchService
      * @throws InvalidArgumentException
      * @throws PlatformAuthException
      */
-    public function query(string $query): array
+    public function query(string $query, $limit = null): array
     {
-        return $this->recursiveQuery($query);
+        return $this->recursiveQuery($query, $limit);
     }
 
     /**
      * Search by identifier of type.
-     *
-     * @param string $identifier
-     * @param string $type
-     *
-     * @return array
      *
      * @throws GuzzleException
      * @throws InvalidArgumentException
@@ -83,23 +76,12 @@ class SearchService
      */
     public function searchByIdentifier(string $identifier, string $type): array
     {
-        switch ($type) {
-            case IdentifierType::PID:
-                // If this is a search after a pid simply search for it and not in the search index.
-                $query = 'rec.id='.$identifier;
-                break;
-
-            case IdentifierType::ISBN:
-                $query = 'term.isbn='.$identifier;
-                break;
-
-            case IdentifierType::FAUST:
-                $query = 'dkcclterm.is='.$identifier;
-                break;
-
-            default:
-                throw new \InvalidArgumentException('Unknown identifier type: '.$type);
-        }
+        $query = match ($type) {
+            IdentifierType::PID => 'rec.id='.$identifier,
+            IdentifierType::ISBN => 'term.isbn='.$identifier,
+            IdentifierType::FAUST => 'dkcclterm.is='.$identifier,
+            default => throw new \InvalidArgumentException('Unknown identifier type: '.$type),
+        };
 
         return $this->query($query);
     }
@@ -107,11 +89,13 @@ class SearchService
     /**
      * Recursive search until no more results exists for the query.
      *
-     * This is needed as the open platform allows a max limit of 50 elements, so
-     * if more results exists this calls itself to get all results.
+     * This is needed as the open platform allows an max limit of 50 elements, so
+     * if more results exists this calls it self to get all results.
      *
      * @param string $query
      *   The cql-query to execute against OpenPlatform
+     * @param ?int $limit
+     *   Limit the number of results to get
      * @param int $offset
      *   The offset to start getting results
      * @param array $results
@@ -124,10 +108,12 @@ class SearchService
      * @throws PlatformAuthException
      * @throws InvalidArgumentException
      */
-    private function recursiveQuery(string $query, int $offset = 0, array &$results = []): array
+    private function recursiveQuery(string $query, ?int $limit = null, int $offset = 0, array &$results = []): array
     {
+        $searchLimit = $limit < ($offset + self::SEARCH_LIMIT) ? self::SEARCH_LIMIT : $limit;
+
         $token = $this->authenticationService->getAccessToken();
-        $response = $this->client->request('POST', $this->searchURL, [
+        $response = $this->guzzleClient->request('POST', $this->searchURL, [
             RequestOptions::JSON => [
                 'fields' => $this->searchFields,
                 'access_token' => $token,
@@ -135,21 +121,23 @@ class SearchService
                 'timings' => false,
                 'q' => $query,
                 'offset' => $offset,
-                'limit' => $this::SEARCH_LIMIT,
+                'limit' => $searchLimit,
                 'profile' => $this->profile,
             ],
         ]);
 
         $content = $response->getBody()->getContents();
-        $json = json_decode($content, true);
+        $json = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
 
         if (isset($json['data']) && !empty($json['data'])) {
             ArrayMerge::mergeArraysByReference($results, $json['data']);
         }
 
         // If there are more results get the next chunk.
-        if (isset($json['hitCount']) && $json['hitCount'] > $offset) {
-            $this->recursiveQuery($query, $offset + self::SEARCH_LIMIT, $results);
+        if (null === $limit || \count($results) < $limit) {
+            if (isset($json['hitCount']) && $json['hitCount'] > $offset) {
+                $this->recursiveQuery($query, $limit, $offset + self::SEARCH_LIMIT, $results);
+            }
         }
 
         return $results;

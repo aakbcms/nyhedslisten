@@ -8,23 +8,19 @@ namespace App\Command;
 
 use App\Repository\CategoryRepository;
 use App\Service\OpenPlatform\NewMaterialService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-/**
- * Class GetNewMaterialsCommand.
- */
+#[AsCommand(
+    name: 'app:materials:get-new',
+    description: 'Get all new materials received in configured timespan',
+)]
 class GetNewMaterialsCommand extends Command
 {
-    protected static $defaultName = 'app:materials:get-new';
-
-    private NewMaterialService $newMaterialService;
-    private CategoryRepository $categoryRepository;
-    private ParameterBagInterface $parameterBag;
-
     /**
      * OpenPlatformQueryCommand constructor.
      *
@@ -35,12 +31,11 @@ class GetNewMaterialsCommand extends Command
      * @param ParameterBagInterface $parameterBag
      *   Application configuration
      */
-    public function __construct(NewMaterialService $newMaterialService, CategoryRepository $categoryRepository, ParameterBagInterface $parameterBag)
-    {
-        $this->newMaterialService = $newMaterialService;
-        $this->categoryRepository = $categoryRepository;
-        $this->parameterBag = $parameterBag;
-
+    public function __construct(
+        private readonly NewMaterialService $newMaterialService,
+        private readonly CategoryRepository $categoryRepository,
+        private readonly ParameterBagInterface $parameterBag
+    ) {
         parent::__construct();
     }
 
@@ -49,21 +44,18 @@ class GetNewMaterialsCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setDescription('Get all new materials received in configured timespan')
-            ->setHelp('Searches through OpenSearch to get all materials received within the time interval configured for the application')
-            ->addArgument('id', InputArgument::OPTIONAL, 'The ID of the CQL search to run');
+        $this->setHelp('Searches through OpenSearch to get all materials received within the time interval configured for the application')
+            ->addOption('id', null, InputArgument::OPTIONAL, 'The ID of the CQL search to run');
     }
 
     /**
      * {@inheritdoc}
      *
-     * Execute a data well search and output the result.
-     *
-     * @throws \Exception
+     * Execute an data well search and output the result.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $id = $input->getArgument('id');
+        $id = $input->getOption('id');
 
         if ($id) {
             $categories = $this->categoryRepository->findById($id);
@@ -75,7 +67,7 @@ class GetNewMaterialsCommand extends Command
         $date = new \DateTimeImmutable($dateConfig);
 
         $count = 1;
-        $total = \count($categories);
+        $total = is_countable($categories) ? \count($categories) : 0;
         foreach ($categories as $category) {
             if ($category) {
                 $results = $this->newMaterialService->updateNewMaterialsSinceDate($category, $date);
@@ -86,5 +78,7 @@ class GetNewMaterialsCommand extends Command
             }
             ++$count;
         }
+
+        return Command::SUCCESS;
     }
 }
