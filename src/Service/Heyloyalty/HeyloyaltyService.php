@@ -83,6 +83,7 @@ class HeyloyaltyService
         $field = $this->getListField($this->listId, $this->fieldId);
         $list['fields'][$field['name']]['options'] = [
             [
+                'id' => null,
                 'label' => $option,
             ],
         ];
