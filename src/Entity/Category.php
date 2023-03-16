@@ -59,6 +59,20 @@ class Category implements \Stringable
         return $this->name;
     }
 
+    /**
+     * Extra Getter for name.
+     *
+     * EasyAdmin doesn't play nice when displaying the
+     * same filed twice so must have an extra getter
+     * for the name filed to fool EasyAdmin.
+     *
+     * @return string|null
+     */
+    public function getHlName(): ?string
+    {
+        return $this->getName();
+    }
+
     public function setName(string $name): self
     {
         $this->name = $name;

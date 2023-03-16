@@ -5,7 +5,7 @@ namespace App\Admin\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
 
-class SuccesField implements FieldInterface
+class SuccessField implements FieldInterface
 {
     use FieldTrait;
 

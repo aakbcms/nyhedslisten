@@ -3,7 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Admin\Field\CqlResultField;
-use App\Admin\Field\SuccesField;
+use App\Admin\Field\ListHasField;
+use App\Admin\Field\SuccessField;
 use App\Entity\Category;
 use App\Exception\HeyloyaltyException;
 use App\Exception\HeyloyaltyOptionNotFoundException;
@@ -16,6 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -25,12 +27,27 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use GuzzleHttp\Exception\GuzzleException;
+use Psr\Cache\InvalidArgumentException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class CategoryCrudController extends AbstractCrudController
 {
+    /**
+     * CategoryCrudController constructor.
+     *
+     * @param SearchService $searchService
+     * @param HeyloyaltyService $heyloyaltyService
+     * @param CategoryRepository $categoryRepository
+     * @param EntityManagerInterface $entityManager
+     */
     public function __construct(
         private readonly SearchService $searchService,
         private readonly HeyloyaltyService $heyloyaltyService,
+        private readonly CategoryRepository $categoryRepository,
+        private readonly EntityManagerInterface $entityManager,
     ) {}
 
     public static function getEntityFqcn(): string
@@ -40,8 +57,15 @@ class CategoryCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
+        $syncToHeyloyalty = Action::new('addToHeyloyalty')
+            ->linkToCrudAction('addToHeyloyalty');
+
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_DETAIL, $syncToHeyloyalty)
+            ->add(Crud::PAGE_EDIT, Action::DETAIL)
+            // @TODO Fix Heyloyalty delete
+            ->disable(Action::DELETE)
             ->addBatchAction(Action::new('query', 'Query Open Search')
                 ->linkToCrudAction('queryBatchAction')
                 ->addCssClass('btn btn-primary')
@@ -61,13 +85,31 @@ class CategoryCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addTab('Category');
-        yield IdField::new('id')->hideOnForm();
+        yield IdField::new('id')->hideOnIndex()->setFormTypeOption('disabled', 'disabled');
         yield TextField::new('name');
-        yield DateTimeField::new('lastSearchRunAt', 'Last run')->hideOnForm();
+        yield ListHasField::new('hlName', 'HL')
+            ->setSortable(false)
+            ->setVirtual(true)
+            ->hideOnForm()
+            ->formatValue(function ($value, $entity) {
+                try {
+                    $d = $this->heyloyaltyService->hasOption($value);
+
+                    return $d;
+                } catch (HeyloyaltyException $exception) {
+                    return null;
+                }
+            });
         yield CodeEditorField::new('cqlSearch', 'CQL search')
             ->hideOnIndex()
             ->hideLineNumbers()
             ->setHelp('Do not include "holdingsitem.accessionDate" ("bad") or "facet.acSource" parameters in the CQL statement. These will be added automatically.');
+        yield TextField::new('createdBy')->hideOnIndex()->setDisabled()->setColumns(3);
+        yield DateTimeField::new('createdAt')->hideOnIndex()->setDisabled()->setColumns(3);
+        yield TextField::new('updatedBy')->hideOnIndex()->setDisabled()->setColumns(3);
+        yield DateTimeField::new('updatedAt')->hideOnIndex()->setDisabled()->setColumns(3);
+
+        yield FormField::addTab('CQL result')->hideOnForm();
         yield CqlResultField::new('cqlSearch', 'CQL result')
             ->setHelp('Result from running the search (Limit 30)')
             ->onlyOnDetail()
@@ -83,7 +125,8 @@ class CategoryCrudController extends AbstractCrudController
             });
 
         yield FormField::addTab('Search runs')->hideOnForm();
-        yield SuccesField::new('lastSearchRunSuccess', 'Succes')->hideOnForm();
+        yield SuccessField::new('lastSearchRunSuccess', 'Success')->hideOnForm();
+        yield DateTimeField::new('lastSearchRunAt', 'Last run')->hideOnForm();
         yield AssociationField::new('searchRuns')->hideOnForm();
     }
 
@@ -93,7 +136,72 @@ class CategoryCrudController extends AbstractCrudController
             ->add('name');
     }
 
-    public function queryBatchAction(BatchActionDto $batchActionDto, NewMaterialService $materialService, CategoryRepository $categoryRepository)
+    /**
+     * Update entity hook.
+     *
+     * @param EntityManagerInterface $entityManager
+     * @param $entityInstance
+     *
+     * @return void
+     */
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $uof = $entityManager->getUnitOfWork();
+        $originalEntity = $uof->getOriginalEntityData($entityInstance);
+
+        // We only need to update if the name has changed. The CQL search is not used
+        // by Heyloyalty
+        if ($originalEntity['name'] !== $entityInstance->getName()) {
+            try {
+                $this->heyloyaltyService->updateOption($originalEntity['name'], $entityInstance->getName());
+
+                $this->flashSuccess('Update', $entityInstance->getName());
+
+                parent::updateEntity($entityManager, $entityInstance);
+            } catch (HeyloyaltyException $e) {
+                $this->flashError('Update', $entityInstance->getName(), $e);
+            }
+        } else {
+            parent::updateEntity($entityManager, $entityInstance);
+        }
+    }
+
+    /**
+     * Persist entity hook.
+     *
+     * @param EntityManagerInterface $entityManager
+     * @param $entityInstance
+     *
+     * @return void
+     */
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        try {
+            $this->heyloyaltyService->addOption($entityInstance->getName());
+
+            $this->flashSuccess('Persist', $entityInstance->getName());
+
+            parent::persistEntity($entityManager, $entityInstance);
+        } catch (\Exception $e) {
+            $this->flashError('Persist', $entityInstance->getName(), $e);
+        }
+    }
+
+    /**
+     * Batch query the datawell for selected categories.
+     *
+     * @param BatchActionDto $batchActionDto
+     * @param NewMaterialService $materialService
+     * @param CategoryRepository $categoryRepository
+     *
+     * @return RedirectResponse
+     *
+     * @throws GuzzleException
+     * @throws InvalidArgumentException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function queryBatchAction(BatchActionDto $batchActionDto, NewMaterialService $materialService, CategoryRepository $categoryRepository): RedirectResponse
     {
         $ids = array_map(static function ($id) {
             return (int) $id;
@@ -126,64 +234,47 @@ class CategoryCrudController extends AbstractCrudController
         return $this->redirect($d);
     }
 
-    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    /**
+     * Add category to Heyloyalty.
+     *
+     * @param AdminContext $adminContext
+     *
+     * @return RedirectResponse
+     */
+    public function addToHeyloyalty(AdminContext $adminContext): RedirectResponse
     {
-        $uof = $entityManager->getUnitOfWork();
-        $originalEntity = $uof->getOriginalEntityData($entityInstance);
+        /** @var Category $category */
+        $category = $adminContext->getEntity()->getInstance();
 
-        // We only need to update if the name has changed. The CQL search is not used
-        // by Heyloyalty
-        if ($originalEntity['name'] !== $entityInstance->getName()) {
+        try {
+            // Ensure option doesn't exist already
+            $this->heyloyaltyService->updateOption($category->getName(), $category->getName());
+
+            $this->addFlash('warning', sprintf('Category %s already exists in Heyloyalty', $category->getName()));
+        } catch (HeyloyaltyOptionNotFoundException $e) {
+            // If option doesn't exist, then add it
             try {
-                $this->heyloyaltyService->updateOption($originalEntity['name'], $entityInstance->getName());
+                $this->heyloyaltyService->addOption($category->getName());
 
-                $this->flashSuccess('Update', $entityInstance->getName());
-
-                parent::updateEntity($entityManager, $entityInstance);
-            } catch (HeyloyaltyOptionNotFoundException $e) {
-                try {
-                    $this->heyloyaltyService->addOption($entityInstance->getName());
-
-                    $this->flashSuccess('Update', $entityInstance->getName());
-
-                    parent::updateEntity($entityManager, $entityInstance);
-                } catch (HeyloyaltyException $e) {
-                    $this->flashError('Update', $entityInstance->getName(), $e);
-                }
+                $this->flashSuccess('Persist', $category);
             } catch (HeyloyaltyException $e) {
-                $this->flashError('Update', $entityInstance->getName(), $e);
+                $this->flashError('Persist', $category->getName(), $e);
             }
-        } else {
-            parent::updateEntity($entityManager, $entityInstance);
+        } catch (HeyloyaltyException $e) {
+            $this->flashError('Persist', $category->getName(), $e);
         }
+
+        return $this->redirect($adminContext->getReferrer());
     }
 
-    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-        try {
-            $this->heyloyaltyService->addOption($entityInstance->getName());
-
-            $this->flashSuccess('Persist', $entityInstance->getName());
-
-            parent::persistEntity($entityManager, $entityInstance);
-        } catch (\Exception $e) {
-            $this->flashError('Persist', $entityInstance->getName(), $e);
-        }
-    }
-
-    public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
-    {
-        try {
-            $this->heyloyaltyService->removeOption();
-
-            $this->flashSuccess('Delete', $entityInstance->getName());
-
-            parent::deleteEntity($entityManager, $entityInstance);
-        } catch (\Exception $e) {
-            $this->flashError('Delete', $entityInstance->getName(), $e);
-        }
-    }
-
+    /**
+     * Add flash success message.
+     *
+     * @param string $action
+     * @param string $name
+     *
+     * @return void
+     */
     private function flashSuccess(string $action, string $name): void
     {
         $this->addFlash(
@@ -192,6 +283,15 @@ class CategoryCrudController extends AbstractCrudController
         );
     }
 
+    /**
+     * Add flash error message.
+     *
+     * @param string $action
+     * @param string $name
+     * @param \Exception $e
+     *
+     * @return void
+     */
     private function flashError(string $action, string $name, \Exception $e): void
     {
         $this->addFlash(
