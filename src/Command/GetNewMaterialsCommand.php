@@ -69,7 +69,7 @@ class GetNewMaterialsCommand extends Command
         $count = 1;
         $total = is_countable($categories) ? \count($categories) : 0;
         foreach ($categories as $category) {
-            if ($category) {
+            if ($category && !empty($category->getCqlSearch())) {
                 $results = $this->newMaterialService->updateNewMaterialsSinceDate($category, $date);
 
                 $output->writeln($count.'/'.$total.' - ['.$category->getId().'] '.$category->getName().': '.\count($results).' materiels found.');

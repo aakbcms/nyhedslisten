@@ -3,21 +3,28 @@
 namespace App\Service\Heyloyalty;
 
 use App\Exception\HeyloyaltyException;
+use App\Exception\HeyloyaltyNotSupportedException;
 use App\Exception\HeyloyaltyOptionNotFoundException;
 use Phpclient\HLClient;
 use Phpclient\HLLists;
 use Phpclient\V2\HLLists as HLListsV2;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 /**
  * Class AuthenticationService.
  */
 class HeyloyaltyService
 {
+    private AsciiSlugger $slugger;
+    private mixed $heyloyaltyList = null;
+
     public function __construct(
         private readonly HLClient $client,
         private readonly string $listId,
         private readonly string $fieldId,
-    ) {}
+    ) {
+        $this->slugger = new AsciiSlugger();
+    }
 
     /**
      * Remove option from list field.
@@ -26,7 +33,24 @@ class HeyloyaltyService
      */
     public function removeOption(): never
     {
-        throw new HeyloyaltyException('Not supported yet');
+        throw new HeyloyaltyNotSupportedException('Not supported yet');
+    }
+
+    /**
+     * Check if the list has the given option.
+     *
+     * @param string $option
+     *
+     * @return bool|null
+     *
+     * @throws HeyloyaltyException
+     */
+    public function hasOption(string $option): ?bool
+    {
+        $list = $this->getList($this->listId);
+        $field = $this->getListField($this->listId, $this->fieldId);
+
+        return in_array($option, $list['fields'][$field['name']]['options']);
     }
 
     /**
@@ -62,7 +86,11 @@ class HeyloyaltyService
                 'fields' => [$field['name'] => $list['fields'][$field['name']]],
             ];
 
-            $this->updateListField($this->listId, $params);
+            $res = $this->updateListField($this->listId, $params);
+            $this->validateResponse($res, $newOption);
+
+            // Invalidate cached list after update
+            $this->heyloyaltyList = null;
         } else {
             throw new HeyloyaltyOptionNotFoundException('Option not found');
         }
@@ -78,12 +106,20 @@ class HeyloyaltyService
      */
     public function addOption(string $option): void
     {
+        // Heyloyalty's api will sometimes fail when ADDING labels
+        // containing spaces. However, we can UPDATE a label without
+        // spaces to a label with spaces... 🤯
+
+        // Slug (remove spaces) from option to add.
+        $sluggedOption = $this->slugger->slug($option)->toString();
+
         $list = $this->getList($this->listId);
 
         $field = $this->getListField($this->listId, $this->fieldId);
         $list['fields'][$field['name']]['options'] = [
             [
-                'label' => $option,
+                'id' => null,
+                'label' => $sluggedOption,
             ],
         ];
 
@@ -95,7 +131,17 @@ class HeyloyaltyService
             'fields' => [$field['name'] => $list['fields'][$field['name']]],
         ];
 
-        $this->updateListField($this->listId, $params);
+        // Add slugged option (without spaces)
+        $res = $this->updateListField($this->listId, $params);
+        $this->validateResponse($res, $sluggedOption);
+
+        // Invalidate cached list after update
+        $this->heyloyaltyList = null;
+
+        // Update option to non-slugged version
+        if ($option !== $sluggedOption) {
+            $this->updateOption($sluggedOption, $option);
+        }
     }
 
     /**
@@ -106,15 +152,16 @@ class HeyloyaltyService
      * @param $params
      *   Stuff to patch
      *
+     * @return mixed
+     *
      * @throws HeyloyaltyException
      */
-    private function updateListField(int $listId, $params): void
+    private function updateListField(int $listId, $params): mixed
     {
         $listsService = new HLListsV2($this->client);
         $res = $listsService->patch($listId, $params);
 
-        // We decode res to get exception on errors in responses.
-        $this->decodeResponse($res['response'], true);
+        return $this->decodeResponse($res['response'], true);
     }
 
     /**
@@ -151,6 +198,10 @@ class HeyloyaltyService
      */
     private function getList(int $listId): mixed
     {
+        if ($this->heyloyaltyList) {
+            return $this->heyloyaltyList;
+        }
+
         $listsService = new HLLists($this->client);
         $response = $listsService->getList($listId);
         if (array_key_exists('response', $response)) {
@@ -159,7 +210,9 @@ class HeyloyaltyService
             throw new HeyloyaltyException('Unknown response from HlLists->getList call');
         }
 
-        return $response ?? null;
+        $this->heyloyaltyList = $response ?? null;
+
+        return $this->heyloyaltyList;
     }
 
     /**
@@ -197,6 +250,32 @@ class HeyloyaltyService
             return $json;
         } catch (\JsonException $e) {
             throw new HeyloyaltyException($e->getMessage(), $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * @param array $list
+     * @param string $option
+     *
+     * @return void
+     *
+     * @throws HeyloyaltyException
+     */
+    private function validateResponse(array $list, string $option): void
+    {
+        $field = $this->getListField($this->listId, $this->fieldId);
+
+        $responseField = array_filter($list['fields'], function ($f) use ($field) {
+            return $f['name'] === $field['name'];
+        });
+        $responseField = array_pop($responseField);
+
+        $result = array_filter($responseField['options'], function ($o) use ($option) {
+            return $o['value'] === $option;
+        });
+
+        if (empty($result)) {
+            throw new HeyloyaltyException(sprintf('Error: Category "%s" not added in Heyloyalty', $option));
         }
     }
 }

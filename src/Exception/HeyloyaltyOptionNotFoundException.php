@@ -2,6 +2,6 @@
 
 namespace App\Exception;
 
-class HeyloyaltyOptionNotFoundException extends \Exception
+class HeyloyaltyOptionNotFoundException extends HeyloyaltyException
 {
 }

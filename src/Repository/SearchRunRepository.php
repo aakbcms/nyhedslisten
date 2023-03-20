@@ -22,4 +22,22 @@ class SearchRunRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, SearchRun::class);
     }
+
+    /**
+     * Delete search runs older than date.
+     *
+     * @param \DateTime $dateTime
+     *
+     * @return int
+     *   Number of deleted rows
+     */
+    public function deleteBefore(\DateTime $dateTime): int
+    {
+        return $this->createQueryBuilder('sr')
+            ->delete(SearchRun::class, 'sr')
+            ->where('sr.runAt < :dateTime')
+            ->setParameter('dateTime', $dateTime)
+            ->getQuery()
+            ->execute();
+    }
 }

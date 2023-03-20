@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Admin\Field\SuccesField;
+use App\Admin\Field\SuccessField;
 use App\Entity\SearchRun;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -34,18 +34,16 @@ class SearchRunCrudController extends AbstractCrudController
     {
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->remove(Crud::PAGE_INDEX, Action::NEW)
-            ->remove(Crud::PAGE_INDEX, Action::EDIT)
-            ->remove(Crud::PAGE_INDEX, Action::DELETE)
-            ->remove(Crud::PAGE_DETAIL, Action::EDIT)
-            ->remove(Crud::PAGE_DETAIL, Action::DELETE);
+            ->disable(Action::NEW, Action::EDIT, Action::DELETE)
+        ;
     }
 
     public function configureFields(string $pageName): iterable
     {
         yield DateTimeField::new('runAt');
-        yield SuccesField::new('isSuccess');
-        yield TextareaField::new('errorMessage');
+        yield SuccessField::new('isSuccess', 'Success');
+        yield TextareaField::new('errorMessage')->hideOnIndex();
+        yield TextareaField::new('errorMessage')->hideOnDetail()->setMaxLength(30);
         yield AssociationField::new('category');
     }
 

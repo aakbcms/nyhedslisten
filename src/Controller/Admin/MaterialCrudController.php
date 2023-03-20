@@ -38,17 +38,14 @@ class MaterialCrudController extends AbstractCrudController
     {
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->remove(Crud::PAGE_INDEX, Action::NEW)
-            ->remove(Crud::PAGE_INDEX, Action::EDIT)
-            ->remove(Crud::PAGE_INDEX, Action::DELETE)
-            ->remove(Crud::PAGE_DETAIL, Action::EDIT)
-            ->remove(Crud::PAGE_DETAIL, Action::DELETE)
+            ->disable(Action::NEW, Action::EDIT, Action::DELETE)
         ;
     }
 
     public function configureFields(string $pageName): iterable
     {
         yield IdField::new('id')->hideOnForm();
+        yield AssociationField::new('categories')->hideOnIndex();
         yield TextField::new('titleFull');
         yield TextField::new('creatorFiltered')
             ->setHelp('The first non null value from "Creator", "CreatorAut", "CreatorCre", "Contributor", "ContributorAct", "ContributorAut", "ContributorCtb", "ContributorDkfig" and "Publisher" in that order');
@@ -68,7 +65,6 @@ class MaterialCrudController extends AbstractCrudController
         yield ImageField::new('coverUrl', 'Cover')->hideOnIndex();
         yield UrlField::new('coverUrl')->hideOnIndex();
         yield MaterialTypeField::new('type');
-        yield AssociationField::new('categories')->hideOnIndex();
         yield AssociationField::new('categories', 'Cat.')->hideOnDetail();
     }
 
